@@ -69,6 +69,87 @@ TimingSimpleCPU::init()
     BaseSimpleCPU::init();
 }
 
+TimingSimpleCPU::LoopList::LoopList(TimingSimpleCPU *owner)
+    : owner(owner), l(list<BranchNode*>()){}
+
+TimingSimpleCPU::LoopList::~LoopList()
+{
+}
+
+void TimingSimpleCPU::LoopList::insertLoop(Addr BranchPC, Addr TargetPC)
+{
+    BranchNode* bn = new BranchNode;
+    bn->BranchPC = BranchPC;
+    bn->TargetPC = TargetPC;
+    bn->iterNum = 0;
+    bn->ArthmNum = 0;
+    bn->LoadNum = 0;
+    bn->StoreNum = 0;
+    bn->pim = false;
+    l.insert(l.begin(), bn);
+}
+
+bool TimingSimpleCPU::LoopList::IsInList(Addr BranchPC, Addr TargetPC)
+{
+    list<BranchNode*>::iterator current = l.begin();
+    for (current = l.begin(); current != l.end(); current++) {
+        if ((*current)->BranchPC == BranchPC &&
+            (*current)->TargetPC == TargetPC) {
+            return true;
+        }
+    }
+    return false;
+}
+
+void TimingSimpleCPU::LoopList::IncreamentList(Addr BranchPC, Addr TargetPC)
+{
+    list<BranchNode*>::iterator current = l.begin();
+    for (current = l.begin(); current != l.end(); current++) {
+        if ((*current)->BranchPC == BranchPC &&
+            (*current)->TargetPC == TargetPC) {
+            (*current)->iterNum++;
+            //add more stat operations here;
+            return;
+        }
+    }
+
+}
+
+//used in exe
+void TimingSimpleCPU::LoopList::updateList(Addr BranchPC, Addr TargetPC) {
+    if (IsInList(BranchPC, TargetPC)) {
+        IncreamentList(BranchPC, TargetPC);
+    } else {
+        insertLoop(BranchPC, TargetPC);
+        IncreamentList(BranchPC, TargetPC);
+    }
+    //First I need to know whether the current Instruction is a branch
+    //if (owner->curStaticInst->isCondCtrl() {
+        //Second, I need to know the currentPC
+        //TheISA::PCState curPC =
+        //onwer->threadInfo[curThread].thread->pcState();
+    //Third, I need to know whether the Target PC is above the curret
+    //PC which means that this is a branch for Loop
+}
+
+void TimingSimpleCPU::LoopList::printList()
+{
+    list<BranchNode*>::iterator current = l.begin();
+    int i = 0;
+    for (current = l.begin(); current != l.end(); current++, i++) {
+        cout << "-----------Loop " << i << " --------------"<<endl;
+        cout << "Starting PC: " << (*current)->TargetPC << endl;
+        cout << "Ending PC: " << (*current)->BranchPC << endl;
+        cout << "Number of Iteration:" << (*current)->iterNum << endl;
+        cout << "----------------------------------------------" << endl;
+        cout << endl;
+    }
+}
+
+void
+TimingSimpleCPU::LoopList::removeLoop(Addr BranchPC, Addr TargetPC)
+{}
+
 void
 TimingSimpleCPU::TimingCPUPort::TickEvent::schedule(PacketPtr _pkt, Tick t)
 {
@@ -77,7 +158,7 @@ TimingSimpleCPU::TimingCPUPort::TickEvent::schedule(PacketPtr _pkt, Tick t)
 }
 
 TimingSimpleCPU::TimingSimpleCPU(TimingSimpleCPUParams *p)
-    : BaseSimpleCPU(p), fetchTranslation(this), icachePort(this),
+    : BaseSimpleCPU(p), ll(this), fetchTranslation(this), icachePort(this),
       dcachePort(this), ifetch_pkt(NULL), dcache_pkt(NULL), previousCycle(0),
       fetchEvent([this]{ fetch(); }, name())
 {
@@ -775,6 +856,11 @@ TimingSimpleCPU::completeIfetch(PacketPtr pkt)
 {
     SimpleExecContext& t_info = *threadInfo[curThread];
 
+    //---------- For Profiling -----------//
+    Addr prevPC, postPC;
+    prevPC = t_info.pcState().instAddr();
+    //-------- end For Profiling ----------//
+
     DPRINTF(SimpleCPU, "Complete ICache Fetch for addr %#x\n", pkt ?
             pkt->getAddr() : 0);
 
@@ -791,7 +877,24 @@ TimingSimpleCPU::completeIfetch(PacketPtr pkt)
     if (pkt)
         pkt->req->setAccessLatency();
 
+    //---------For profiling -----------//
+    bool PrfIsBranch = false;
+    bool PrfIsReturn = false;
+    //StaticInst Inst = *curStaticInst;
+    if (curStaticInst && curStaticInst->isCondCtrl()) {
+        //postPC = curStaticInst->branchTarget(t_info.pcState()).instAddr();
+        PrfIsBranch = true;
+        //if (postPC <= prevPC) { // this means that it is a loop
+        //    ll.updateList(prevPC, postPC);
+        //}
 
+
+    }
+    if (curStaticInst && curStaticInst->isReturn()) {
+        PrfIsReturn = true;
+        //ll.printList();
+    }
+    //--------end for Profiling ---------//
     preExecute();
     if (curStaticInst && curStaticInst->isMemRef()) {
         // load or store: just send to dcache
@@ -835,6 +938,18 @@ TimingSimpleCPU::completeIfetch(PacketPtr pkt)
     } else {
         advanceInst(NoFault);
     }
+
+    //----------- For Profiling --------------//
+    if (PrfIsBranch) {
+        postPC = t_info.pcState().instAddr();
+        if (postPC <= prevPC) { // this means that it is a loop
+            ll.updateList(prevPC, postPC);
+        }
+    }
+    if (PrfIsReturn) {
+        ll.printList();
+    }
+    //---------- End For Profiling -----------//
 
     if (pkt) {
         delete pkt;

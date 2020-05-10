@@ -43,6 +43,8 @@
 #ifndef __CPU_SIMPLE_TIMING_HH__
 #define __CPU_SIMPLE_TIMING_HH__
 
+#include <list>
+
 #include "cpu/simple/base.hh"
 #include "cpu/simple/exec_context.hh"
 #include "cpu/translation.hh"
@@ -56,6 +58,37 @@ class TimingSimpleCPU : public BaseSimpleCPU
     virtual ~TimingSimpleCPU();
 
     void init() override;
+
+    //Used for loop profiling
+    struct BranchNode {
+        Addr BranchPC;
+        Addr TargetPC;
+        size_t iterNum;// Number of iteration
+        size_t ArthmNum;// Number of Arithmatic operations within the loop
+        size_t LoadNum; //Number of Load
+        size_t StoreNum; //Number of Store
+        bool pim = false; //Whether the loop corresponding to this
+        //branchNode should be offloaded to PIM
+    };
+
+    class LoopList {
+        private:
+            TimingSimpleCPU* owner;
+            std::list<BranchNode*> l;
+        public:
+            LoopList(TimingSimpleCPU* owner);
+            virtual ~LoopList();
+            // insert a new loop to the list
+            void insertLoop(Addr BranchPC, Addr TargetPC);
+            //to test whether an encountered loop is already in the list
+            bool IsInList(Addr BranchPC, Addr TargetPC);
+            void IncreamentList(Addr BranchPC, Addr TargetPC);
+            void updateList(Addr BranchPC, Addr TargetPC);
+            void printList();
+            void removeLoop(Addr BranchPC, Addr TargetPC);
+    };
+
+    LoopList ll;
 
   private:
 

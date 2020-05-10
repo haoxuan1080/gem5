@@ -576,7 +576,7 @@ BaseSimpleCPU::postExecute()
     SimpleThread* thread = t_info.thread;
 
     assert(curStaticInst);
-
+    //cout<<"In post Execute!"<<endl;
     TheISA::PCState pc = threadContexts[curThread]->pcState();
     Addr instAddr = pc.instAddr();
     if (FullSystem && thread->profile) {
