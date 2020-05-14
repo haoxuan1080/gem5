@@ -81,6 +81,7 @@ class TimingSimpleCPU : public BaseSimpleCPU
             // insert a new loop to the list
             void insertLoop(Addr BranchPC, Addr TargetPC);
             //to test whether an encountered loop is already in the list
+            BranchNode* IsInALoop(Addr CurPC);
             bool IsInList(Addr BranchPC, Addr TargetPC);
             void IncreamentList(Addr BranchPC, Addr TargetPC);
             void updateList(Addr BranchPC, Addr TargetPC);

@@ -89,6 +89,17 @@ void TimingSimpleCPU::LoopList::insertLoop(Addr BranchPC, Addr TargetPC)
     l.insert(l.begin(), bn);
 }
 
+TimingSimpleCPU::BranchNode* TimingSimpleCPU::LoopList::IsInALoop(Addr CurPC)
+{
+    list<BranchNode*>::iterator current = l.begin();
+    for (current = l.begin(); current != l.end(); current++) {
+        if ((*current)->BranchPC > CurPC && (*current)->TargetPC <= CurPC) {
+            return *current;
+        }
+    }
+    return nullptr;
+}
+
 bool TimingSimpleCPU::LoopList::IsInList(Addr BranchPC, Addr TargetPC)
 {
     list<BranchNode*>::iterator current = l.begin();
@@ -137,12 +148,25 @@ void TimingSimpleCPU::LoopList::printList()
     list<BranchNode*>::iterator current = l.begin();
     int i = 0;
     for (current = l.begin(); current != l.end(); current++, i++) {
-        cout << "-----------Loop " << i << " --------------"<<endl;
-        cout << "Starting PC: " << (*current)->TargetPC << endl;
-        cout << "Ending PC: " << (*current)->BranchPC << endl;
-        cout << "Number of Iteration:" << (*current)->iterNum << endl;
-        cout << "----------------------------------------------" << endl;
-        cout << endl;
+        if (*current) {
+            float AMRatio = (float)(*current)->ArthmNum
+                /(float)((*current)->LoadNum+(*current)->StoreNum);
+            cout << "-----------Loop " << i << " --------------"<<endl;
+            cout << "Starting PC: " << (*current)->TargetPC << endl;
+            cout << "Ending PC: " << (*current)->BranchPC << endl;
+            cout << "Number of Iteration:" << (*current)->iterNum << endl;
+            cout << "Number of Arithmatic operations" <<
+                (*current)->ArthmNum << endl;
+            cout << "Number of Load:" << (*current)->LoadNum << endl;
+            cout << "Number of Store:" << (*current)->StoreNum << endl;
+            cout << "The Arithmatic to memory access ratio is: "
+                << AMRatio << endl;
+            cout << "----------------------------------------------" << endl;
+            cout << endl;
+        }
+        else {
+            cout << "why did you placed nullptr in the list?" << endl;
+        }
     }
 }
 
@@ -857,6 +881,7 @@ TimingSimpleCPU::completeIfetch(PacketPtr pkt)
     SimpleExecContext& t_info = *threadInfo[curThread];
 
     //---------- For Profiling -----------//
+    //cout << "start of profiling" <<endl;
     Addr prevPC, postPC;
     prevPC = t_info.pcState().instAddr();
     //-------- end For Profiling ----------//
@@ -878,24 +903,45 @@ TimingSimpleCPU::completeIfetch(PacketPtr pkt)
         pkt->req->setAccessLatency();
 
     //---------For profiling -----------//
+    //cout << "profiling 1" << endl;
     bool PrfIsBranch = false;
     bool PrfIsReturn = false;
-    //StaticInst Inst = *curStaticInst;
-    if (curStaticInst && curStaticInst->isCondCtrl()) {
-        //postPC = curStaticInst->branchTarget(t_info.pcState()).instAddr();
-        PrfIsBranch = true;
-        //if (postPC <= prevPC) { // this means that it is a loop
-        //    ll.updateList(prevPC, postPC);
-        //}
-
-
-    }
-    if (curStaticInst && curStaticInst->isReturn()) {
-        PrfIsReturn = true;
-        //ll.printList();
-    }
     //--------end for Profiling ---------//
     preExecute();
+
+    //--------for profiling--------------//
+    //cout << "Profiling 2" << endl;
+    if (curStaticInst && (curStaticInst->isControl()
+        || curStaticInst->isIndirectCtrl()
+        || curStaticInst->isCondCtrl()
+        || curStaticInst->isUncondCtrl())
+        && !(curStaticInst->isCall()
+        || curStaticInst->isReturn())) {
+        PrfIsBranch = true;
+        }
+        if (curStaticInst && curStaticInst->isReturn()) {
+            PrfIsReturn = true;
+        }
+        //-------------End Profiling
+
+        //---------For profiling -----------//
+        BranchNode* bn = ll.IsInALoop(prevPC);
+
+        if (bn) {
+            if (curStaticInst && curStaticInst->isLoad()) {
+                bn->LoadNum++;
+            }
+            if (curStaticInst && (curStaticInst->isStore()
+                || curStaticInst->isStoreConditional())) {
+                bn->StoreNum++;
+            }
+            if (curStaticInst && (curStaticInst->isFloating()
+                || curStaticInst->isInteger())) {
+                bn->ArthmNum++;
+            }
+        }
+        //----------End for Profiling--------//
+
     if (curStaticInst && curStaticInst->isMemRef()) {
         // load or store: just send to dcache
         Fault fault = curStaticInst->initiateAcc(&t_info, traceData);
@@ -911,6 +957,7 @@ TimingSimpleCPU::completeIfetch(PacketPtr pkt)
             }
 
             postExecute();
+
             // @todo remove me after debugging with legion done
             if (curStaticInst && (!curStaticInst->isMicroop() ||
                         curStaticInst->isFirstMicroop()))
@@ -930,6 +977,8 @@ TimingSimpleCPU::completeIfetch(PacketPtr pkt)
         }
 
         postExecute();
+
+
         // @todo remove me after debugging with legion done
         if (curStaticInst && (!curStaticInst->isMicroop() ||
                 curStaticInst->isFirstMicroop()))
@@ -942,7 +991,7 @@ TimingSimpleCPU::completeIfetch(PacketPtr pkt)
     //----------- For Profiling --------------//
     if (PrfIsBranch) {
         postPC = t_info.pcState().instAddr();
-        if (postPC <= prevPC) { // this means that it is a loop
+        if (postPC < prevPC) { // this means that it is a loop
             ll.updateList(prevPC, postPC);
         }
     }
