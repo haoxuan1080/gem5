@@ -89,15 +89,17 @@ void TimingSimpleCPU::LoopList::insertLoop(Addr BranchPC, Addr TargetPC)
     l.insert(l.begin(), bn);
 }
 
-TimingSimpleCPU::BranchNode* TimingSimpleCPU::LoopList::IsInALoop(Addr CurPC)
+std::list<TimingSimpleCPU::BranchNode*>&
+TimingSimpleCPU::LoopList::IsInALoop(Addr CurPC)
 {
+    std::list<BranchNode*>* activeLoops = new std::list<BranchNode*>();
     list<BranchNode*>::iterator current = l.begin();
     for (current = l.begin(); current != l.end(); current++) {
         if ((*current)->BranchPC > CurPC && (*current)->TargetPC <= CurPC) {
-            return *current;
+            activeLoops->push_back(*current);
         }
     }
-    return nullptr;
+    return *activeLoops;
 }
 
 bool TimingSimpleCPU::LoopList::IsInList(Addr BranchPC, Addr TargetPC)
@@ -925,19 +927,24 @@ TimingSimpleCPU::completeIfetch(PacketPtr pkt)
         //-------------End Profiling
 
         //---------For profiling -----------//
-        BranchNode* bn = ll.IsInALoop(prevPC);
+        //BranchNode* bn = ll.IsInALoop(prevPC);
 
-        if (bn) {
-            if (curStaticInst && curStaticInst->isLoad()) {
-                bn->LoadNum++;
-            }
-            if (curStaticInst && (curStaticInst->isStore()
-                || curStaticInst->isStoreConditional())) {
-                bn->StoreNum++;
-            }
-            if (curStaticInst && (curStaticInst->isFloating()
-                || curStaticInst->isInteger())) {
-                bn->ArthmNum++;
+        std::list<BranchNode*> activeLoops = ll.IsInALoop(prevPC);
+        if (!activeLoops.empty()) {
+            std::list<BranchNode*>::iterator current = activeLoops.begin();
+            for (current = activeLoops.begin();
+                current != activeLoops.end(); current++) {
+                if (curStaticInst && curStaticInst->isLoad()) {
+                    (*current)->LoadNum++;
+                }
+                if (curStaticInst && (curStaticInst->isStore()
+                    || curStaticInst->isStoreConditional())) {
+                    (*current)->StoreNum++;
+                }
+                if (curStaticInst && (curStaticInst->isFloating()
+                    || curStaticInst->isInteger())) {
+                    (*current)->ArthmNum++;
+                }
             }
         }
         //----------End for Profiling--------//
