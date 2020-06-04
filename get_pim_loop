@@ -1,0 +1,108 @@
+#!/usr/bin/python3
+
+from string import *
+import sys
+#import argparse
+import optparse
+
+
+def addOptions(parser):
+    parser.add_option("-f", "--file", \
+            dest="filename", type="string", \
+            default='./m5out/stats.txt', \
+            help = """The statisic file for \
+            input that includes loops""")
+    parser.add_option("-t", "--threshold", \
+            dest="threshold", type="int", \
+            default = 0, \
+            help ="""The threshold above which the number \
+            of iterations of reserved loops should have""")
+    parser.add_option("-r", "--ratio", \
+            dest="ratio", type="float", \
+            default = 5.0, \
+            help = "The threashold below which the Arithmetic \
+            to Memory operation ratio of reserved loops should be")
+
+def is_stat(line):
+    return (line[0] != '-' and line[0] != ' ' and line[0] != '\n')
+
+def is_a_loop(name_sections):
+    return (len(name_sections) >= 6 and "loop" in name_sections[4])
+
+def read_a_loop(f, StartPC):
+    #reading EndPC
+    line = f.readline()
+    stat = line.split()
+    EndPC = int(stat[1])
+
+    #reading iterNum
+    line = f.readline()
+    stat = line.split()
+    iterNum = int(stat[1])
+
+    #reading ArthmNum
+    line = f.readline()
+    stat = line.split()
+    ArthmNum = int(stat[1])
+
+    #reading LoadNum
+    line = f.readline()
+    stat = line.split()
+    LoadNum = int(stat[1])
+
+    #reading StoreNum
+    line = f.readline()
+    stat = line.split()
+    StoreNum = int(stat[1])
+
+    #reading AMratio
+    line = f.readline()
+    stat = line.split()
+    AMratio = float(stat[1])
+
+    return [StartPC, EndPC, iterNum, ArthmNum, LoadNum, StoreNum, AMratio]
+
+###Start of Script
+parser = optparse.OptionParser()
+addOptions(parser)
+(options, args) = parser.parse_args()
+filepath = options.filename
+
+print("reading from file: " + filepath)
+f = open(filepath, "r")
+fw = open("./PIM_loops.txt", "w")
+
+loops = []
+
+while True:
+    line = f.readline()
+    if not line:
+        print("reached the end of the file")
+        break;
+    if is_stat(line):
+        stat = line.split()
+        name = stat[0]
+        value = stat[1]
+        #print(name)
+        #print(value)
+        name_sections = name.split('.')
+        if (is_a_loop(name_sections)):
+            #print ("this is a loop " + name)
+            loopnum = int(name_sections[4][5:len(name_sections[4])])
+            #print ("loop num is: ", loopnum)
+            StartPC = int(value)
+            [StartPC, EndPC, iterNum, ArthmNum, LoadNum, \
+                    StoreNum, Amratio] = read_a_loop(f, StartPC)
+            print("Loop ", loopnum, "from ", StartPC, " to ", EndPC)
+            print("AMratio = ", Amratio)
+            if (iterNum >= options.threshold and Amratio < options.ratio):
+                print("Loop ", loopnum, "is selected to be offloaded to PIM")
+                loops.append((loopnum, StartPC, EndPC))
+
+for loop in loops:
+    fw.write("Loop " + str(loop[0]) + "\n")
+    fw.write(hex(loop[1]) + "\n")
+    fw.write(hex(loop[2]) + "\n")
+
+f.close()
+fw.close()

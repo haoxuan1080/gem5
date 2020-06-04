@@ -228,8 +228,11 @@ BaseSimpleCPU::regStats()
 
         t_info.numInsts
             .name(thread_str + ".committedInsts")
-            .desc("Number of instructions committed")
+            .desc("Number of instructions committed in Simple CPU")
             ;
+        t_info.MyStats
+            .name(thread_str + ".MyStats")
+            .desc("This is a test, My Stats");
 
         t_info.numOps
             .name(thread_str + ".committedOps")

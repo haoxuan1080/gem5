@@ -87,6 +87,8 @@ class SimpleExecContext : public ExecContext {
     // Number of integer alu accesses
     Stats::Scalar numIntAluAccesses;
 
+    Stats::Scalar MyStats;
+
     // Number of float alu accesses
     Stats::Scalar numFpAluAccesses;
 

@@ -50,6 +50,21 @@
 #include "cpu/translation.hh"
 #include "params/TimingSimpleCPU.hh"
 
+//Used for loop profiling
+    struct BranchNode : public Stats::Group
+    {
+        Stats::Scalar TargetPC;
+        Stats::Scalar BranchPC;
+        Stats::Scalar iterNum;
+        Stats::Scalar ArthmNum;
+        Stats::Scalar LoadNum;
+        Stats::Scalar StoreNum;
+        Stats::Formula AMratio;
+        BranchNode(TimingSimpleCPU&, int);
+        bool pim = false;
+    };
+
+
 class TimingSimpleCPU : public BaseSimpleCPU
 {
   public:
@@ -57,34 +72,26 @@ class TimingSimpleCPU : public BaseSimpleCPU
     TimingSimpleCPU(TimingSimpleCPUParams * params);
     virtual ~TimingSimpleCPU();
 
+    void regStats_BN(BranchNode&, int);
+
     void init() override;
 
-    //Used for loop profiling
-    struct BranchNode {
-        Addr BranchPC;
-        Addr TargetPC;
-        size_t iterNum;// Number of iteration
-        size_t ArthmNum;// Number of Arithmatic operations within the loop
-        size_t LoadNum; //Number of Load
-        size_t StoreNum; //Number of Store
-        bool pim = false; //Whether the loop corresponding to this
-        //branchNode should be offloaded to PIM
-    };
-
     class LoopList {
-        private:
+        //private:
+        public:
             TimingSimpleCPU* owner;
             std::list<BranchNode*> l;
         public:
             LoopList(TimingSimpleCPU* owner);
             virtual ~LoopList();
             // insert a new loop to the list
-            void insertLoop(Addr BranchPC, Addr TargetPC);
+            BranchNode& insertLoop(Addr BranchPC,\
+                        Addr TargetPC, TimingSimpleCPU&);
             //to test whether an encountered loop is already in the list
             std::list<BranchNode*>& IsInALoop(Addr CurPC);
             bool IsInList(Addr BranchPC, Addr TargetPC);
             void IncreamentList(Addr BranchPC, Addr TargetPC);
-            void updateList(Addr BranchPC, Addr TargetPC);
+            void updateList(Addr BranchPC, Addr TargetPC, TimingSimpleCPU&);
             void printList();
             void removeLoop(Addr BranchPC, Addr TargetPC);
     };

@@ -125,7 +125,7 @@ Global::Global()
     simInsts
         .functor(BaseCPU::numSimulatedInsts)
         .name("sim_insts")
-        .desc("Number of instructions simulated")
+        .desc("Number of Global instructions simulated")
         .precision(0)
         .prereq(simInsts)
         ;
