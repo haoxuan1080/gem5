@@ -84,6 +84,15 @@ class SimpleExecContext : public ExecContext {
     Counter numOp;
     Stats::Scalar numOps;
 
+    //For PIM statistics
+    Stats::Average PIM_Fraction;
+    Stats::Scalar PIM_ArthmNum;
+    Stats::Scalar PIM_LoadNum;
+    Stats::Scalar PIM_StoreNum;
+    Stats::Formula PIM_AMratio; //overall AM ratio of all
+    //the instructions offloaded to the memory
+    //PIM statistics ends
+
     // Number of integer alu accesses
     Stats::Scalar numIntAluAccesses;
 

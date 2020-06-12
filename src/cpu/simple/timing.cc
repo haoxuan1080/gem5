@@ -187,50 +187,12 @@ void TimingSimpleCPU::LoopList::updateList(Addr BranchPC, \
         insertLoop(BranchPC, TargetPC, cpu);
         IncreamentList(BranchPC, TargetPC);
     }
-    //First I need to know whether the current Instruction is a branch
-    //if (owner->curStaticInst->isCondCtrl() {
-        //Second, I need to know the currentPC
-        //TheISA::PCState curPC =
-        //onwer->threadInfo[curThread].thread->pcState();
-    //Third, I need to know whether the Target PC is above the curret
-    //PC which means that this is a branch for Loop
 }
 
-/*void TimingSimpleCPU::LoopList::printList()
-{
-    list<BranchNode*>::iterator current = l.begin();
-    int i = 0;
-    for (current = l.begin(); current != l.end(); current++, i++) {
-        if (*current) {
-            float AMRatio = (float)(*current)->ArthmNum
-                /(float)((*current)->LoadNum+(*current)->StoreNum);
-            cout << "-----------Loop " << i << " --------------"<<endl;
-            cout << "Starting PC: " << (*current)->TargetPC << endl;
-            cout << "Ending PC: " << (*current)->BranchPC << endl;
-            cout << "Number of Iteration:" << (*current)->iterNum << endl;
-            cout << "Number of Arithmatic operations" <<
-                (*current)->ArthmNum << endl;
-            cout << "Number of Load:" << (*current)->LoadNum << endl;
-            cout << "Number of Store:" << (*current)->StoreNum << endl;
-            cout << "The Arithmatic to memory access ratio is: "
-                << AMRatio << endl;
-            cout << "----------------------------------------------" << endl;
-            cout << endl;
-        }
-        else {
-            cout << "why did you placed nullptr in the list?" << endl;
-        }
-    }
-}
-*/
-
-
-//void
-//TimingSimpleCPU::regStats()
-//{
-//    using namespace Stats;
-//
-//}
+PIM_Node::PIM_Node(uint64_t start, uint64_t end)
+    :startPC(start)
+    ,endPC(end)
+{}
 
 void
 TimingSimpleCPU::LoopList::removeLoop(Addr BranchPC, Addr TargetPC)
@@ -244,18 +206,47 @@ TimingSimpleCPU::TimingCPUPort::TickEvent::schedule(PacketPtr _pkt, Tick t)
 }
 
 TimingSimpleCPU::TimingSimpleCPU(TimingSimpleCPUParams *p)
-    : BaseSimpleCPU(p), ll(this), fetchTranslation(this), icachePort(this),
+    : BaseSimpleCPU(p), PIM_list(), In_PIM(false),
+      ll(this), fetchTranslation(this), icachePort(this),
       dcachePort(this), ifetch_pkt(NULL), dcache_pkt(NULL), previousCycle(0),
       fetchEvent([this]{ fetch(); }, name())
 {
     _status = Idle;
+
+    ///For PIM statistics
+    ifstream file("PIM_loops.txt");
+    while (1) {
+        string str;
+        if (!getline(file, str)) break;
+        if (!getline(file, str)) break;
+        cout<<"start point: "<<str<<endl;
+        uint64_t start = stoul(str.substr(2, str.length()-2), nullptr, 16);
+        if (!getline(file, str)) break;
+        cout<<"end point: "<<str<<endl;
+        uint64_t end = stoul(str.substr(2, str.length()-2), nullptr, 16);
+        auto pn = new PIM_Node(start, end);
+        PIM_list.push_back(pn);
+        cout<<"finished reading one node"<<endl;
+    }
+    ///For PIM statistics end
 }
-
-
 
 TimingSimpleCPU::~TimingSimpleCPU()
 {
 }
+
+///For PIM statistics
+bool TimingSimpleCPU::isInPIM_Node(uint64_t currentPC)
+{
+    list<PIM_Node*>::iterator itr;
+    for (itr = PIM_list.begin(); itr != PIM_list.end(); itr++) {
+        if ((*itr)->startPC <= currentPC && (*itr)->endPC > currentPC) {
+            return true;
+        }
+    }
+    return false;
+}
+//For PIMstatistics end
 
 DrainState
 TimingSimpleCPU::drain()
@@ -949,6 +940,17 @@ TimingSimpleCPU::completeIfetch(PacketPtr pkt)
     prevPC = t_info.pcState().instAddr();
     //-------- end For Profiling ----------//
 
+    //---------For PIM Statistics----------//
+    if (isInPIM_Node(prevPC)) {
+        t_info.PIM_Fraction = 1;
+        In_PIM = true;
+    }
+    else {
+        t_info.PIM_Fraction = 0;
+        In_PIM = false;
+    }
+    //---------end For PIM Stat------------//
+
     DPRINTF(SimpleCPU, "Complete ICache Fetch for addr %#x\n", pkt ?
             pkt->getAddr() : 0);
 
@@ -1002,6 +1004,22 @@ TimingSimpleCPU::completeIfetch(PacketPtr pkt)
          }
      }
      activeLoops.clear();
+     //----------End for Profiling--------//
+
+     //---------For PIM statistics--------//
+     if (In_PIM) {
+         if (curStaticInst && (curStaticInst->isStore()
+                 || curStaticInst->isStoreConditional())) {
+             t_info.PIM_StoreNum++;
+         }
+         if (curStaticInst && curStaticInst->isLoad()) {
+             t_info.PIM_LoadNum++;
+         }
+         if (curStaticInst && (curStaticInst->isFloating()
+                 || curStaticInst->isInteger())) {
+             t_info.PIM_ArthmNum++;
+         }
+     }
      //----------End for Profiling--------//
 
     if (curStaticInst && curStaticInst->isMemRef()) {

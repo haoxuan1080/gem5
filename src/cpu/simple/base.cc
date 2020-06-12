@@ -239,6 +239,36 @@ BaseSimpleCPU::regStats()
             .desc("Number of ops (including micro ops) committed")
             ;
 
+        t_info.PIM_Fraction
+            .name(thread_str + ".PIM_Fraction")
+            .desc("The Fraction of offloaded instructions\
+in all the instructions executed")
+            ;
+
+        t_info.PIM_ArthmNum
+            .name(thread_str + ".PIM_ArthmNum")
+            .desc("Number of Arithmetic operations offloaded\
+to the memory")
+            ;
+
+        t_info.PIM_LoadNum
+            .name(thread_str + ".PIM_LoadNum")
+            .desc("Number of Load Instructions offloadded \
+to the memory")
+            ;
+
+        t_info.PIM_StoreNum
+            .name(thread_str + ".PIM_StoreNum")
+            .desc("Number of Store Instructions offloadded \
+to the memory")
+            ;
+
+        t_info.PIM_AMratio
+            .name(thread_str + ".PIM_AMratio")
+            .desc("Overall Arithmetic to Memory access of all \
+the instruction offloaded to PIM")
+            ;
+
         t_info.numIntAluAccesses
             .name(thread_str + ".num_int_alu_accesses")
             .desc("Number of integer alu accesses")
@@ -382,6 +412,9 @@ BaseSimpleCPU::regStats()
         t_info.idleFraction = constant(1.0) - t_info.notIdleFraction;
         t_info.numIdleCycles = t_info.idleFraction * numCycles;
         t_info.numBusyCycles = t_info.notIdleFraction * numCycles;
+
+        t_info.PIM_AMratio = t_info.PIM_ArthmNum
+                /(t_info.PIM_LoadNum + t_info.PIM_StoreNum);
 
         t_info.numBranches
             .name(thread_str + ".Branches")

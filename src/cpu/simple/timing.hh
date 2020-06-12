@@ -51,18 +51,26 @@
 #include "params/TimingSimpleCPU.hh"
 
 //Used for loop profiling
-    struct BranchNode : public Stats::Group
-    {
-        Stats::Scalar TargetPC;
-        Stats::Scalar BranchPC;
-        Stats::Scalar iterNum;
-        Stats::Scalar ArthmNum;
-        Stats::Scalar LoadNum;
-        Stats::Scalar StoreNum;
-        Stats::Formula AMratio;
-        BranchNode(TimingSimpleCPU&, int);
-        bool pim = false;
-    };
+struct BranchNode : public Stats::Group
+{
+    Stats::Scalar TargetPC;
+    Stats::Scalar BranchPC;
+    Stats::Scalar iterNum;
+    Stats::Scalar ArthmNum;
+    Stats::Scalar LoadNum;
+    Stats::Scalar StoreNum;
+    Stats::Formula AMratio;
+    BranchNode(TimingSimpleCPU&, int);
+    bool pim = false;
+};
+
+struct PIM_Node
+{
+    uint64_t startPC;
+    uint64_t endPC;
+
+    PIM_Node(uint64_t start, uint64_t end);
+};
 
 
 class TimingSimpleCPU : public BaseSimpleCPU
@@ -75,6 +83,15 @@ class TimingSimpleCPU : public BaseSimpleCPU
     void regStats_BN(BranchNode&, int);
 
     void init() override;
+
+    //For PIM statistics
+    //
+    ////////////////////
+    std::list<PIM_Node*> PIM_list;
+    bool isInPIM_Node(uint64_t currentPC);
+    bool In_PIM;
+
+    //For Profiling
 
     class LoopList {
         //private:
