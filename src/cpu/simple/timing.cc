@@ -42,6 +42,7 @@
  */
 
 #include "cpu/simple/timing.hh"
+#include <fstream>
 
 #include "arch/locked_mem.hh"
 #include "arch/mmapped_ipr.hh"

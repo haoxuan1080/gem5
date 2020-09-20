@@ -1,0 +1,175 @@
+\documentclass[11pt]{article}
+\usepackage{fullpage}
+\usepackage{epsfig}
+\usepackage{algorithm}
+\usepackage[noend]{algorithmic}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{enumerate}
+\usepackage{framed}
+\usepackage{titlesec}
+\usepackage{listings}
+\usepackage{tabto}
+\usepackage{xcolor}
+\usepackage{listings}
+%\usepackage{lstlisting}
+\usepackage{hyperref}
+\usepackage{multicol}
+
+\usepackage{graphicx}
+\usepackage{caption}
+\usepackage{subcaption}
+
+\usepackage{enumitem}
+
+% FILL IN THE SPECIFICS OF EACH HOMEWORK HERE
+\newcommand{\course}{Research Project}
+\newcommand{\semester}{Fall 2020}
+\newcommand{\name}{Researh Project}
+%%%
+%%%
+%%% PLEASE FILL OUT YOUR NAME AND THE HOMEWORK/PROBLEM NUMBER
+%%% DO NOT INCLUDE STUDENT NAMES, FOR ANONYMOUS PEER GRADING PURPOSES.
+%%%
+%%%
+\newcommand{\hwk}{Learning Notes}
+
+\newcommand{\reportname}{Gem5 Learning Notes}
+
+
+\usepackage[margin=3cm]{caption}
+
+
+%%% You can ignore the following stuff, it's just for formatting purposes
+\textheight=8.6in
+\setlength{\textwidth}{6.44in}
+\addtolength{\headheight}{\baselineskip}
+% enumerate uses a), b), c), ...
+\renewcommand{\labelenumi}{\alph{enumi})}
+% Sets the style for fancy pages (namely, all but first page)
+% Changes the title box on the first page
+\renewcommand\maketitle{
+\begin{center}
+  {\huge\bf\reportname}\\
+\begin{tabular*}{6.44in}{l @{\extracolsep{\fill}}c r}
+%\bfseries  &  & \bfseries \course ~\semester \\
+%\bfseries&  & \bfseries  \hwk  \\
+\bfseries   &   &  \bfseries \\
+\bfseries   &   &  \bfseries \\
+Name: Haoxuan Zhang \bfseries  &  & \bfseries \course ~\semester\\
+ \bfseries&  & \bfseries  \hwk
+\end{tabular*}
+\end{center} }
+
+
+%% adjustments for dynamic programming.
+
+%\titleformat{\subsection}{\bf}{Part \thesubsection:}{1ex}{}
+\titleformat{\section}[runin]{\normalsize\bfseries}{\thesection.}{5pt}{}
+%\renewcommand{\thesubsection}{\alph{subsection}}
+\titleformat{\subsection}[runin]{\normalsize\bfseries}{\-\hspace{0.5cm}\thesubsection}{5pt}{}
+%\titleformat{\section}{\wrap}{}{}{}{}
+
+
+
+%%
+%%
+%% THE REAL STUFF STARTS HERE
+%%
+%%
+\begin{document}
+\maketitle
+\titlelabel{\thetitle.\quad}
+
+\begin{multicols}{2}[\section{Learning Notes for O3 CPU}]
+
+\subsection{O3 CPU Attributes}
+	\begin{enumerate}
+		\item From Base CPU:\\
+		
+		protected:
+			\begin{enumerate}[label={\arabic*.}]
+				\item instCnt
+				\item \_cpuId
+        \item socketId
+        \item taskID
+        \item \_pid
+        \item bool \_switchedOut
+        \item \_cacheLineSize
+        \item \texttt{std::vector\textless BaseInterrupts*\textgreater interrupts;}
+        \item \texttt{std::vector\textless ThreadContext *\textgreater threadContexts;}
+        \item \texttt{Trace::InstTracer * tracer;}
+        \item \texttt{Cycles previousCycle;}
+    		\item \texttt{CPUState previousState;}
+			\end{enumerate}
+		public:
+			\begin{enumerate}[label={\arabic*.}]
+				\item \texttt{ThreadID numThreads;}
+				\item \texttt{System *system;}
+			\end{enumerate}
+			
+		\item From FullO3CPU:\\
+		
+		protected:
+			\begin{enumerate}[label={\arabic*.}]
+				\item EventFunctionWrapper tickEvent; The tick event used for scheduling CPU ticks. What is a CPU tick?
+				\item EventFunctionWrapper threadExitEvent;The exit event used for terminating all ready-to-exit threads
+				\item \textbf{typename CPUPolicy::Fetch fetch;} This is a class which needs Impl specified
+				\item \textbf{typename CPUPolicy::Decode decode;} This is a class which needs Impl specified
+				\item \textbf{typename CPUPolicy::IEW iew;} The issue/execute/writeback stages.
+				\item \textbf{typename CPUPolicy::Commit commit;} The commit stage.
+				\item \textbf{PhysRegFile regFile;} The physical Register File
+				\item \textbf{typename CPUPolicy::FreeList freeList;} What is this?
+				\item \textbf{typename CPUPolicy::RenameMap renameMap[Impl::MaxThreads];} The rename map
+				\item \textbf{typename CPUPolicy::RenameMap commitRenameMap[Impl::MaxThreads];} The commit rename map
+				\item \textbf{typename CPUPolicy::ROB rob;} The re-order buffer.
+				\item \textbf{std::list\textless ThreadID\textgreater activeThreads;} Active Threads List
+				\item \textbf{std::unordered\_map\textless ThreadID, bool\textgreater exitingThreads;} This is a list of threads that are trying to exit. Each thread id is mapped to a boolean value denoting whether the thread is ready to exit.
+				\item \textbf{Scoreboard scoreboard;} The scoreboard
+				\item \textbf{TimeBuffer\textless TimeStruct\textgreater timeBuffer;} The main time buffer to do backwards communication.
+				\item \textbf{TimeBuffer\textless FetchStruct\textgreater fetchQueue;} The fetch stage's instruction queue.
+				\item \textbf{TimeBuffer\textless DecodeStruct\textgreater decodeQueue;} The decode stage's instruction queue.
+				\item \textbf{TimeBuffer\textless RenameStruct\textgreater renameQueue;} The rename stage's instruction queue.
+				\item \textbf{TimeBuffer\textless IEWStruct\textgreater iewQueue;} The IEW stage's instruction queue.
+				\item \textbf{ActivityRecorder activityRec;} The activity recorder; used to tell if the CPU has any activity remaining or if it can go to idle and deschedule itself.
+				
+
+			\end{enumerate}
+			
+		private:
+		\begin{enumerate}[label={\arabic*.}]
+			\item \textbf{System *system;} Pointer to the system.
+			\item \textbf{std::map\\\textless ThreadID,unsigned\textgreater threadMap;} Mapping for system thread id to cpu id
+			\item \textbf{std::vector\textless ThreadID\textgreater tids;} Available thread ids in the cpu
+			\item lots of Stats at the end of the class declaration
+		\end{enumerate}
+			
+			
+		public:
+			\begin{enumerate}[label={\arabic*.}]
+				\item \texttt{    enum Status \{\\
+        						\-\hspace{1cm}	Running,\\
+        						\-\hspace{1cm}	Idle,\\
+        						\-\hspace{1cm}	Halted,\\
+        						\-\hspace{1cm}	Blocked,\\
+        						\-\hspace{1cm}	SwitchedOut\\
+    												\};}
+    		\item \texttt{BaseTLB *itb;}
+    		\item \texttt{BaseTLB *dtb;}
+    		\item \texttt{Status \_status;}
+    		\item \texttt{int instcount;} with flag \texttt{NDEBUG} Count of total number of dynamic instructions in flight.
+    		\item \texttt{std::list<DynInstPtr> instList;} List of all the instructions in flight.
+    		\item \texttt{std::queue<ListIt> removeList;} List of all the instructions that will be removed at the end of this cycle.
+    		\item \texttt{bool removeInstsThisCycle;} Records if instructions need to be removed this cycle due to being retired or squashed.
+			\end{enumerate}
+	\end{enumerate}
+\subsection{Sept 19 2020}
+\begin{enumerate}
+  \item What is LSQ request in Full O3 CPU?
+  \item if there are multiple lanes dispatching at the same time. how should they register themselves in the reorder buffer?
+  \item DefaultIEW is initializing width in the way: issueWidth(params-\textgreater issueWidth) Maybe changing such parameters could change the configuration. next problem is how to change the bandwidth of the memory
+  \item It seems that the SimObject is polymorphic so I could convert a point to SimObject to a pointer to the derived class.
+  \item seems that all the parameters in the python classes are declared not in \_\_init\_\_() but in the class itself.
+  \item what is a probe?
+\end{enumerate}
+\end{multicols}
+\end{document}
