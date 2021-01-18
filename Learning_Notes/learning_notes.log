@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.18 (TeX Live 2017/Debian) (preloaded format=pdflatex 2020.1.18)  19 SEP 2020 18:16
+This is pdfTeX, Version 3.14159265-2.6-1.40.18 (TeX Live 2017/Debian) (preloaded format=pdflatex 2020.1.18)  17 JAN 2021 18:52
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -521,65 +521,16 @@ LaTeX Font Warning: Font shape `OML/cmtt/m/n' undefined
 (Font)              for symbol `textless' on input line 98.
 
 
-Overfull \hbox (53.49043pt too wide) in paragraph at lines 98--99
-[]\OT1/cmtt/m/n/10.95 std::vector\OML/cmtt/m/n/10.95 <\OT1/cmtt/m/n/10.95 BaseI
-nterrupts*\OML/cmtt/m/n/10.95 >\OT1/cmtt/m/n/10.95 interrupts; 
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 99--100
-[]\OT1/cmtt/m/n/10.95 std::vector\OML/cmtt/m/n/10.95 <\OT1/cmtt/m/n/10.95 Threa
-dContext
- []
-
-
 Underfull \hbox (badness 10000) in paragraph at lines 110--111
 
  []
 
+[1
 
-Underfull \hbox (badness 10000) in paragraph at lines 114--115
-[]\OT1/cmr/m/n/10.95 EventFunctionWrapper tick-Event;
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 115--116
-[]\OT1/cmr/m/n/10.95 EventFunctionWrapper thread-Ex-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 116--117
-[]\OT1/cmr/bx/n/10.95 typename CPUPol-icy::Fetch
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 117--118
-[]\OT1/cmr/bx/n/10.95 typename CPUPol-icy::Decode
- []
-
-
-Overfull \hbox (18.09404pt too wide) in paragraph at lines 122--123
-[]\OT1/cmr/bx/n/10.95 typename CPUPol-icy::RenameMap
- []
-
-
-Overfull \hbox (1.93684pt too wide) in paragraph at lines 122--123
-\OT1/cmr/bx/n/10.95 re-nameMap[Impl::MaxThreads];
- []
-
-
-Overfull \hbox (18.09404pt too wide) in paragraph at lines 123--124
-[]\OT1/cmr/bx/n/10.95 typename CPUPol-icy::RenameMap
- []
-
-
-Overfull \hbox (47.47029pt too wide) in paragraph at lines 123--124
-\OT1/cmr/bx/n/10.95 com-mitRe-nameMap[Impl::MaxThreads];
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 124--125
-[]\OT1/cmr/bx/n/10.95 typename CPUPol-icy::ROB
+{/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map}]
+Overfull \hbox (6.89755pt too wide) in paragraph at lines 123--124
+[]\OT1/cmr/bx/n/10.95 typename CPUPol-icy::RenameMap com-mitRe-nameMap[Impl::Ma
+xThreads];
  []
 
 LaTeX Font Info:    Try loading font information for OML+cmr on input line 125.
@@ -590,74 +541,10 @@ File: omlcmr.fd 2014/09/29 v2.5h Standard LaTeX font definitions
 LaTeX Font Info:    Font shape `OML/cmr/bx/n' in size <10.95> not available
 (Font)              Font shape `OML/cmm/b/it' tried instead on input line 125.
 
-Overfull \hbox (18.79816pt too wide) in paragraph at lines 125--126
-[]\OT1/cmr/bx/n/10.95 std::list\OML/cmm/b/it/10.95 <\OT1/cmr/bx/n/10.95 ThreadI
-D\OML/cmm/b/it/10.95 >\OT1/cmr/bx/n/10.95 activeThreads;
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 126--127
-[]\OT1/cmr/bx/n/10.95 std::unordered[]map\OML/cmm/b/it/10.95 <\OT1/cmr/bx/n/10.
-95 ThreadID,
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 127--128
-[]\OT1/cmr/bx/n/10.95 Scoreboard score-board; \OT1/cmr/m/n/10.95 The
- []
-
-
-Overfull \hbox (31.62941pt too wide) in paragraph at lines 128--129
-[]\OT1/cmr/bx/n/10.95 TimeBuffer\OML/cmm/b/it/10.95 <\OT1/cmr/bx/n/10.95 TimeSt
-ruct\OML/cmm/b/it/10.95 >\OT1/cmr/bx/n/10.95 timeBuffer;
- []
-
-
-Overfull \hbox (35.72801pt too wide) in paragraph at lines 129--130
-[]\OT1/cmr/bx/n/10.95 TimeBuffer\OML/cmm/b/it/10.95 <\OT1/cmr/bx/n/10.95 FetchS
-truct\OML/cmm/b/it/10.95 >\OT1/cmr/bx/n/10.95 fetchQueue;
- []
-
-
-Overfull \hbox (57.39973pt too wide) in paragraph at lines 130--131
-[]\OT1/cmr/bx/n/10.95 TimeBuffer\OML/cmm/b/it/10.95 <\OT1/cmr/bx/n/10.95 Decode
-Struct\OML/cmm/b/it/10.95 >\OT1/cmr/bx/n/10.95 decodeQueue;
- []
-
-
-Overfull \hbox (64.12181pt too wide) in paragraph at lines 131--132
+Overfull \hbox (6.82393pt too wide) in paragraph at lines 131--132
 []\OT1/cmr/bx/n/10.95 TimeBuffer\OML/cmm/b/it/10.95 <\OT1/cmr/bx/n/10.95 Rename
-Struct\OML/cmm/b/it/10.95 >\OT1/cmr/bx/n/10.95 renameQueue;
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 131--132
-\OT1/cmr/m/n/10.95 The re-name stage's in-struc-tion
- []
-
-[1
-
-{/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map}]
-Overfull \hbox (23.61465pt too wide) in paragraph at lines 132--133
-[]\OT1/cmr/bx/n/10.95 TimeBuffer\OML/cmm/b/it/10.95 <\OT1/cmr/bx/n/10.95 IEWStr
-uct\OML/cmm/b/it/10.95 >\OT1/cmr/bx/n/10.95 iewQueue;
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 133--134
-[]\OT1/cmr/bx/n/10.95 ActivityRecorder ac-tiv-i-tyRec;
- []
-
-
-Overfull \hbox (14.15663pt too wide) in paragraph at lines 141--142
-\OML/cmm/b/it/10.95 <\OT1/cmr/bx/n/10.95 ThreadID,unsigned\OML/cmm/b/it/10.95 >
-\OT1/cmr/bx/n/10.95 threadMap;
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 142--143
-[]\OT1/cmr/bx/n/10.95 std::vector\OML/cmm/b/it/10.95 <\OT1/cmr/bx/n/10.95 Threa
-dID\OML/cmm/b/it/10.95 >\OT1/cmr/bx/n/10.95 tids;
+Struct\OML/cmm/b/it/10.95 >\OT1/cmr/bx/n/10.95 renameQueue; \OT1/cmr/m/n/10.95 
+The re-name stage's in-struc-tion queue. 
  []
 
 LaTeX Font Info:    Try loading font information for OMS+cmtt on input line 155
@@ -668,45 +555,411 @@ LaTeX Font Warning: Font shape `OMS/cmtt/m/n' undefined
 (Font)              using `OMS/cmsy/m/n' instead
 (Font)              for symbol `textbraceleft' on input line 155.
 
-
-Overfull \hbox (1.96492pt too wide) in paragraph at lines 160--161
-[]\OT1/cmtt/m/n/10.95 std::list<DynInstPtr> instList;
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 161--162
-[]\OT1/cmtt/m/n/10.95 std::queue<ListIt> removeList;
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 162--163
-[]\OT1/cmtt/m/n/10.95 bool removeInstsThisCycle;
- []
-
+[2]
 LaTeX Font Info:    Font shape `OML/cmr/m/n' in size <10.95> not available
 (Font)              Font shape `OML/cmm/m/it' tried instead on input line 169.
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 176.
-[2]
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 176.
+
+Overfull \hbox (0.65501pt too wide) in paragraph at lines 169--170
+[]\OT1/cmr/m/n/10.95 DefaultIEW is ini-tial-iz-ing width in the way: issueWidth
+(params-\OML/cmm/m/it/10.95 >\OT1/cmr/m/n/10.95 issueWidth) Maybe chang-
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 173--174
+
+ []
+
+LaTeX Font Info:    Font shape `OT1/cmtt/bx/n' in size <10.95> not available
+(Font)              Font shape `OT1/cmtt/m/n' tried instead on input line 178.
+
+Underfull \hbox (badness 10000) in paragraph at lines 181--182
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 183--184
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 185--186
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 187--188
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 189--190
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 191--192
+
+ []
+
+[3]
+Underfull \hbox (badness 10000) in paragraph at lines 193--194
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 195--196
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 199--200
+
+ []
+
+
+Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
+(hyperref)                removing `\\' on input line 218.
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 221--222
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 234--235
+
+ []
+
+LaTeX Font Info:    Try loading font information for OMS+cmr on input line 246.
+
+(/usr/share/texlive/texmf-dist/tex/latex/base/omscmr.fd
+File: omscmr.fd 2014/09/29 v2.5h Standard LaTeX font definitions
+)
+LaTeX Font Info:    Font shape `OMS/cmr/m/n' in size <10.95> not available
+(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 246.
+ [4]
+Underfull \hbox (badness 10000) in paragraph at lines 254--255
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 263--264
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 265--266
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 270--271
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 272--274
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 275--276
+
+ []
+
+[5]
+
+Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
+(hyperref)                removing `\\' on input line 285.
+
+
+Overfull \hbox (21.5889pt too wide) in paragraph at lines 307--308
+\OT1/cmr/m/n/10.95 squash() is called, it clears the buffers from fetch and cal
+l cpu-\OML/cmm/m/it/10.95 >\OT1/cmr/m/n/10.95 removeInstsUntil(squash[]seq[]num
+,
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 317--318
+
+ []
+
+
+Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
+(hyperref)                removing `\\' on input line 325.
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 327--328
+
+ []
+
+[6]
+Underfull \hbox (badness 10000) in paragraph at lines 329--330
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 333--334
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 335--336
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 337--338
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 339--340
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 342--343
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 353--354
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 355--356
+
+ []
+
+[7]
+
+Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
+(hyperref)                removing `\\' on input line 366.
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 376--377
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 378--379
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 380--381
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 382--383
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 384--385
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 386--387
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 388--389
+
+ []
+
+[8]
+Underfull \hbox (badness 10000) in paragraph at lines 390--391
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 392--393
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 394--395
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 396--397
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 398--399
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 400--401
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 406--407
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 408--409
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 410--411
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 412--413
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 414--415
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 416--417
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 418--419
+
+ []
+
+[9]
+Underfull \hbox (badness 10000) in paragraph at lines 420--421
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 422--423
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 424--425
+
+ []
+
+
+Overfull \hbox (19.28957pt too wide) in paragraph at lines 426--427
+[]\OT1/cmr/m/n/10.95 if noth-ing mak-ing the cur-rent branch to be in-ef-fect(l
+ine 1361 iew[]impl.hh), if inst-\OML/cmm/m/it/10.95 >\OT1/cmr/m/n/10.95 mispred
+icted()
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 428--429
+
+ []
+
+
+Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
+(hyperref)                removing `\\' on input line 441.
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 445--446
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 447--448
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 449--450
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 451--452
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 453--454
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 458--459
+
+ []
+
+[10]
+Underfull \hbox (badness 10000) in paragraph at lines 461--462
+
+ []
+
+
+Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
+(hyperref)                removing `\\' on input line 466.
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 468--469
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 490--491
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 492--493
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 494--495
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 496--497
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 498--499
+
+ []
+
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 502.
+[11]
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 502.
  (./learning_notes.aux)
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 176.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 176.
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 502.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 502.
 Package rerunfilecheck Info: File `learning_notes.out' has not changed.
-(rerunfilecheck)             Checksum: 90B1FD5D4D8EF6CE5DC9D74CAFAABD10;187.
+(rerunfilecheck)             Checksum: B3A775E67F36655AEB70EA90CCBAEE60;574.
 
 
 LaTeX Font Warning: Some font shapes were not available, defaults substituted.
 
-Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 176.
+Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 502.
  ) 
 Here is how much of TeX's memory you used:
- 9753 strings out of 492982
- 142974 string characters out of 6134896
- 258561 words of memory out of 5000000
- 13135 multiletter control sequences out of 15000+600000
+ 9854 strings out of 492982
+ 143952 string characters out of 6134896
+ 246561 words of memory out of 5000000
+ 13152 multiletter control sequences out of 15000+600000
  9728 words of font info for 37 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 36i,6n,38p,271b,776s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 36i,6n,38p,646b,582s stack positions out of 5000i,500n,10000p,200000b,80000s
 </usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx10.pfb></us
 r/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx12.pfb></usr/shar
 e/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb></usr/share/texl
@@ -714,10 +967,10 @@ ive/texmf-dist/fonts/type1/public/amsfonts/cm/cmmib10.pfb></usr/share/texlive/t
 exmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/share/texlive/texmf-di
 st/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/share/texlive/texmf-dist/fon
 ts/type1/public/amsfonts/cm/cmtt10.pfb>
-Output written on learning_notes.pdf (2 pages, 96788 bytes).
+Output written on learning_notes.pdf (11 pages, 121720 bytes).
 PDF statistics:
- 127 PDF objects out of 1000 (max. 8388607)
- 114 compressed objects within 2 object streams
- 61 named destinations out of 1000 (max. 500000)
- 25 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 271 PDF objects out of 1000 (max. 8388607)
+ 248 compressed objects within 3 object streams
+ 142 named destinations out of 1000 (max. 500000)
+ 73 words of extra memory for PDF output out of 10000 (max. 10000000)
 

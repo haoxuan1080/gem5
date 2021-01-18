@@ -80,7 +80,7 @@ Name: Haoxuan Zhang \bfseries  &  & \bfseries \course ~\semester\\
 \maketitle
 \titlelabel{\thetitle.\quad}
 
-\begin{multicols}{2}[\section{Learning Notes for O3 CPU}]
+%\begin{multicols}{2}[\section{Learning Notes for O3 CPU}]
 
 \subsection{O3 CPU Attributes}
 	\begin{enumerate}
@@ -170,7 +170,333 @@ Name: Haoxuan Zhang \bfseries  &  & \bfseries \course ~\semester\\
   \item It seems that the SimObject is polymorphic so I could convert a point to SimObject to a pointer to the derived class.
   \item seems that all the parameters in the python classes are declared not in \_\_init\_\_() but in the class itself.
   \item what is a probe?
-  \item every sim\_object has a name and the plan is to split the name and check whether the name ``cpu'' or something is in the list of strings. If so, the object is found.
+  \item every sim\_object has a name and the plan is to split the name and check whether the name ``cpu'' or something is in the list of strings. If so, the object is found.\\
 \end{enumerate}
-\end{multicols}
+
+\subsection{Dec 28 2020}
+\begin{enumerate}
+	\item \textbf{\texttt{SimpleCPUPolicy<O3CPUImpl>}}:\\
+		include fetch, decode, rename, iew, commit stages
+		\begin{enumerate}
+			\item \texttt{typedef DefaultFetch<Impl> Fetch;}  :\\
+			
+			has pointer to CPUPol, DynInst, DynInstPtr and O3CPU\\
+			
+			from CPUPol, it has type of FetchStruct(The struct for communication between fetch and decode) and TimeStruct(The struct for all backwards communication)\\
+			
+			It has IcachePort as a MasterPort(base class)\\
+			
+			It has FetchTranslation as BaseTLC::Translation\\
+			
+			It has a private FinishTranslationEvent as Event(base class). When processed, it assert that numInst is smaller than fetchWidth and then call finishTranslation(fault, req)\\
+			
+			It has FetchStatus as Active or Inactive; \\
+			
+			It has ThreadStatus\\
+			
+			It has list of threads organized by priority
+			
+		\item \texttt{typedef DefaultDecode<Impl> Decode;}:\\
+		
+		 similar pointers It has pointer to FetchStruct and DecodeStruct and TimeStruct
+		 
+		 It has DecodeStatus as Active or Inactive
+		 
+		 It has ThreadStatus
+		 
+		 It has 
+		
+		\item \texttt{typedef DefaultRename<Impl> Rename;}
+		
+		\item \texttt{typedef DefaultIEW<Impl> IEW;}
+		
+		\item \texttt{typedef DefaultCommit<Impl> Commit;}
+			
+		\end{enumerate}
+\end{enumerate}
+
+\subsection{Jan 15 2021\\}
+
+
+\textbf{Things to do:\\}
+
+\begin{enumerate}
+	\item read the selected loop files; detect them in fetch and drain and dump statistics; think about what to test to make sure the program runs correctly.
+	
+	\item after detecting the drain, divide memory latency by 2 and compare the cycle count
+	
+	\item after detecting the drain, modify the cpu width and compare the cycle count
+	
+	\item change both. compare the cycle count and other statistics
+\end{enumerate}
+
+
+\textbf{Problems encountered:\\}
+
+\begin{enumerate}
+	\item If detect drain in fetch stage; How to deal with mis-branch prediction? Could I assume that without interrupt or exception, squash can only happen from branch prediction? what about memory speculation? Until when can I make sure a instruction is safe to commit? iew stage or commit?
+	
+	The key is to know until which stage, we can say a inst is safe to commit. At that stage, if a inst's pc is the start of the loop, then we drain and switch.
+\end{enumerate}
+
+\textbf{Fetch Stage tick processing function:}
+
+\begin{enumerate}
+	\item checkSignalsAndUpdate() for all tid
+	\item DPRINGF(fetch, ``Running stage.\textbackslash n'');
+	\item If \textbf{fullSystem}, Do sth
+	\item for all the threads, do fetch(status\_change)
+	\item Record number of instructions fetched this cycle for distribution:\\
+    fetchNisnDist.sample(numInst);
+	\item if status\_change then assign updateFetchStatus() to \_status
+	\item Issue the next I-cache request if possible.
+	\item Send instructions enqueued into the fetch queue to decode. Limit rate by fetchWidth.  Stall if decode is stalled.
+	\item Pick a random thread to start trying to grab instructions from.\\
+	
+	don\'t care randomly picking thread because currently there is only one thread.
+	
+	In this step, while there is available instruction and decode width not exceeded, if decode not stalled and fetch queue not empty, add inst to decode and set wrtoeToTimeBuffer to true
+	
+	\item If wroteToTimeBuffer which means there was activity in the cycle, inform the CPU of it by calling cpu->activityThisCycle();
+\end{enumerate}
+
+\textbf{fetch():\\}
+
+This is the actual fetch:\\
+
+\begin{enumerate}
+	\item thisPC = pc[tid]
+	\item fetchAddr = (thisPC.instAddr() + pcOffset) \& BaseCPU::PCMask; //pcOffset is always multiple of 8.
+	\item if IcachAccessComplete, then set status to running and status\_change = true\\
+	
+				else if it is Running, then align fetch PC to the start of a fetch buffer segment \\
+				\-\hspace{1cm} if buffer no longer valid or fetch addr moved to next cache block, fetchCacheLine() and return\\
+				
+				\-\hspace{1cm} else if interrupt, stall cpu and return\\
+				
+				\-\hspace{1cm} else idle cycle count ++ and return
+	\item increament fetch cycles; nextPC = thisPC; start to track predicted Branch which indicates whether a predicted branch ended this fetch block.
+	
+	\item Loop through instruction memory from the cache. Keep issuing while fetchWidth is available and branch is not predicted taken. (This is a huge while loop); next PC is looked up in lookupAndUpdateNextPC(const DynInstPtr \&, TheISA::PCState \&)
+	
+	\item pc[tid] = thisPC
+\end{enumerate}
+
+\subsection{Decode Stage tick processing function\\}
+
+\begin{enumerate}
+	\item for all threads, call decode
+	\item update status if status\_change
+\end{enumerate}
+
+\textbf{decode():}
+
+\begin{enumerate}
+	\item call decodeInsts() only when status is Idle or Running or Unblocking
+	
+	\item In decodeInsts(), the queue will be skidbuffer(buffer between fetch and decode) if unblocking or insts(queue of all instructions coming from fetch this cycle) otherwise
+	
+	\item while insts\_available \textgreater 0; if inst-\textgreater isSquashed() then continue;
+	
+	\item setCanIssue() if inst don't require source register
+
+	\item add the instruction into the decode  queue.  The next instruction may not be valid, so check to see if branches were predicted correctly
+	
+	\item check is branch if predicted as a branch. panic otherwise.
+	
+	\item compute any PC-relative branches; if branchtarget is not the same as predicted target, the squash() is called, it clears the buffers from fetch and call cpu-\textgreater removeInstsUntil(squash\_seq\_num, tid) which will squash all the inst in instList until this instruction; Seems that the branch instruction itself is not squashed. The predicted PC: nextPC is calculated in lookupAndUpdateNextPC() in fetch. In lookupAndUpdateNextPC(), if it is not control instruction, then just advance PC and return. Otherwise, do the prediction. It will predict both taken or not taken and the target address.
+	
+	\item if insts to decode not empty then block and put all insts into skid buffer
+	
+	\item QUestion: when resolving branches in decode, not considering conditional branches that are predicted as not taken?
+	
+	Answer: it is only confirming the target, not the prediction correctness. Maybe prediction correctness will be checked in the next stage
+
+\end{enumerate}
+
+Question: when are the reorder buffer tags in result shift registers are determined? In schedule stage with out-of-order dispatching?\\
+
+What does dependency means? It means the second instruction cannot start before the first completes in the dependency pair.
+
+WAR: the read will read the wrong value by the write
+
+WAW: the system will see the wrong value as the first result instead of the second result.
+
+\subsection{Rename Stage tick processing function\\}
+
+New mapping of architectural and physical registers pair is made whenever an instruction write to a register? I don't think so\\
+
+Question: In renaming, when can physical register be marked as available? when there is no RAW dependency on the architectural registers?\\
+
+The renaming process is to translate the architectural registers into physical registers?\\ It do has a table mapping architectural registers into physical registers. 
+
+When an instruction can be dispatched? how can a hardware detect depencies and dispatch whenever the dependency has been eliminated? If the latest dependency has finished.\\
+
+The idea of register renaming is to have more registers in physical space but not in architectural space.\\
+
+Store the pointers in instruction queue and reorder buffer.\\
+
+Scoreboarding is used to show data dependencies of every instruction logged to determine whether an instruction is ready to be released when no conflicts with previously issued and incomplete instructions. ALl the instructions decoded are having four stages: Issue(stalled if there is WAW dependency or structural hazard of the requested functional unit), Read operands(stall if RAW dependency), execution(seems that this stage won't be stalled and after execution is finished, the scoreboard will be notified.) and write result(in reorder buffer, stall on WAR dependency)\\
+
+
+\textbf{tick():\\}
+
+\begin{enumerate}
+	\item for each thread, check whether there are squash, stall signals and the status
+	
+	\item call rename(status\_change, tid), then if the status is running, idle or unblocking, renameInsts(tid) will be called; Inside renameInsts(): number of free rob entries calculated, number of free instruction queue entries calculated. min\_free\_entries is the minimum among the two. The stall source is marked as IQ or ROB
+	
+	\item handle serializing(what is serializing? serializeafter make the next instruction as serializebefore which can only wait in rename until the ROB is empty. IPR is serialize before and store conditionals are serialize after.)
+	
+	\item while resource and instruction available. LQ and SQ free entries are separately calculated. stall if not available. call renameMap[tid]->can Rename() to see whether enough registers are available. stall if not.
+	
+	\item rename Src regs and rename Dest regs for that register. For rename src register, mark src register ready if scoreboard-\textgreater getReg(renamed\_register) is not Null.\\
+	
+	question: if it is not register when rename, when will it be marked as ready after the result has been generated? I guess it is in the commit stage or in the execution stage. when a dest register is calculated, it will inform the scoreboard. (will the scoreboard keep track of all the instruction's status and which instruction they are waiting for?)\\
+	
+	\textbf{Only rename and iew stage has scoreboard.} Does that mean before the rename stage, the order of the instructions are following the program order?
+	
+	\item when renaming dest register, a new entry is added into history buffer(\textbf{A per-thread list of all destination register renames, used to either undo rename mappings or free old physical registers.}). rename\_result.first is the new physical register and the old physical register is rename\_result.second. (How to determine whether a physical register is free? why bother keeping the old physical register?)
+	
+	\item Put instruction in rename queue.
+\end{enumerate}
+
+
+
+\subsection{IEW Stage tick processing function\\}
+
+\textbf{tick():}
+IssueWidth, dispatch width and wbwidth are all in IEW stage; decode width is in decode stage and fetch stage; fetch width is in fetch stage; skid buffer max is affected by renamewidth; rename stage has commitwidth and rename width
+\begin{enumerate}
+	\item load/store queue tick()
+	\item sortInsts(); Sorts instructions coming from rename into lists separated by thread
+	
+	\item Free function units marked as being freed this cycle(before it actually do anything? means this free is not blocked one which will only be effective in the next cycle?)
+	
+	\item for each thread, checkSignalsAndUpdate(tid) and then dispatch(tid);\\
+	
+	In dispatch(), Dispatch should try to dispatch as many instructions as its bandwidth  will allow, as long as it is not currently blocked. \textbf{Question: which parameter determine how many functional units are there?} calldispatchInsts(tid) and if unblocking, insert skid buffer.\\
+	
+	When dispatching instructions, call dispatchInsts(tid) and instructions will be obtained from skid buffer if unblocking or the insts buffer from rename otherwise.\\
+	
+	if the instruction is squashed, then it will pop that instruction out from the insts to dispatch and increament dispatched flag in toRename and continue to next inst(\textbf{Question: why toRename? for ScoreBoarding? why not refer to Scoreboard object directly?})\\
+	
+	Otherwise, if inst queue is full, block; tell rename iweUnblock is false\\
+	
+	if corresponding lsq is full and it is a ld/ST or Atomic inst then block; tell rename iweUnblock is false.\\
+	
+	Otherwise, just issue the instruction(\textbf{Question: wait, did the comment just used issue? what is the difference between dispatch and issue here?}) \\
+	
+	insert the inst to ldstqueue.insertNonSpec(inst) if inst is atomic and add\_to\_iq is false and increment toRename dispatchedtosq.\\
+	
+	insert the inst to ldstqueue.insertLoad(inst) if the instruction is load, add\_to\_iq is true and increment toRenmae iewInfo dispatchedtoLQ\\
+	
+	insert the isnt to ldstQueue.insertStore(inst) if inst is store, same as load if it is not store conditional.\\
+	
+	insert instQueue.insertBarrier(inst) if inst is Mem Barrier; set inst to can commit if it is memBarrier; set add\_to\_iq as false(\textbf{Question: Why?})\\
+	
+	instQueue.recordProducer(inst) and set inst to issued, executed and setCanCommit if inst is a nop; add\_to\_iq is false.\\
+	
+	Else, assert inst is not executed and set add\_to\_iq to true.\\
+	
+	for all the previous conditions, if add\_to\_iq is true and inst is not speculative. Then set instruction to can commit. instQueue.insertNonSpec(inst)(meaning it is not speculative); Set add\_to\_iq to false.
+	
+	If add\_to\_iq is still true at this point, instQueue.insert(inst)
+	
+	pop this inst from insts\_to\_dispatch and increment dispatched and ppDispatch-\textgreater notify(inst) (\textbf{What does this mean?})\\
+	
+	\item \textbf{After dispatch():} if not suqashing, do \textbf{executeInsts():}.\\
+	
+	get number of insts to execute from fromIssue-\textgreater size. the fromIssue is a Timebuffer::wire which seems to be registered in instQueue.\\
+	
+	get the oldest scheduled instruction and removes it from the list of instructions waiting to execute by calling instQueue.getInstToExecute()\\
+	
+	notify potential listeners that this isntruction has started executing by calling ppExecute-\textgreater notify(inst)\\
+	
+	Check if the instruction is squashed; if so then skip it\\
+	
+	Execute instruction. Note that if the instruction faults, it will be handled at the commit stage.\\
+	
+	if memref, inst executed in special way. Otherwise, if inst-\textgreater getFault() is NoFault, execute and if not readPredicate, forwardOldRegs. set the inst to executed and send the inst to commit\\
+	
+	Update ExeInstStats(inst)\\
+	
+	\textbf{Check if branch prediction was correct, if not then we need to tell commit to squash in flight instructions.}\\
+	
+	if nothing making the current branch to be ineffect(line 1361 iew\_impl.hh), if inst-\textgreater mispredicted() and not loadNotExecuted, set fetchRedirect[tid] to be true and squashDueToBranch(inst, tid); notify mispredict. The ROB will be signaled to squash the instructions after this one
+	
+	\item  a conditional change to exeStatus, updateLSQNextCycle and broadcast\_free\_entries.\\
+	
+	\item ldstQueue.writebackStores(); Writeback any stores using any leftover bandwidth.
+	
+	\item for each thread, Update structures(the ldstQueue and the instQueue) based on instructions committed.
+	
+	\item if from commit told to commit non speculative instructions, schedule the non speculative inst.
+	
+	
+	\item broadcast free entries
+
+\end{enumerate}
+
+\subsection{Commit Stage tick processing function\\}
+
+\textbf{tick():}
+\begin{enumerate}
+	\item Check if any of the threads are done squashing.  Change the status if they are done.\\
+	
+	\item call commit():\\
+	
+	1. check interrupt if fullsystem\\
+	
+	2. do the squashing staffs if needed. Otherwise get the inst by calling getInsts(), seems that the commit and squash not happening in the same cycle is guaranteed here:\\
+	
+	\-\hspace{1cm} Read any renamed instructions and place them into the ROB.\\
+	
+	\-\hspace{1cm} get inst from rename and insert it into ROB and set youngestSeqNum[tid] = inst-\textgreater seqNum;
+	3. call commitInsts() to try to commit any instructions:
+	
+	\-\hspace{1cm} Commit as many instructions as possible until the commit bandwidth limit is reached, or it becomes impossible to commit any more.\\
+	
+	maybe call the cpu-\textgreater drain() and squashAfter and reset the fetch pc; However, maybe don't squash it
+	\item markCompletedInsts():\\
+	
+	\item for each thread: set rob status
+\end{enumerate}
+
+\subsection{CPU Switching Plan\\}
+
+\textbf{helper functions to be created:\\}
+
+\begin{enumerate}
+	\item CPU::RunningLoop(inst) // return true if the inst pc is in a loop node in PIM\_list
+
+	\item CPU::RunningLoopinMainCPU(inst) //return true if currently running on main cpu and the inst-\textgreater pc is within a loop node in PIM\_list.
+	
+	\item CPU::switch\_to\_PIM() // set the PIM flag to be true and set the PIM flag in system also to be true
+	
+	\item CPU::switch\_back\_from\_PIM()
+	
+	\item CPU:: shrink\_width() // shrink the dispatch width. ? which parameter determines the number of function unit available?
+\end{enumerate}
+
+\textbf{helper class to create}
+
+\begin{enumerate}
+	\item PIM\_FU\_Pool : public FUPool // a functional unit pool which can switch betwenn pool with lots of functional units and pool with fewer functional units.
+	
+	\item PIM\_DDR\_Controller: public DDR\_Controller // a DDR controller that can switch between high latency and low latency
+\end{enumerate}
+
+\textbf{Scenario\\}
+
+in commitInsts(), if RunningLoopinMainCPU(inst) returns true, then drain.\\
+
+In CPU::tick(), if trydrain returns true and flag drain from PIM loop is true, then check whether the next pc is still in loop. If so, call the switch function and set the flag drain from PIM loop to be false. Otherwise set the flag to false but not switch.\\
+
+Or Should I make sure that all the instructions in the loop should be strictly run in PIM cores? In this way the stat is easier but It won't be too difficult for the former strategy.\\
+
+In commitInsts, if in PIM and not in loop then drain.\\ 
+
+In CPU::tick() if trydrain returns true and flag drain from restore main cpu is true, then check whether next pc is still out of loop, If soo clal the switch back to main cpu function.
+%\end{multicols}
 \end{document}

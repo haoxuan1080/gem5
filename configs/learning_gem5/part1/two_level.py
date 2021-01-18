@@ -69,8 +69,9 @@ isa = str(m5.defines.buildEnv['TARGET_ISA']).lower()
 # Default to running 'hello', use the compiled ISA to find the binary
 # grab the specific path to the binary
 thispath = os.path.dirname(os.path.realpath(__file__))
-binary = os.path.join(thispath, '../../../',
-                      'tests/test-progs/hello/bin/', isa, 'linux/hello')
+#binary = os.path.join(thispath, '../../../',
+#                      'tests/test-progs/hello/bin/', isa, 'linux/hello')
+binary = os.path.join('/home/haoxuan/Gem5/Haoxuan_Gem5/gem5/tests/loop/a.out')
 
 # Check if there was a binary passed in via the command line and error if
 # there are too many arguments
@@ -93,7 +94,8 @@ system.mem_mode = 'timing'               # Use timing accesses
 system.mem_ranges = [AddrRange('512MB')] # Create an address range
 
 # Create a simple CPU
-system.cpu = TimingSimpleCPU()
+#system.cpu = TimingSimpleCPU()
+system.cpu = DerivO3CPU()
 
 # Create an L1 instruction and data cache
 system.cpu.icache = L1ICache(opts)
@@ -116,6 +118,10 @@ system.l2cache.connectCPUSideBus(system.l2bus)
 
 # Create a memory bus
 system.membus = SystemXBar()
+system.membus.frontend_latency = 100
+system.membus.forward_latency = 0
+system.membus.response_latency = 0
+system.membus.snoop_response_latency = 0
 
 # Connect the L2 cache to the membus
 system.l2cache.connectMemSideBus(system.membus)

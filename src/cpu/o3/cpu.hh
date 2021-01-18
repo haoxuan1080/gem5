@@ -90,6 +90,17 @@ class BaseO3CPU : public BaseCPU
 };
 
 /**
+ * The structure containing loop Node to be offloaded to PIM info
+ */
+struct PIM_Node
+{
+    uint64_t startPC;
+    uint64_t endPC;
+
+    PIM_Node(uint64_t start, uint64_t end);
+};
+
+/**
  * FullO3CPU class, has each of the stages (fetch through commit)
  * within it, as well as all of the time buffers between stages.  The
  * tick() function for the CPU is defined here.
@@ -130,6 +141,10 @@ class FullO3CPU : public BaseO3CPU
 
     /** Overall CPU status. */
     Status _status;
+
+
+    /** For PIM offloading **/
+    std::list<PIM_Node*> PIM_list;
 
   private:
 
