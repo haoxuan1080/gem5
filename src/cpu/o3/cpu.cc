@@ -475,6 +475,16 @@ FullO3CPU<Impl>::regStats()
 {
     BaseO3CPU::regStats();
 
+    PIM_InstNUM
+        .name(name() + ".PIM_InstNUM")
+        .desc("Number of Insts Offloaded to PIM")
+        ;
+
+    NONPIM_InstNUM
+        .name(name() + ".NONPIM_InstNUM")
+        .desc("Number of Insts executed in main cpu")
+        ;
+
     PIM_Fraction
         .name(name() + ".PIM_Fraction")
         .desc("The Fraction of offloaded instructions\

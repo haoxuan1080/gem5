@@ -239,6 +239,16 @@ BaseSimpleCPU::regStats()
             .desc("Number of ops (including micro ops) committed")
             ;
 
+        t_info.PIM_InstNUM
+            .name(thread_str + ".PIM_InstNUM")
+            .desc("Number of Insts Offloaded to PIM")
+            ;
+
+        t_info.NONPIM_InstNUM
+            .name(thread_str + ".NONPIM_InstNUM")
+            .desc("Number of Insts executed in main cpu")
+            ;
+
         t_info.PIM_Fraction
             .name(thread_str + ".PIM_Fraction")
             .desc("The Fraction of offloaded instructions\

@@ -1061,6 +1061,7 @@ DefaultCommit<Impl>::commitInsts()
 
                 if (cpu->isInPIMList(head_inst->pcState().instAddr())){
                     cpu->PIM_Fraction = 1;
+                    cpu->PIM_InstNUM++;
                     if (head_inst->isStore() ||
                            head_inst->isStoreConditional()) {
                         cpu->PIM_StoreNum++;
@@ -1074,6 +1075,7 @@ DefaultCommit<Impl>::commitInsts()
                 }
                 else {
                     cpu->PIM_Fraction = 0;
+                    cpu->NONPIM_InstNUM++;
                 }
 
                 // at this point store conditionals should either have

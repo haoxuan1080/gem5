@@ -85,6 +85,8 @@ class SimpleExecContext : public ExecContext {
     Stats::Scalar numOps;
 
     //For PIM statistics
+    Stats::Scalar PIM_InstNUM;
+    Stats::Scalar NONPIM_InstNUM;
     Stats::Average PIM_Fraction;
     Stats::Scalar PIM_ArthmNum;
     Stats::Scalar PIM_LoadNum;

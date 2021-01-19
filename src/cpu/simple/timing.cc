@@ -939,15 +939,21 @@ TimingSimpleCPU::completeIfetch(PacketPtr pkt)
     //---------- For Profiling -----------//
     Addr prevPC, postPC;
     prevPC = t_info.pcState().instAddr();
+    bool new_inst = false;
+    new_inst = (curStaticInst && (!curStaticInst->isMicroop()
+        || curStaticInst->isFirstMicroop()));
+    new_inst = true;
     //-------- end For Profiling ----------//
 
     //---------For PIM Statistics----------//
     if (isInPIM_Node(prevPC)) {
         t_info.PIM_Fraction = 1;
+        t_info.PIM_InstNUM++;
         In_PIM = true;
     }
     else {
         t_info.PIM_Fraction = 0;
+        t_info.NONPIM_InstNUM++;
         In_PIM = false;
     }
     //---------end For PIM Stat------------//
@@ -987,7 +993,7 @@ TimingSimpleCPU::completeIfetch(PacketPtr pkt)
      //---------For profiling -----------//
 
      std::list<BranchNode*> activeLoops = ll.IsInALoop(prevPC);
-     if (!activeLoops.empty()) {
+     if (!activeLoops.empty() && new_inst) {
          std::list<BranchNode*>::iterator current = activeLoops.begin();
          for (current = activeLoops.begin();
              current != activeLoops.end(); current++) {
@@ -1008,7 +1014,8 @@ TimingSimpleCPU::completeIfetch(PacketPtr pkt)
      //----------End for Profiling--------//
 
      //---------For PIM statistics--------//
-     if (In_PIM) {
+     if (In_PIM && new_inst) {
+         cout<<"In PIM Node and the PC is:"<<std::hex<<prevPC<<endl;
          if (curStaticInst && (curStaticInst->isStore()
                  || curStaticInst->isStoreConditional())) {
              t_info.PIM_StoreNum++;
@@ -1068,15 +1075,20 @@ TimingSimpleCPU::completeIfetch(PacketPtr pkt)
     } else {
         advanceInst(NoFault);
     }
+//    cout<<"PC: 0x"<<std::hex<<prevPC<<endl;
 
     //----------- For Profiling --------------//
     if (PrfIsBranch) {
         postPC = t_info.pcState().instAddr();
         if (postPC < prevPC) { // this means that it is a loop
+            if (postPC == 0x4010a1 && prevPC == 0x4010bf)
+                cout<<"encountered the loop!"<<endl;
             if (ll.IsInList(prevPC, postPC)) {
                 ll.IncreamentList(prevPC, postPC);
             }
             else {
+                if (postPC == 0x4010a1 && prevPC == 0x4010bf)
+                                cout<<"add the loop!"<<endl;
                 BranchNode& bn = ll.insertLoop(prevPC, postPC, *this);
                 regStats_BN(bn, ll.l.size()-1);
                 ll.IncreamentList(prevPC, postPC);
