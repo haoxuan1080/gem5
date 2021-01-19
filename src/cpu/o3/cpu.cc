@@ -45,6 +45,7 @@
  */
 
 #include "cpu/o3/cpu.hh"
+#include <fstream>
 
 #include "arch/generic/traits.hh"
 #include "arch/kernel_stats.hh"
@@ -95,6 +96,8 @@ FullO3CPU<Impl>::FullO3CPU(DerivO3CPUParams *params)
     : BaseO3CPU(params),
       itb(params->itb),
       dtb(params->dtb),
+      PIM_list(std::list<PIM_Node*>()),
+      PIM_mode(false),
       tickEvent([this]{ tick(); }, "FullO3CPU tick",
                 false, Event::CPU_Tick_Pri),
       threadExitEvent([this]{ exitThreads(); }, "FullO3CPU exit threads",
@@ -145,6 +148,21 @@ FullO3CPU<Impl>::FullO3CPU(DerivO3CPUParams *params)
         _status = Running;
     } else {
         _status = SwitchedOut;
+    }
+
+    ifstream file("PIM_loops.txt");
+    while (1) {
+        string str;
+        if (!getline(file, str)) break;
+        if (!getline(file, str)) break;
+        cout<<"start point: "<<str<<endl;
+        uint64_t start = stoul(str.substr(2, str.length()-2), nullptr, 16);
+        if (!getline(file, str)) break;
+        cout<<"end point: "<<str<<endl;
+        uint64_t end = stoul(str.substr(2, str.length()-2), nullptr, 16);
+        auto pn = new PIM_Node(start, end);
+        PIM_list.push_back(pn);
+        cout<<"finished reading one node"<<endl;
     }
 
     if (params->checker) {
@@ -378,6 +396,64 @@ FullO3CPU<Impl>::~FullO3CPU()
 {
 }
 
+/******
+ * PIM helper functions impl
+ *
+ * ******/
+
+template <class Impl>
+bool
+FullO3CPU<Impl>::isInPIMList(uint64_t currentPC)
+{
+    list<PIM_Node*>::iterator itr;
+    for (itr = PIM_list.begin(); itr != PIM_list.end(); itr++) {
+        if ((*itr)->startPC <= currentPC && ((*itr))->endPC > currentPC) {
+            return true;
+        }
+    }
+    return false;
+}
+
+template <class Impl>
+bool
+FullO3CPU<Impl>::NextPCInPIMList(const DynInstPtr &inst)
+{
+    TheISA::PCState pc = inst->pcState();
+    TheISA::advancePC(pc, inst->staticInst);
+    return isInPIMList(pc.instAddr());
+}
+
+template <class Impl>
+bool
+FullO3CPU<Impl>::MainCPUNextPCInPIMList(const DynInstPtr &inst)
+{
+    return PIM_mode && NextPCInPIMList(inst);
+}
+
+template <class Impl>
+void
+FullO3CPU<Impl>::SwitchToPIM()
+{
+    PIM_mode = true;
+    // system->PIM_mode = true;
+}
+
+template <class Impl>
+void
+FullO3CPU<Impl>::SwitchBackFromPIM()
+{
+    PIM_mode = false;
+    // system->PIM_mode = false;
+}
+
+template <class Impl>
+void
+FullO3CPU<Impl>::ShrinkWidth()
+{
+    // reduce the functional unit count in FU pool
+    // maybe modify the interface after created PIM_FU_Pool
+}
+
 template <class Impl>
 void
 FullO3CPU<Impl>::regProbePoints()
@@ -399,6 +475,38 @@ FullO3CPU<Impl>::regStats()
 {
     BaseO3CPU::regStats();
 
+    PIM_Fraction
+        .name(name() + ".PIM_Fraction")
+        .desc("The Fraction of offloaded instructions\
+in all the instructions executed")
+        ;
+
+    PIM_ArthmNum
+        .name(name() + ".PIM_ArthmNum")
+        .desc("Number of Arithmetic operations offloaded\
+to the memory")
+        ;
+
+    PIM_LoadNum
+        .name(name() + ".PIM_LoadNum")
+        .desc("Number of Load Instructions offloadded \
+to the memory")
+        ;
+
+    PIM_StoreNum
+        .name(name() + ".PIM_StoreNum")
+        .desc("Number of Store Instructions offloadded \
+to the memory")
+        ;
+
+    PIM_AMratio
+        .name(name() + ".PIM_AMratio")
+        .desc("Overall Arithmetic to Memory access of all \
+the instruction offloaded to PIM")
+        ;
+
+    PIM_AMratio = PIM_ArthmNum
+        /(PIM_LoadNum + PIM_StoreNum);
     // Register any of the O3CPU's stats here.
     timesIdled
         .name(name() + ".timesIdled")

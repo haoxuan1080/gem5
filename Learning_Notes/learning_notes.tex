@@ -497,6 +497,25 @@ Or Should I make sure that all the instructions in the loop should be strictly r
 
 In commitInsts, if in PIM and not in loop then drain.\\ 
 
-In CPU::tick() if trydrain returns true and flag drain from restore main cpu is true, then check whether next pc is still out of loop, If soo clal the switch back to main cpu function.
+In CPU::tick() if trydrain returns true and flag drain from restore main cpu is true, then check whether next pc is still out of loop, If so call the switch back to main cpu function.\\
+
+\textbf{The Squash Process From IEW\\}
+
+toCommit-\textgreater squashedSeqNum[tid] = inst-\textgreater seqNum; The seqNum to which insts should be squashed. This seqNum should be the branch instruction seqNum
+
+TheISA::PCState pc = inst-\textgreater pcState();
+TheISA::advancePC(pc, inst-\textgreater staticInst);
+
+toCommit-\textgreater pc[tid] = pc; This pc should be the pc of the first instruction in the correct branch.\\
+
+The squash due to switching should be the same thing. Just tell the commit to squash until the inst whose next PC will be in the loop and set notify the fetch to reset pc and at the same time drain. After trydrain indicating that the drain has finished, switch the cpu and contiue. \\
+
+If the inst::nextPC is out of loop in commit, squash until the inst and notify the fetch to reset pc and at the same time drain. After trydrain indicating that the drain has finished, switch the cpu and continue.\\
+
+\textbf{Assumption:} all the actions are performed in tick() for all simobject. This assumption maybe used when making changes to the CPU and memory controller.\\
+
+Seems that the profiling and stats at present are all micro insts. That explain why the stats has more counts than profiling. Multiple consecutive microop can be having the same pc. and the first jump will create the difference between profiling and stats.\\
+
+I think I need to use microop
 %\end{multicols}
 \end{document}

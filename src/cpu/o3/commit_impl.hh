@@ -1059,6 +1059,23 @@ DefaultCommit<Impl>::commitInsts()
                                              (!(pc[0].instAddr() & 0x3)));
                 }
 
+                if (cpu->isInPIMList(head_inst->pcState().instAddr())){
+                    cpu->PIM_Fraction = 1;
+                    if (head_inst->isStore() ||
+                           head_inst->isStoreConditional()) {
+                        cpu->PIM_StoreNum++;
+                    }
+                    if (head_inst->isLoad()) {
+                        cpu->PIM_LoadNum++;
+                    }
+                    if (head_inst->isFloating() || head_inst->isInteger()) {
+                        cpu->PIM_ArthmNum++;
+                    }
+                }
+                else {
+                    cpu->PIM_Fraction = 0;
+                }
+
                 // at this point store conditionals should either have
                 // been completed or predicated false
                 assert(!head_inst->isStoreConditional() ||

@@ -146,6 +146,8 @@ class FullO3CPU : public BaseO3CPU
     /** For PIM offloading **/
     std::list<PIM_Node*> PIM_list;
 
+    bool PIM_mode;
+
   private:
 
     /** The tick event used for scheduling CPU ticks. */
@@ -202,6 +204,30 @@ class FullO3CPU : public BaseO3CPU
     FullO3CPU(DerivO3CPUParams *params);
     /** Destructor. */
     ~FullO3CPU();
+
+
+    /**
+     * PIM Helper Functions
+     * ***/
+    //determine whether currentPC is in PIM_list
+    bool isInPIMList(uint64_t currentPC);
+
+    //determine whether the next PC of inst is in PIM_list
+    bool NextPCInPIMList(const DynInstPtr &inst);
+
+    // return true if  currently running on main cpu and
+    // inst->nextPC is within a loop node in PIM_list
+    bool MainCPUNextPCInPIMList(const DynInstPtr &inst);
+
+    //set the PIM flag to be true and set the PIM flag in system
+    //also to be true
+    void SwitchToPIM();
+
+    //switch abck from PIM to Main
+    void SwitchBackFromPIM();
+
+    //shrink the dispatch width and the FU pool
+    void ShrinkWidth();
 
     /** Registers statistics. */
     void regStats() override;
@@ -762,6 +788,15 @@ class FullO3CPU : public BaseO3CPU
     {
         return this->iew.ldstQueue.getDataPort();
     }
+
+    //For PIM statistics
+    Stats::Average PIM_Fraction;
+    Stats::Scalar PIM_ArthmNum;
+    Stats::Scalar PIM_LoadNum;
+    Stats::Scalar PIM_StoreNum;
+    Stats::Formula PIM_AMratio; //overall AM ratio of all
+    //the instructions offloaded to the memory
+    //PIM statistics ends
 
     /** Stat for total number of times the CPU is descheduled. */
     Stats::Scalar timesIdled;

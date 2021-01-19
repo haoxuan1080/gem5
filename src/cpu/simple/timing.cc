@@ -1021,7 +1021,7 @@ TimingSimpleCPU::completeIfetch(PacketPtr pkt)
              t_info.PIM_ArthmNum++;
          }
      }
-     //----------End for Profiling--------//
+     //----------End for statistics--------//
 
     if (curStaticInst && curStaticInst->isMemRef()) {
         // load or store: just send to dcache
