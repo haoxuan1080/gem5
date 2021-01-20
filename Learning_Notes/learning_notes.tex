@@ -516,6 +516,22 @@ If the inst::nextPC is out of loop in commit, squash until the inst and notify t
 
 Seems that the profiling and stats at present are all micro insts. That explain why the stats has more counts than profiling. Multiple consecutive microop can be having the same pc. and the first jump will create the difference between profiling and stats.\\
 
-I think I need to use microop
+I think I need to use microop. This should be correct. Because only the microops can separate arithmetic operation from memory reference operation.\\
+
+\textbf{Question: } Why some instructions can be both (integer || float) and (load || store) such as mov    (\%rbx),\%r14?\\
 %\end{multicols}
+
+\section{How to modify the memory?}
+cpu drain, set PIM_mode to true in system.\\
+memory see PIM_mode and set MEM_PIM_Mode_received\\
+cpu in tick()(not sure whether still have tick now), see MEM_PIM_Mode_received and resume.\\
+However, memory is not guranteed to have events after cpu drain() starts.\\
+
+Idea2: have a new port to connect cpu and memory. cpu send a packet to schedule an event to make memory to change parameters and use trydrain() to deschedule() the tick events.\\
+
+after memory has finished changing the parameters, send a packet back to cpu to resume draining.\\ 
+
+The packet data can be used to tell whether the memory should switch to or from PIM_mode\\
+
+There should be an EventWrapper in memory controller to be scheduled to change the parameters and send a packet back to cpu so that cpu can resume from drain().
 \end{document}
