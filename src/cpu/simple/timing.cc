@@ -946,15 +946,17 @@ TimingSimpleCPU::completeIfetch(PacketPtr pkt)
     //-------- end For Profiling ----------//
 
     //---------For PIM Statistics----------//
-    if (isInPIM_Node(prevPC)) {
-        t_info.PIM_Fraction = 1;
-        t_info.PIM_InstNUM++;
-        In_PIM = true;
-    }
-    else {
-        t_info.PIM_Fraction = 0;
-        t_info.NONPIM_InstNUM++;
-        In_PIM = false;
+    if (curStaticInst){
+        if (isInPIM_Node(prevPC)) {
+            t_info.PIM_Fraction = 1;
+            t_info.PIM_InstNUM++;
+            In_PIM = true;
+        }
+        else {
+            t_info.PIM_Fraction = 0;
+            t_info.NONPIM_InstNUM++;
+            In_PIM = false;
+        }
     }
     //---------end For PIM Stat------------//
 
