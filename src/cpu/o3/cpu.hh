@@ -126,6 +126,26 @@ class FullO3CPU : public BaseO3CPU
 
     friend class O3ThreadContext<Impl>;
 
+    /**
+     * PIM Port class
+     *
+     */
+    class PIMPort : public MasterPort
+    {
+          private:
+            FullO3CPU<Impl>* cpu;
+          public:
+            /** Default constructor. */
+            PIMPort(FullO3CPU<Impl>* cpu)
+                : MasterPort(cpu->name() + ".pim_port", cpu), cpu(cpu)
+            { }
+
+          protected:
+            virtual bool recvTimingResp(PacketPtr pkt) override;
+            virtual void recvReqRetry() override;
+            virtual void recvRangeChange() override;
+        };
+
   public:
     enum Status {
         Running,
@@ -597,6 +617,9 @@ class FullO3CPU : public BaseO3CPU
     bool removeInstsThisCycle;
 
   protected:
+    /** The PIM Port which should be connected to the memory controller **/
+    FullO3CPU<Impl>::PIMPort PimPort;
+
     /** The fetch stage. */
     typename CPUPolicy::Fetch fetch;
 
@@ -775,6 +798,23 @@ class FullO3CPU : public BaseO3CPU
         return this->iew.ldstQueue.write(req, data, store_idx);
     }
 
+    Port &getPort(const std::string &if_name,
+                  PortID idx=InvalidPortID) override
+    {
+        // Get the right port based on name. This applies to all the
+        // subclasses of the base CPU and relies on their implementation
+        // of getDataPort and getInstPort.
+        if (if_name == "dcache_port")
+            return getDataPort();
+        else if (if_name == "icache_port")
+            return getInstPort();
+        else if (if_name == "pim_port")
+            return getPimPort();
+        else
+            return ClockedObject::getPort(if_name, idx);
+    }
+
+
     /** Used by the fetch unit to get a hold of the instruction port. */
     Port &
     getInstPort() override
@@ -787,6 +827,12 @@ class FullO3CPU : public BaseO3CPU
     getDataPort() override
     {
         return this->iew.ldstQueue.getDataPort();
+    }
+
+    Port &
+    getPimPort()
+    {
+        return PimPort;
     }
 
     //For PIM statistics

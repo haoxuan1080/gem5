@@ -92,6 +92,25 @@ BaseO3CPU::regStats()
 }
 
 template <class Impl>
+bool
+FullO3CPU<Impl>::PIMPort::recvTimingResp(PacketPtr pkt)
+{
+    return true;
+}
+
+template <class Impl>
+void
+FullO3CPU<Impl>::PIMPort::recvReqRetry()
+{
+}
+
+template <class Impl>
+void
+FullO3CPU<Impl>::PIMPort::recvRangeChange()
+{
+}
+
+template <class Impl>
 FullO3CPU<Impl>::FullO3CPU(DerivO3CPUParams *params)
     : BaseO3CPU(params),
       itb(params->itb),
@@ -106,6 +125,7 @@ FullO3CPU<Impl>::FullO3CPU(DerivO3CPUParams *params)
       instcount(0),
 #endif
       removeInstsThisCycle(false),
+      PimPort(this),
       fetch(this, params),
       decode(this, params),
       rename(this, params),
