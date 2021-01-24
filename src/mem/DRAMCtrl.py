@@ -78,6 +78,8 @@ class DRAMCtrl(QoSMemCtrl):
     # bus in front of the controller for multiple ports
     port = SlavePort("Slave port")
 
+    pim_port = SlavePort("Pim port")
+
     # the basic configuration of the controller architecture, note
     # that each entry corresponds to a burst for the specific DRAM
     # configuration (e.g. x32 with burst length 8 is 32 bytes) and not

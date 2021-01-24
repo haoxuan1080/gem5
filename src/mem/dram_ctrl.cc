@@ -61,7 +61,9 @@ using namespace Data;
 
 DRAMCtrl::DRAMCtrl(const DRAMCtrlParams* p) :
     QoS::MemCtrl(p),
-    port(name() + ".port", *this), isTimingMode(false),
+    port(name() + ".port", *this),
+    pim_port(name() + ".pim_port", this),
+    isTimingMode(false),
     retryRdReq(false), retryWrReq(false),
     nextReqEvent([this]{ processNextReqEvent(); }, name()),
     respondEvent([this]{ processRespondEvent(); }, name()),
@@ -2708,7 +2710,10 @@ DRAMCtrl::recvFunctional(PacketPtr pkt)
 Port &
 DRAMCtrl::getPort(const string &if_name, PortID idx)
 {
-    if (if_name != "port") {
+    if (if_name == "pim_port") {
+        return pim_port;
+    }
+    else if (if_name != "port") {
         return QoS::MemCtrl::getPort(if_name, idx);
     } else {
         return port;
@@ -2822,6 +2827,93 @@ DRAMCtrl::MemoryPort::recvTimingReq(PacketPtr pkt)
 {
     // pass it to the memory controller
     return memory.recvTimingReq(pkt);
+}
+
+/**
+ * PIMPort Impl
+ */
+DRAMCtrl::PIMPort::PIMPort(const std::string& name, DRAMCtrl* _memory)
+    : SlavePort(name, _memory), dram_ctrl(_memory),
+      blocked(false), blocked_pkt(nullptr),
+      needRetry(false)
+{}
+
+/**
+ * fix the address at 0x20000000; THis is a magic number
+ */
+AddrRangeList
+DRAMCtrl::PIMPort::getAddrRanges() const
+{
+    AddrRangeList rangelist;
+    rangelist.push_back(AddrRange(0x20000000, 0x20000001));
+    return rangelist;
+}
+
+void
+DRAMCtrl::PIMPort::recvFunctional(PacketPtr pkt)
+{
+
+}
+
+void DRAMCtrl::PIMPort::sendPacket(PacketPtr resp_pkt) {
+    if (!sendTimingResp(resp_pkt)) {
+        blocked = true;
+        blocked_pkt = resp_pkt;
+    }
+}
+
+bool
+DRAMCtrl::PIMPort::recvTimingReq(PacketPtr pkt)
+{
+    if (blocked) {
+        needRetry = true;
+        return false;
+    }
+
+//    Addr resq_addr = pkt->addr;
+    uint8_t* resq_data = pkt->getPtr<uint8_t>();
+//    if (resq_addr != 0x20000000) {
+//        panic("The request to memory ctrl pim port is not correct!");
+//    }
+    if (*resq_data == 1) {
+        dram_ctrl->SwitchToPIM();
+        cout<<"switch to pim request received by mem_ctrl!"
+        <<"Start Start doing switch"<<endl;
+        // send response
+        PacketPtr resp_pkt = new Packet(nullptr, MemCmd());
+        //this means ddr_ctrl has finished switching
+        resp_pkt->dataStatic<uint8_t>((uint8_t*)new char(1));
+        sendPacket(resp_pkt);
+    }
+    else {
+        cout<<"switch to pim request received by \
+            mem_ctrl but already in PIM"<<endl;
+    }
+    return true;
+}
+
+void
+DRAMCtrl::PIMPort::recvRespRetry()
+{
+    if (!blocked)
+        panic("mem_ctrl pim port receive response \
+            retry without being blocked before");
+    if (!blocked_pkt)
+        panic("blocked_pkt is nullptr when resend \
+            response in mem_ctrl pim port");
+    blocked = false;
+    PacketPtr pkt = blocked_pkt;
+    blocked_pkt = nullptr;
+    sendPacket(pkt);
+    if (!blocked && blocked_pkt == nullptr && needRetry) {
+        needRetry = false;
+        sendRetryReq();
+    }
+}
+
+void DRAMCtrl::SwitchToPIM()
+{
+    cout<<"virtual switching to PIM in mem_ctrl"<<endl;
 }
 
 DRAMCtrl*

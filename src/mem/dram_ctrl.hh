@@ -124,11 +124,43 @@ class DRAMCtrl : public QoS::MemCtrl
 
     };
 
+    class PIMPort : public SlavePort
+    {
+        private:
+            DRAMCtrl* dram_ctrl;
+            bool blocked;
+            PacketPtr blocked_pkt;
+            bool needRetry;
+
+        public:
+            PIMPort(const std::string& name, DRAMCtrl* _memory);
+
+            AddrRangeList getAddrRanges() const override;
+
+        protected:
+            Tick recvAtomic(PacketPtr pkt) override
+            { panic("recvAtomic unimpl."); }
+
+            void recvFunctional(PacketPtr pkt) override;
+
+            bool recvTimingReq(PacketPtr) override;
+
+            void recvRespRetry() override;
+            void sendPacket(PacketPtr resp_pkt);
+    };
+
     /**
      * Our incoming port, for a multi-ported controller add a crossbar
      * in front of it
      */
     MemoryPort port;
+
+    /**
+     * PIM port
+     */
+    PIMPort pim_port;
+
+    void SwitchToPIM();
 
     /**
      * Remember if the memory system is in timing mode
