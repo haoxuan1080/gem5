@@ -179,6 +179,7 @@ FullO3CPU<Impl>::FullO3CPU(DerivO3CPUParams *params)
       dtb(params->dtb),
       PIM_list(std::list<PIM_Node*>()),
       PIM_mode(false),
+      drain_due_to_pim(false),
       tickEvent([this]{ tick(); }, "FullO3CPU tick",
                 false, Event::CPU_Tick_Pri),
       threadExitEvent([this]{ exitThreads(); }, "FullO3CPU exit threads",
@@ -489,7 +490,7 @@ FullO3CPU<Impl>::isInPIMList(uint64_t currentPC)
 {
     list<PIM_Node*>::iterator itr;
     for (itr = PIM_list.begin(); itr != PIM_list.end(); itr++) {
-        if ((*itr)->startPC <= currentPC && ((*itr))->endPC > currentPC) {
+        if ((*itr)->startPC <= currentPC && ((*itr))->endPC >= currentPC) {
             return true;
         }
     }
@@ -512,6 +513,7 @@ FullO3CPU<Impl>::MainCPUNextPCInPIMList(const DynInstPtr &inst)
     return PIM_mode && NextPCInPIMList(inst);
 }
 
+//TODO: This method is probably not going to be used and will be deleted.
 template <class Impl>
 void
 FullO3CPU<Impl>::SwitchToPIM()
@@ -543,6 +545,14 @@ FullO3CPU<Impl>::ShrinkWidth()
 {
     // reduce the functional unit count in FU pool
     // maybe modify the interface after created PIM_FU_Pool
+    cout<<"Shrink the CPU Width"<<endl;
+}
+
+template <class Impl>
+void
+FullO3CPU<Impl>::ExpandWidth()
+{
+    cout<<"Expand the CPU Width"<<endl;
 }
 
 template <class Impl>
@@ -791,7 +801,17 @@ FullO3CPU<Impl>::tick()
     if (!FullSystem)
         updateThreadPriority();
 
-    tryDrain();
+    bool drained_seen_first_time = tryDrain();
+    if (drained_seen_first_time && drain_due_to_pim) {
+        if (PIM_mode) {
+            ShrinkWidth();
+            SendPIMSignalToMem(true);
+        }
+        else {
+            ExpandWidth();
+            SendPIMSignalToMem(false);
+        }
+    }
 }
 
 template <class Impl>

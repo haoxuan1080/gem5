@@ -176,6 +176,8 @@ class FullO3CPU : public BaseO3CPU
 
     bool PIM_mode;
 
+    bool drain_due_to_pim;
+
   private:
 
     /** The tick event used for scheduling CPU ticks. */
@@ -259,6 +261,9 @@ class FullO3CPU : public BaseO3CPU
 
     //shrink the dispatch width and the FU pool
     void ShrinkWidth();
+
+    //the reverse operation of ShrinkWidth
+    void ExpandWidth();
 
     /** Registers statistics. */
     void regStats() override;

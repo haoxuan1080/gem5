@@ -1078,6 +1078,23 @@ DefaultCommit<Impl>::commitInsts()
                     cpu->NONPIM_InstNUM++;
                 }
 
+                // Determine whether to drain due to PIM switching
+                if (cpu->NextPCInPIMList(head_inst) && (!cpu->PIM_mode)) {
+                    //should drain due to pim now.
+                    cout<<"PC: 0x"
+                    <<std::hex<<head_inst->pcState().instAddr()
+                    <<" should drain due to pim now: switch to PIM!"
+                    <<endl;
+                    cpu->PIM_mode = true;
+                }
+                else if (!cpu->NextPCInPIMList(head_inst) && (cpu->PIM_mode)) {
+                    cout<<"PC: 0x"
+                    <<std::hex<<head_inst->pcState().instAddr()
+                    <<" should drain due to pim now: switch from PIM!"
+                    <<endl;
+                    cpu->PIM_mode = false;
+                }
+
                 // at this point store conditionals should either have
                 // been completed or predicated false
                 assert(!head_inst->isStoreConditional() ||
