@@ -93,8 +93,44 @@ BaseO3CPU::regStats()
 
 template <class Impl>
 bool
-FullO3CPU<Impl>::PIMPort::recvTimingResp(PacketPtr pkt)
+FullO3CPU<Impl>::PIMPort::recvTimingResp(PacketPtr resp_pkt)
 {
+    if (blocked) {
+        needRetry = true;
+        return false;
+    }
+    if (cpu->drainState() != DrainState::Drained) {
+        cout<<"cpu is not in DrainState::Drained state when \
+            received packet from mem_ctrl pim port"<<endl;
+        needRetry = true;
+        return false;
+    }
+    cout<<"cpu pim port received pkt from mem ctrl"<<endl;
+    uint8_t* resp_data = resp_pkt->getPtr<uint8_t>();
+    bool has_error = false;
+    if (*resp_data == 1) {
+        if (!cpu->PIM_mode){
+            cout<<"The memory switched to non PIM while cpu in PIM"<<endl;
+            has_error = true;
+        }
+        else
+            cout<<"CPU in PIM mode and memory also notified cpu \
+            that it is in pim now"<<endl;
+    }
+    else if (*resp_data == 0) {
+        if (cpu->PIM_mode) {
+            cout<<"The memory switched to PIM while cpu in non PIM"<<endl;
+            has_error = true;
+        }
+        else
+            cout<<"CPU in non PIM mode and memory also notified \
+            cpu that it is in non pim now"<<endl;
+    }
+    assert(cpu->drainState() == DrainState::Drained);
+
+    if (!has_error) {
+        cpu->drainResume();
+    }
     return true;
 }
 
@@ -102,12 +138,38 @@ template <class Impl>
 void
 FullO3CPU<Impl>::PIMPort::recvReqRetry()
 {
+    if (!blocked)
+        panic("mem_ctrl pim port receive response \
+                retry without being blocked before");
+    if (!blocked_pkt)
+        panic("blocked_pkt is nullptr when resend \
+                response in mem_ctrl pim port");
+    blocked = false;
+    PacketPtr pkt = blocked_pkt;
+    blocked_pkt = nullptr;
+    sendPacket(pkt);
+    if (!blocked && blocked_pkt == nullptr && needRetry) {
+        needRetry = false;
+        sendRetryResp();
+    }
 }
 
 template <class Impl>
 void
 FullO3CPU<Impl>::PIMPort::recvRangeChange()
 {
+}
+
+template <class Impl>
+void
+FullO3CPU<Impl>::PIMPort::sendPacket(PacketPtr pkt)
+{
+    if (!blocked){
+        if (!sendTimingReq(pkt)) {
+            blocked  = true;
+            blocked_pkt = pkt;
+        }
+    }
 }
 
 template <class Impl>
@@ -456,6 +518,15 @@ FullO3CPU<Impl>::SwitchToPIM()
 {
     PIM_mode = true;
     // system->PIM_mode = true;
+}
+
+template <class Impl>
+void
+FullO3CPU<Impl>::SendPIMSignalToMem(bool to_pim)
+{
+    PacketPtr pim_pkt = new Packet(nullptr, MemCmd());
+    pim_pkt->dataStatic<uint8_t>((uint8_t*)new char((uint8_t)to_pim));
+    PimPort.sendPacket(pim_pkt);
 }
 
 template <class Impl>

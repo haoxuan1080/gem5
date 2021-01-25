@@ -134,16 +134,24 @@ class FullO3CPU : public BaseO3CPU
     {
           private:
             FullO3CPU<Impl>* cpu;
+            bool blocked;
+            PacketPtr blocked_pkt;
+            bool needRetry;
+
           public:
             /** Default constructor. */
             PIMPort(FullO3CPU<Impl>* cpu)
-                : MasterPort(cpu->name() + ".pim_port", cpu), cpu(cpu)
+                : MasterPort(cpu->name() + ".pim_port", cpu), cpu(cpu),
+                  blocked(false), blocked_pkt(nullptr), needRetry(false)
             { }
 
           protected:
             virtual bool recvTimingResp(PacketPtr pkt) override;
             virtual void recvReqRetry() override;
             virtual void recvRangeChange() override;
+
+          public:
+            void sendPacket(PacketPtr resp_pkt);
         };
 
   public:
@@ -242,6 +250,9 @@ class FullO3CPU : public BaseO3CPU
     //set the PIM flag to be true and set the PIM flag in system
     //also to be true
     void SwitchToPIM();
+
+    //send PIM signal to Mem
+    void SendPIMSignalToMem(bool to_pim);
 
     //switch abck from PIM to Main
     void SwitchBackFromPIM();
