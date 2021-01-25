@@ -521,17 +521,67 @@ I think I need to use microop. This should be correct. Because only the microops
 \textbf{Question: } Why some instructions can be both (integer || float) and (load || store) such as mov    (\%rbx),\%r14?\\
 %\end{multicols}
 
-\section{How to modify the memory?}
-cpu drain, set PIM_mode to true in system.\\
-memory see PIM_mode and set MEM_PIM_Mode_received\\
-cpu in tick()(not sure whether still have tick now), see MEM_PIM_Mode_received and resume.\\
+\section{How to modify the memory?\\}
+
+cpu drain, set PIM\_mode to true in system.\\
+
+memory see PIM\_mode and set MEM\_PIM\_Mode\_received\\
+cpu in tick()(not sure whether still have tick now), see MEM\_PIM\_Mode\_received and resume.\\
 However, memory is not guranteed to have events after cpu drain() starts.\\
 
 Idea2: have a new port to connect cpu and memory. cpu send a packet to schedule an event to make memory to change parameters and use trydrain() to deschedule() the tick events.\\
 
 after memory has finished changing the parameters, send a packet back to cpu to resume draining.\\ 
 
-The packet data can be used to tell whether the memory should switch to or from PIM_mode\\
+The packet data can be used to tell whether the memory should switch to or from PIM\_mode\\
 
 There should be an EventWrapper in memory controller to be scheduled to change the parameters and send a packet back to cpu so that cpu can resume from drain().
+
+\section{Problems encountered\\}
+
+A loop offloaded to PIM leads to repeated switch from PIM to non PIM. Here is the assambly of the loop:
+\begin{framed}
+	\begin{verbatim}
+  ...
+  4010df:	eb 17                	jmp    4010f8 <__libc_start_main+0x1f8>
+  4010e1:	83 7b 08 25          	cmpl   $0x25,0x8(%rbx)
+  4010e5:	4c 8b 33             	mov    (%rbx),%r14
+  4010e8:	0f 85 12 02 00 00    	jne    401300 <__libc_start_main+0x400>
+  4010ee:	ff 53 10             	callq  *0x10(%rbx)
+  4010f1:	48 83 c3 18          	add    $0x18,%rbx
+  4010f5:	49 89 06             	mov    %rax,(%r14)
+  4010f8:	48 81 fb 00 04 40 00 	cmp    $0x400400,%rbx
+  4010ff:	72 e0                	jb     4010e1 <__libc_start_main+0x1e1>
+  ...
+  
+  0000000000423440 <strchr_ifunc>:
+  423440:	8b 15 e6 89 29 00    	mov    0x2989e6(%rip),%edx        # 6bbe2c <_dl_x86_cpu_features+0x4c>
+  423446:	48 8d 05 33 c5 01 00 	lea    0x1c533(%rip),%rax        # 43f980 <__strchr_avx2>
+  42344d:	89 d1                	mov    %edx,%ecx
+  42344f:	81 e1 00 0c 02 00    	and    $0x20c00,%ecx
+  423455:	81 f9 00 0c 00 00    	cmp    $0xc00,%ecx
+  42345b:	74 15                	je     423472 <strchr_ifunc+0x32>
+  42345d:	83 e2 04             	and    $0x4,%edx
+  423460:	48 8d 05 e9 c0 01 00 	lea    0x1c0e9(%rip),%rax        # 43f550 <__strchr_sse2>
+  423467:	48 8d 15 c2 0a 02 00 	lea    0x20ac2(%rip),%rdx        # 443f30 <__strchr_sse2_no_bsf>
+  42346e:	48 0f 45 c2          	cmovne %rdx,%rax
+  423472:	f3 c3                	repz retq 
+  423474:	66 2e 0f 1f 84 00 00 	nopw   %cs:0x0(%rax,%rax,1)
+  42347b:	00 00 00 
+  42347e:	66 90                	xchg   %ax,%ax
+  ...
+  
+  0000000000484bb0 <strspn_ifunc>:
+  484bb0:	f6 05 3b 72 23 00 10 	testb  $0x10,0x23723b(%rip)        # 6bbdf2 <_dl_x86_cpu_features+0x12>
+  484bb7:	48 8d 15 02 01 00 00 	lea    0x102(%rip),%rdx        # 484cc0 <__strspn_sse42>
+  484bbe:	48 8d 05 5b 00 00 00 	lea    0x5b(%rip),%rax        # 484c20 <__strspn_sse2>
+  484bc5:	48 0f 45 c2          	cmovne %rdx,%rax
+  484bc9:	c3                   	retq   
+  484bca:	66 0f 1f 44 00 00    	nopw   0x0(%rax,%rax,1)
+
+	\end{verbatim}
+\end{framed}
+
+\textbf{Question: } Switching Policy? switch only at the boarder of the loop? Or switch whenever the next pc's projected execution location doesn't match with the cpu mode?
+
 \end{document}
