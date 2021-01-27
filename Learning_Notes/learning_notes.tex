@@ -582,6 +582,30 @@ A loop offloaded to PIM leads to repeated switch from PIM to non PIM. Here is th
 	\end{verbatim}
 \end{framed}
 
-\textbf{Question: } Switching Policy? switch only at the boarder of the loop? Or switch whenever the next pc's projected execution location doesn't match with the cpu mode?
+\textbf{Question: } Switching Policy? switch only at the boarder of the loop? Or switch whenever the next pc's projected execution location doesn't match with the cpu mode?\\
+
+\textbf{Draining and Squashing Process}
+After draining, the cpu drain() call commit drain() which set drain pending to be true. then if drain pending is true, commit stage call squashAfter() which set commitStatus to be SquashAfterPending. Then in the next commit() get called, if SquashAfterPending is true, squashFromSquashAfter(tid) will be called. Then in squashFromSquashAfter(tid), squashAll() will be called which will inform the fetch about the pc state to resume. The pc is updated whenever before calling bool commit\_success = commitHead(head\_inst, num\_committed); in commitInsts().\\
+
+Therefore, a squash is not needed after the drain because the drain itself has done the squashing.\\
+
+Jan 25: next step: make sure that the switching sequencing is correct. Without drain, with drain, and why with some special loop(containing call), the decode will encounter assertion failure of decode.stall[] when unblocking? why? Why there is a very long delay after finished send signal to memory print?\\
+
+Jan26: Result: \\
+
+with draining(without actually changing anything):  \\24082408000 ticks.\\
+
+without draining: \\24082702000 ticks.
+
+with draining (4 loops offloaded) \\
+24082262000 ticks..
+
+why this is the case? why draining has fewer cycles?\\
+
+Problem encountered: from decode to fetch, decodeunblock[tid] is true across the drain and drain resume. That is caused by blocking in decode in second last tick and decode unblocking in last tick. The fetch will make the stall to be true when it detects the deocode block or remain the stall if decode block remains in true. The stall should be cleared when the fetch in the next tick see the deocode unblock. However, in drain resume, stall is cleared but decode unblocking is not. \\
+
+My current solution is to only clear stall if decodeUnblock is not true.\\
+
+Why they have block and unblock? maybe they need to determine whether get inst in inst queue or skid queue?
 
 \end{document}
