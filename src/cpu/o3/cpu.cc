@@ -851,7 +851,9 @@ FullO3CPU<Impl>::tick()
         }
         else {
             ExpandWidth();
+            cout<<"send signal to memory"<<endl;
             SendPIMSignalToMem(false);
+            cout<<"finished send signal to memory"<<endl;
         }
     }
 }

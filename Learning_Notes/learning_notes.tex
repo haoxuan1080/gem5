@@ -598,7 +598,13 @@ with draining(without actually changing anything):  \\24082408000 ticks.\\
 without draining: \\24082702000 ticks.
 
 with draining (4 loops offloaded) \\
-24082262000 ticks..
+24082262000 ticks.
+
+with draining (10000 tick delay in DRAM\_CTRL):\\
+24081660000 ticks.\\
+
+with draining (1000000 tick delay in DRAM\_CTRL):\\
+24091549000 ticks.\\
 
 why this is the case? why draining has fewer cycles?\\
 
