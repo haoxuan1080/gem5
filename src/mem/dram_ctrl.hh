@@ -160,7 +160,11 @@ class DRAMCtrl : public QoS::MemCtrl
      */
     PIMPort pim_port;
 
+    bool in_pim;
+
     void SwitchToPIM();
+
+    void SwitchFromPIM();
 
     /**
      * Remember if the memory system is in timing mode

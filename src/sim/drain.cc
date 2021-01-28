@@ -194,7 +194,8 @@ DrainManager::drainableCount() const
 
 
 Drainable::Drainable()
-    : _drainManager(DrainManager::instance()),
+    : drain_due_to_pim(false),
+      _drainManager(DrainManager::instance()),
       _drainState(_drainManager.state())
 {
     _drainManager.registerDrainable(this);

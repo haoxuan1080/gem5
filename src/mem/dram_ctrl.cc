@@ -63,6 +63,7 @@ DRAMCtrl::DRAMCtrl(const DRAMCtrlParams* p) :
     QoS::MemCtrl(p),
     port(name() + ".port", *this),
     pim_port(name() + ".pim_port", this),
+    in_pim(false),
     isTimingMode(false),
     retryRdReq(false), retryWrReq(false),
     nextReqEvent([this]{ processNextReqEvent(); }, name()),
@@ -2865,6 +2866,7 @@ void DRAMCtrl::PIMPort::sendPacket(PacketPtr resp_pkt) {
 bool
 DRAMCtrl::PIMPort::recvTimingReq(PacketPtr pkt)
 {
+    cout<<"mem_ctrl->pim_port received timing request!"<<endl;
     if (blocked) {
         needRetry = true;
         return false;
@@ -2872,6 +2874,7 @@ DRAMCtrl::PIMPort::recvTimingReq(PacketPtr pkt)
 
 //    Addr resq_addr = pkt->addr;
     uint8_t* resq_data = pkt->getPtr<uint8_t>();
+    MemCmd::Command resp_cmd = pkt->cmd.responseCommand();
 //    if (resq_addr != 0x20000000) {
 //        panic("The request to memory ctrl pim port is not correct!");
 //    }
@@ -2880,14 +2883,23 @@ DRAMCtrl::PIMPort::recvTimingReq(PacketPtr pkt)
         cout<<"switch to pim request received by mem_ctrl!"
         <<"Start Start doing switch"<<endl;
         // send response
-        PacketPtr resp_pkt = new Packet(nullptr, MemCmd());
+        RequestPtr req_ptr = std::make_shared<Request>();
+        PacketPtr resp_pkt = new Packet(req_ptr, MemCmd(resp_cmd));
         //this means ddr_ctrl has finished switching
         resp_pkt->dataStatic<uint8_t>((uint8_t*)new char(1));
         sendPacket(resp_pkt);
     }
+    else if (*resq_data == 0) {
+        dram_ctrl->SwitchFromPIM();
+        cout<<"switch from pim request received by mem_ctrl!"
+         <<"Start Start doing switch"<<endl;
+        RequestPtr req_ptr = std::make_shared<Request>();
+        PacketPtr resp_pkt = new Packet(req_ptr, MemCmd(resp_cmd));
+        resp_pkt->dataStatic<uint8_t>((uint8_t*)new char(0));
+                sendPacket(resp_pkt);
+    }
     else {
-        cout<<"switch to pim request received by \
-            mem_ctrl but already in PIM"<<endl;
+        panic("mem_ctrl: pim packet data is not 0 or 1");
     }
     return true;
 }
@@ -2914,6 +2926,11 @@ DRAMCtrl::PIMPort::recvRespRetry()
 void DRAMCtrl::SwitchToPIM()
 {
     cout<<"virtual switching to PIM in mem_ctrl"<<endl;
+}
+
+void DRAMCtrl::SwitchFromPIM()
+{
+    cout<<"virtual switching from PIM in mem_ctrl"<<endl;
 }
 
 DRAMCtrl*

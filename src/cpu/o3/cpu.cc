@@ -91,6 +91,14 @@ BaseO3CPU::regStats()
     BaseCPU::regStats();
 }
 
+O3_PIM_Node::O3_PIM_Node(uint64_t start, uint64_t end)
+    :startPC(start)
+    ,endPC(end)
+{
+    cout<<"constructing pim node: start: "<<std::hex<<start
+            <<" end: "<<std::hex<<end<<endl;
+}
+
 template <class Impl>
 bool
 FullO3CPU<Impl>::PIMPort::recvTimingResp(PacketPtr resp_pkt)
@@ -129,7 +137,7 @@ FullO3CPU<Impl>::PIMPort::recvTimingResp(PacketPtr resp_pkt)
     assert(cpu->drainState() == DrainState::Drained);
 
     if (!has_error) {
-        cpu->drainResume();
+        cpu->dmDrainResume();
     }
     return true;
 }
@@ -177,7 +185,7 @@ FullO3CPU<Impl>::FullO3CPU(DerivO3CPUParams *params)
     : BaseO3CPU(params),
       itb(params->itb),
       dtb(params->dtb),
-      PIM_list(std::list<PIM_Node*>()),
+      PIM_list(std::list<O3_PIM_Node*>()),
       PIM_mode(false),
       drain_due_to_pim(false),
       tickEvent([this]{ tick(); }, "FullO3CPU tick",
@@ -243,7 +251,7 @@ FullO3CPU<Impl>::FullO3CPU(DerivO3CPUParams *params)
         if (!getline(file, str)) break;
         cout<<"end point: "<<str<<endl;
         uint64_t end = stoul(str.substr(2, str.length()-2), nullptr, 16);
-        auto pn = new PIM_Node(start, end);
+        auto pn = new O3_PIM_Node(start, end);
         PIM_list.push_back(pn);
         cout<<"finished reading one node"<<endl;
     }
@@ -488,7 +496,7 @@ template <class Impl>
 bool
 FullO3CPU<Impl>::isInPIMList(uint64_t currentPC)
 {
-    list<PIM_Node*>::iterator itr;
+    list<O3_PIM_Node*>::iterator itr;
     for (itr = PIM_list.begin(); itr != PIM_list.end(); itr++) {
         if ((*itr)->startPC <= currentPC && ((*itr))->endPC >= currentPC) {
             return true;
@@ -504,6 +512,36 @@ FullO3CPU<Impl>::NextPCInPIMList(const DynInstPtr &inst)
     TheISA::PCState pc = inst->pcState();
     TheISA::advancePC(pc, inst->staticInst);
     return isInPIMList(pc.instAddr());
+}
+
+template <class Impl>
+bool
+FullO3CPU<Impl>::NextPCEnterPIMList(const DynInstPtr &inst)
+{
+    TheISA::PCState pc = inst->pcState();
+    TheISA::advancePC(pc, inst->staticInst);
+    Addr nextPC = pc.instAddr();
+    list<O3_PIM_Node*>::iterator itr;
+    for (itr = PIM_list.begin(); itr != PIM_list.end(); itr++) {
+        if ((*itr)->startPC == nextPC) {
+            return true;
+        }
+    }
+    return false;
+}
+
+template <class Impl>
+bool
+FullO3CPU<Impl>::PCExitPIMList(const DynInstPtr &inst)
+{
+    Addr currentPC = inst->pcState().instAddr();
+    list<O3_PIM_Node*>::iterator itr;
+    for (itr = PIM_list.begin(); itr != PIM_list.end(); itr++) {
+        if ((*itr)->endPC == currentPC) {
+            return true;
+        }
+    }
+    return false;
 }
 
 template <class Impl>
@@ -526,8 +564,10 @@ template <class Impl>
 void
 FullO3CPU<Impl>::SendPIMSignalToMem(bool to_pim)
 {
-    PacketPtr pim_pkt = new Packet(nullptr, MemCmd());
+    RequestPtr req_ptr = std::make_shared<Request>();
+    PacketPtr pim_pkt = new Packet(req_ptr, MemCmd(MemCmd::WriteReq));
     pim_pkt->dataStatic<uint8_t>((uint8_t*)new char((uint8_t)to_pim));
+    cout<<"Send packet to mem; to_pim is: "<<to_pim<<endl;
     PimPort.sendPacket(pim_pkt);
 }
 
@@ -805,7 +845,9 @@ FullO3CPU<Impl>::tick()
     if (drained_seen_first_time && drain_due_to_pim) {
         if (PIM_mode) {
             ShrinkWidth();
+            cout<<"send signal to memory"<<endl;
             SendPIMSignalToMem(true);
+            cout<<"finished send signal to memory"<<endl;
         }
         else {
             ExpandWidth();
@@ -1273,31 +1315,39 @@ FullO3CPU<Impl>::isCpuDrained() const
         DPRINTF(Drain, "Main CPU structures not drained.\n");
         drained = false;
     }
+    else
+    {DPRINTF(Drain, "Main CPU structures drained.\n");}
 
     if (!fetch.isDrained()) {
         DPRINTF(Drain, "Fetch not drained.\n");
         drained = false;
     }
+    else
+    {DPRINTF(Drain, "Fetch drained.\n");}
 
     if (!decode.isDrained()) {
         DPRINTF(Drain, "Decode not drained.\n");
         drained = false;
     }
+    else {DPRINTF(Drain, "Decode drained.\n");}
 
     if (!rename.isDrained()) {
         DPRINTF(Drain, "Rename not drained.\n");
         drained = false;
     }
+    else {DPRINTF(Drain, "Rename drained.\n");}
 
     if (!iew.isDrained()) {
         DPRINTF(Drain, "IEW not drained.\n");
         drained = false;
     }
+    else {DPRINTF(Drain, "IEW drained.\n");}
 
     if (!commit.isDrained()) {
         DPRINTF(Drain, "Commit not drained.\n");
         drained = false;
     }
+    else {DPRINTF(Drain, "Commit drained.\n");}
 
     return drained;
 }

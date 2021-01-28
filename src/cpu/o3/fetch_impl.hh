@@ -433,7 +433,8 @@ void
 DefaultFetch<Impl>::drainResume()
 {
     for (ThreadID i = 0; i < numThreads; ++i) {
-        stalls[i].decode = false;
+        if (!fromDecode->decodeUnblock[i])
+            stalls[i].decode = false;
         stalls[i].drain = false;
     }
 }

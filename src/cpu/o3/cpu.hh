@@ -69,10 +69,10 @@
 #include "params/DerivO3CPU.hh"
 #include "sim/process.hh"
 
-template <class>
+template<class >
 class Checker;
 class ThreadContext;
-template <class>
+template<class >
 class O3ThreadContext;
 
 class Checkpoint;
@@ -80,10 +80,9 @@ class Process;
 
 struct BaseCPUParams;
 
-class BaseO3CPU : public BaseCPU
-{
+class BaseO3CPU: public BaseCPU {
     //Stuff that's pretty ISA independent will go here.
-  public:
+public:
     BaseO3CPU(BaseCPUParams *params);
 
     void regStats();
@@ -92,12 +91,11 @@ class BaseO3CPU : public BaseCPU
 /**
  * The structure containing loop Node to be offloaded to PIM info
  */
-struct PIM_Node
-{
+struct O3_PIM_Node {
     uint64_t startPC;
     uint64_t endPC;
 
-    PIM_Node(uint64_t start, uint64_t end);
+    O3_PIM_Node(uint64_t start, uint64_t end);
 };
 
 /**
@@ -105,17 +103,16 @@ struct PIM_Node
  * within it, as well as all of the time buffers between stages.  The
  * tick() function for the CPU is defined here.
  */
-template <class Impl>
-class FullO3CPU : public BaseO3CPU
-{
-  public:
+template<class Impl>
+class FullO3CPU: public BaseO3CPU {
+public:
     // Typedefs from the Impl here.
     typedef typename Impl::CPUPol CPUPolicy;
     typedef typename Impl::DynInstPtr DynInstPtr;
     typedef typename Impl::O3CPU O3CPU;
 
-    using VecElem =  TheISA::VecElem;
-    using VecRegContainer =  TheISA::VecRegContainer;
+    using VecElem = TheISA::VecElem;
+    using VecRegContainer = TheISA::VecRegContainer;
 
     using VecPredRegContainer = TheISA::VecPredRegContainer;
 
@@ -124,43 +121,38 @@ class FullO3CPU : public BaseO3CPU
 
     typedef typename std::list<DynInstPtr>::iterator ListIt;
 
-    friend class O3ThreadContext<Impl>;
+    friend class O3ThreadContext<Impl> ;
 
     /**
      * PIM Port class
      *
      */
-    class PIMPort : public MasterPort
-    {
-          private:
-            FullO3CPU<Impl>* cpu;
-            bool blocked;
-            PacketPtr blocked_pkt;
-            bool needRetry;
+    class PIMPort: public MasterPort {
+    private:
+        FullO3CPU<Impl>* cpu;
+        bool blocked;
+        PacketPtr blocked_pkt;
+        bool needRetry;
 
-          public:
-            /** Default constructor. */
-            PIMPort(FullO3CPU<Impl>* cpu)
-                : MasterPort(cpu->name() + ".pim_port", cpu), cpu(cpu),
-                  blocked(false), blocked_pkt(nullptr), needRetry(false)
-            { }
+    public:
+        /** Default constructor. */
+        PIMPort(FullO3CPU<Impl>* cpu) :
+                MasterPort(cpu->name() + ".pim_port", cpu), cpu(cpu), blocked(
+                        false), blocked_pkt(nullptr), needRetry(false) {
+        }
 
-          protected:
-            virtual bool recvTimingResp(PacketPtr pkt) override;
-            virtual void recvReqRetry() override;
-            virtual void recvRangeChange() override;
+    protected:
+        virtual bool recvTimingResp(PacketPtr pkt) override;
+        virtual void recvReqRetry() override;
+        virtual void recvRangeChange() override;
 
-          public:
-            void sendPacket(PacketPtr resp_pkt);
-        };
+    public:
+        void sendPacket(PacketPtr resp_pkt);
+    };
 
-  public:
+public:
     enum Status {
-        Running,
-        Idle,
-        Halted,
-        Blocked,
-        SwitchedOut
+        Running, Idle, Halted, Blocked, SwitchedOut
     };
 
     BaseTLB *itb;
@@ -170,15 +162,14 @@ class FullO3CPU : public BaseO3CPU
     /** Overall CPU status. */
     Status _status;
 
-
     /** For PIM offloading **/
-    std::list<PIM_Node*> PIM_list;
+    std::list<O3_PIM_Node*> PIM_list;
 
     bool PIM_mode;
 
     bool drain_due_to_pim;
 
-  private:
+private:
 
     /** The tick event used for scheduling CPU ticks. */
     EventFunctionWrapper tickEvent;
@@ -187,8 +178,7 @@ class FullO3CPU : public BaseO3CPU
     EventFunctionWrapper threadExitEvent;
 
     /** Schedule tick event, regardless of its current state. */
-    void scheduleTickEvent(Cycles delay)
-    {
+    void scheduleTickEvent(Cycles delay) {
         if (tickEvent.squashed())
             reschedule(tickEvent, clockEdge(delay));
         else if (!tickEvent.scheduled())
@@ -196,8 +186,7 @@ class FullO3CPU : public BaseO3CPU
     }
 
     /** Unschedule tick event, regardless of its current state. */
-    void unscheduleTickEvent()
-    {
+    void unscheduleTickEvent() {
         if (tickEvent.scheduled())
             tickEvent.squash();
     }
@@ -229,12 +218,11 @@ class FullO3CPU : public BaseO3CPU
     /** Check if a system is in a drained state. */
     bool isCpuDrained() const;
 
-  public:
+public:
     /** Constructs a CPU with the given parameters. */
     FullO3CPU(DerivO3CPUParams *params);
     /** Destructor. */
     ~FullO3CPU();
-
 
     /**
      * PIM Helper Functions
@@ -244,6 +232,12 @@ class FullO3CPU : public BaseO3CPU
 
     //determine whether the next PC of inst is in PIM_list
     bool NextPCInPIMList(const DynInstPtr &inst);
+
+    //return true if the next PC is the start PC of a loop
+    bool NextPCEnterPIMList(const DynInstPtr &inst);
+
+    //return true if the next PC is the end PC of a loop
+    bool PCExitPIMList(const DynInstPtr &inst);
 
     // return true if  currently running on main cpu and
     // inst->nextPC is within a loop node in PIM_list
@@ -274,19 +268,16 @@ class FullO3CPU : public BaseO3CPU
     /** Register probe points. */
     void regProbePoints() override;
 
-    void demapPage(Addr vaddr, uint64_t asn)
-    {
+    void demapPage(Addr vaddr, uint64_t asn) {
         this->itb->demapPage(vaddr, asn);
         this->dtb->demapPage(vaddr, asn);
     }
 
-    void demapInstPage(Addr vaddr, uint64_t asn)
-    {
+    void demapInstPage(Addr vaddr, uint64_t asn) {
         this->itb->demapPage(vaddr, asn);
     }
 
-    void demapDataPage(Addr vaddr, uint64_t asn)
-    {
+    void demapDataPage(Addr vaddr, uint64_t asn) {
         this->dtb->demapPage(vaddr, asn);
     }
 
@@ -301,8 +292,9 @@ class FullO3CPU : public BaseO3CPU
     void startup() override;
 
     /** Returns the Number of Active Threads in the CPU */
-    int numActiveThreads()
-    { return activeThreads.size(); }
+    int numActiveThreads() {
+        return activeThreads.size();
+    }
 
     /** Add Thread to Active Threads List */
     void activateThread(ThreadID tid);
@@ -337,7 +329,9 @@ class FullO3CPU : public BaseO3CPU
     void updateThreadPriority();
 
     /** Is the CPU draining? */
-    bool isDraining() const { return drainState() == DrainState::Draining; }
+    bool isDraining() const {
+        return drainState() == DrainState::Draining;
+    }
 
     void serializeThread(CheckpointOut &cp, ThreadID tid) const override;
     void unserializeThread(CheckpointIn &cp, ThreadID tid) override;
@@ -357,7 +351,7 @@ class FullO3CPU : public BaseO3CPU
     /** Terminate all threads that are ready to exit */
     void exitThreads();
 
-  public:
+public:
     /** Executes a syscall.
      * @todo: Determine if this needs to be virtual.
      */
@@ -388,8 +382,9 @@ class FullO3CPU : public BaseO3CPU
     void verifyMemoryMode() const override;
 
     /** Get the current instruction sequence number, and increment it. */
-    InstSeqNum getAndIncrementInstSeq()
-    { return globalSeqNum++; }
+    InstSeqNum getAndIncrementInstSeq() {
+        return globalSeqNum++;
+    }
 
     /** Traps to handle given fault. */
     void trap(const Fault &fault, ThreadID tid, const StaticInstPtr &inst);
@@ -409,7 +404,9 @@ class FullO3CPU : public BaseO3CPU
     void processInterrupts(const Fault &interrupt);
 
     /** Halts the CPU. */
-    void halt() { panic("Halt not implemented!\n"); }
+    void halt() {
+        panic("Halt not implemented!\n");
+    }
 
     /** Register accessors.  Index refers to the physical register index. */
 
@@ -441,19 +438,20 @@ class FullO3CPU : public BaseO3CPU
     VecRegContainer& getWritableVecReg(PhysRegIdPtr reg_idx);
 
     /** Returns current vector renaming mode */
-    Enums::VecRegRenameMode vecRenameMode() const { return vecMode; }
+    Enums::VecRegRenameMode vecRenameMode() const {
+        return vecMode;
+    }
 
     /** Sets the current vector renaming mode */
-    void vecRenameMode(Enums::VecRegRenameMode vec_mode)
-    { vecMode = vec_mode; }
+    void vecRenameMode(Enums::VecRegRenameMode vec_mode) {
+        vecMode = vec_mode;
+    }
 
     /**
      * Read physical vector register lane
      */
     template<typename VecElem, int LaneIdx>
-    VecLaneT<VecElem, true>
-    readVecLane(PhysRegIdPtr phys_reg) const
-    {
+    VecLaneT<VecElem, true> readVecLane(PhysRegIdPtr phys_reg) const {
         vecRegfileReads++;
         return regFile.readVecLane<VecElem, LaneIdx>(phys_reg);
     }
@@ -462,18 +460,14 @@ class FullO3CPU : public BaseO3CPU
      * Read physical vector register lane
      */
     template<typename VecElem>
-    VecLaneT<VecElem, true>
-    readVecLane(PhysRegIdPtr phys_reg) const
-    {
+    VecLaneT<VecElem, true> readVecLane(PhysRegIdPtr phys_reg) const {
         vecRegfileReads++;
         return regFile.readVecLane<VecElem>(phys_reg);
     }
 
     /** Write a lane of the destination vector register. */
     template<typename LD>
-    void
-    setVecLane(PhysRegIdPtr phys_reg, const LD& val)
-    {
+    void setVecLane(PhysRegIdPtr phys_reg, const LD& val) {
         vecRegfileWrites++;
         return regFile.setVecLane(phys_reg, val);
     }
@@ -508,30 +502,26 @@ class FullO3CPU : public BaseO3CPU
 
     /** Read architectural vector register lane. */
     template<typename VecElem>
-    VecLaneT<VecElem, true>
-    readArchVecLane(int reg_idx, int lId, ThreadID tid) const
-    {
+    VecLaneT<VecElem, true> readArchVecLane(int reg_idx, int lId,
+            ThreadID tid) const {
         PhysRegIdPtr phys_reg = commitRenameMap[tid].lookup(
-                    RegId(VecRegClass, reg_idx));
+                RegId(VecRegClass, reg_idx));
         return readVecLane<VecElem>(phys_reg);
     }
 
-
     /** Write a lane of the destination vector register. */
     template<typename LD>
-    void
-    setArchVecLane(int reg_idx, int lId, ThreadID tid, const LD& val)
-    {
+    void setArchVecLane(int reg_idx, int lId, ThreadID tid, const LD& val) {
         PhysRegIdPtr phys_reg = commitRenameMap[tid].lookup(
-                    RegId(VecRegClass, reg_idx));
+                RegId(VecRegClass, reg_idx));
         setVecLane(phys_reg, val);
     }
 
     const VecElem& readArchVecElem(const RegIndex& reg_idx,
-                                   const ElemIndex& ldx, ThreadID tid) const;
+            const ElemIndex& ldx, ThreadID tid) const;
 
     const VecPredRegContainer& readArchVecPredReg(int reg_idx,
-                                                  ThreadID tid) const;
+            ThreadID tid) const;
 
     VecPredRegContainer& getWritableArchVecPredReg(int reg_idx, ThreadID tid);
 
@@ -547,12 +537,12 @@ class FullO3CPU : public BaseO3CPU
     void setArchFloatReg(int reg_idx, RegVal val, ThreadID tid);
 
     void setArchVecPredReg(int reg_idx, const VecPredRegContainer& val,
-                           ThreadID tid);
+            ThreadID tid);
 
     void setArchVecReg(int reg_idx, const VecRegContainer& val, ThreadID tid);
 
     void setArchVecElem(const RegIndex& reg_idx, const ElemIndex& ldx,
-                        const VecElem& val, ThreadID tid);
+            const VecElem& val, ThreadID tid);
 
     void setArchCCReg(int reg_idx, RegVal val, ThreadID tid);
 
@@ -606,7 +596,7 @@ class FullO3CPU : public BaseO3CPU
     /** Debug function to print all instructions on the list. */
     void dumpInsts();
 
-  public:
+public:
 #ifndef NDEBUG
     /** Count of total number of dynamic instructions in flight. */
     int instcount;
@@ -632,7 +622,7 @@ class FullO3CPU : public BaseO3CPU
      */
     bool removeInstsThisCycle;
 
-  protected:
+protected:
     /** The PIM Port which should be connected to the memory controller **/
     FullO3CPU<Impl>::PIMPort PimPort;
 
@@ -684,18 +674,14 @@ class FullO3CPU : public BaseO3CPU
 
     std::vector<TheISA::ISA *> isa;
 
-  public:
+public:
     /** Enum to give each stage a specific index, so when calling
      *  activateStage() or deactivateStage(), they can specify which stage
      *  is being activated/deactivated.
      */
     enum StageIdx {
-        FetchIdx,
-        DecodeIdx,
-        RenameIdx,
-        IEWIdx,
-        CommitIdx,
-        NumStages };
+        FetchIdx, DecodeIdx, RenameIdx, IEWIdx, CommitIdx, NumStages
+    };
 
     /** Typedefs from the Impl to get the structs that each of the
      *  time buffers should use.
@@ -725,24 +711,28 @@ class FullO3CPU : public BaseO3CPU
     /** The IEW stage's instruction queue. */
     TimeBuffer<IEWStruct> iewQueue;
 
-  private:
+private:
     /** The activity recorder; used to tell if the CPU has any
      * activity remaining or if it can go to idle and deschedule
      * itself.
      */
     ActivityRecorder activityRec;
 
-  public:
+public:
     /** Records that there was time buffer activity this cycle. */
-    void activityThisCycle() { activityRec.activity(); }
+    void activityThisCycle() {
+        activityRec.activity();
+    }
 
     /** Changes a stage's status to active within the activity recorder. */
-    void activateStage(const StageIdx idx)
-    { activityRec.activateStage(idx); }
+    void activateStage(const StageIdx idx) {
+        activityRec.activateStage(idx);
+    }
 
     /** Changes a stage's status to inactive within the activity recorder. */
-    void deactivateStage(const StageIdx idx)
-    { activityRec.deactivateStage(idx); }
+    void deactivateStage(const StageIdx idx) {
+        activityRec.deactivateStage(idx);
+    }
 
     /** Wakes the CPU, rescheduling the CPU if it's not already active. */
     void wakeCPU();
@@ -752,16 +742,15 @@ class FullO3CPU : public BaseO3CPU
     /** Gets a free thread id. Use if thread ids change across system. */
     ThreadID getFreeTid();
 
-  public:
+public:
     /** Returns a pointer to a thread context. */
     ThreadContext *
-    tcBase(ThreadID tid)
-    {
+    tcBase(ThreadID tid) {
         return thread[tid]->getTC();
     }
 
     /** The global sequence number counter. */
-    InstSeqNum globalSeqNum;//[Impl::MaxThreads];
+    InstSeqNum globalSeqNum;    //[Impl::MaxThreads];
 
     /** Pointer to the checker, which can dynamically verify
      * instruction results at run time.  This can be set to NULL if it
@@ -792,31 +781,28 @@ class FullO3CPU : public BaseO3CPU
 
     /** CPU pushRequest function, forwards request to LSQ. */
     Fault pushRequest(const DynInstPtr& inst, bool isLoad, uint8_t *data,
-                      unsigned int size, Addr addr, Request::Flags flags,
-                      uint64_t *res, AtomicOpFunctorPtr amo_op = nullptr,
-                      const std::vector<bool>& byte_enable =
-                          std::vector<bool>())
+            unsigned int size, Addr addr, Request::Flags flags, uint64_t *res,
+            AtomicOpFunctorPtr amo_op = nullptr,
+            const std::vector<bool>& byte_enable = std::vector<bool>())
 
-    {
-        return iew.ldstQueue.pushRequest(inst, isLoad, data, size, addr,
-                flags, res, std::move(amo_op), byte_enable);
+            {
+        return iew.ldstQueue.pushRequest(inst, isLoad, data, size, addr, flags,
+                res, std::move(amo_op), byte_enable);
     }
 
     /** CPU read function, forwards read to LSQ. */
-    Fault read(LSQRequest* req, int load_idx)
-    {
+    Fault read(LSQRequest* req, int load_idx) {
         return this->iew.ldstQueue.read(req, load_idx);
     }
 
     /** CPU write function, forwards write to LSQ. */
-    Fault write(LSQRequest* req, uint8_t *data, int store_idx)
-    {
+    Fault write(LSQRequest* req, uint8_t *data, int store_idx) {
         return this->iew.ldstQueue.write(req, data, store_idx);
     }
 
-    Port &getPort(const std::string &if_name,
-                  PortID idx=InvalidPortID) override
-    {
+    Port &getPort(const std::string &if_name, PortID idx = InvalidPortID)
+            override
+            {
         // Get the right port based on name. This applies to all the
         // subclasses of the base CPU and relies on their implementation
         // of getDataPort and getInstPort.
@@ -829,7 +815,6 @@ class FullO3CPU : public BaseO3CPU
         else
             return ClockedObject::getPort(if_name, idx);
     }
-
 
     /** Used by the fetch unit to get a hold of the instruction port. */
     Port &
@@ -846,8 +831,7 @@ class FullO3CPU : public BaseO3CPU
     }
 
     Port &
-    getPimPort()
-    {
+    getPimPort() {
         return PimPort;
     }
 

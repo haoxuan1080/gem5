@@ -272,7 +272,10 @@ class Drainable
             return;
           case DrainState::Draining:
             _drainState = DrainState::Drained;
-            _drainManager.signalDrainDone();
+            if (drain_due_to_pim) {
+                _drainManager.signalDrainDone();
+                drain_due_to_pim = false;
+            }
             return;
         }
     }
@@ -295,12 +298,15 @@ class Drainable
      */
     virtual void notifyFork() {};
 
-  private:
+  public:
     /** DrainManager interface to request a drain operation */
     DrainState dmDrain();
     /** DrainManager interface to request a resume operation */
     void dmDrainResume();
 
+    mutable bool drain_due_to_pim;
+
+  private:
     /** Convenience reference to the drain manager */
     DrainManager &_drainManager;
 

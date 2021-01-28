@@ -278,6 +278,8 @@ DefaultDecode<Impl>::block(ThreadID tid)
 
         return true;
     }
+    else
+        DPRINTF(Decode, "decode is already blocked!");
 
     return false;
 }
