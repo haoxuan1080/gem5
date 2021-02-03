@@ -600,6 +600,9 @@ without draining: \\24082702000 ticks.
 with draining (4 loops offloaded) \\
 24082262000 ticks..
 
+with draining (1000000 tick delay in DRAM\_CTRL) and shrinking the mem\_ctrl delay:\\
+16385135000 ticks.\\
+
 why this is the case? why draining has fewer cycles?\\
 
 Problem encountered: from decode to fetch, decodeunblock[tid] is true across the drain and drain resume. That is caused by blocking in decode in second last tick and decode unblocking in last tick. The fetch will make the stall to be true when it detects the deocode block or remain the stall if decode block remains in true. The stall should be cleared when the fetch in the next tick see the deocode unblock. However, in drain resume, stall is cleared but decode unblocking is not. \\
@@ -607,5 +610,117 @@ Problem encountered: from decode to fetch, decodeunblock[tid] is true across the
 My current solution is to only clear stall if decodeUnblock is not true.\\
 
 Why they have block and unblock? maybe they need to determine whether get inst in inst queue or skid queue?
+
+\subsection{Create My Own Draining}
+\begin{enumerate}
+	\item detect the loop in fetch and stall fetch, drain and then switch
+	
+	\item detect the loop in commit and squash all not committed or reset all stages
+\end{enumerate}
+
+\textbf{CPU pc is the commit pc\\}
+
+\textbf{Switching Strategy\\}
+
+when commit detect the next pc is a switch, reset all stages, store the next pc somewhere in cpu, reset rob. send package to mem, deschedule ticks. After receiving package from mem, set fetch pc to be the previously stored pc and reschedule the cpu tick event.\\
+
+\textbf{Helper Functions to Create:\\}
+
+\begin{enumerate}
+	\item cpu::ResetAllStages()
+	
+	\item cpu::PIMRestorePC
+	
+	\item cpu::PIMRestoreFlag: Used to indicate that the cpu is restoring from PIM and the fetch should start to fetch the nextPC.
+	
+	\item cpu::switchToPIM()
+	
+	\item cpu::switchFromPIM()
+\end{enumerate}
+
+Experiment on d0eb0255e0740a1fad93c062117d27004dadbce0 node:
+
+\begin{enumerate}
+	\item 4 loops offloaded(8 drains) and memory divided: 16385135000
+\end{enumerate}
+
+Experiment on 3852adc62ba801c7da4ec6a1616b04fc97a2d59f node( 10 tick delay in DRAM\_CTRL):
+\begin{enumerate}
+	\item 4 loops offloaded(8 drains) and memory not divided: \\
+	
+	9295000 start to drain\\
+	9338000 drain done \\
+	9338010 drain resume start(tick event scheduled in nextCycle)\\
+	9340000 new tick event started\\
+	24082262000 total ticks
+	
+	\item only first 2 loops offloaded(4 drains) and memory not divided:\\
+	
+	9295000 start to drain\\
+	43000 ticks -> 43 cycles
+	9338000 drain done\\
+  9338010 drain resume\\
+  9340000 new tick event started\\
+  \textbf{9398000} to get to the next next PC\\
+  8389000 ticks -> 8389 cycles\\
+  17729000 second drain detected start to drain (ROB has 29 insts)\\
+  17734000 ROB has 0 insts.\\
+  8000 ticks -> 8 cycles\\
+  17737000 Drain done\\
+  17739000 new tick event continues and cpu pc is the nextPC\\
+  30689000 ticks -> 30589 cycles\\
+  48428000 third drain detected start to drain\\
+  285 cycles\\
+  48713000 Drain done\\
+  48715000 new tick continues\\
+  2233 cycles\\
+  50948000 forth drain detected start to drain\\
+  684 cycles\\
+  51632000 Drain done\\
+  51634000 new tick continues\\
+  24029922 cycles\\
+  24081556000 total ticks
+  
+  \item not actually drain! first 2 loops( 4 drains)\\
+  9295000 recognized the draining point\\
+  9296000 already working at pc of the nextPC(in pim loop)\\
+  \textbf{9379000} to get to the next next PC
+  8434 cycles\\
+  17729000 second drain detected\\
+  17730000 already in nextPC\\
+  30555 cycles\\
+  48284000 third drain detected\\
+  48285000 already in nextPC\\
+  2454 cycles\\
+  50738000 forth drain detected\\
+  50739000 already in nextPC\\
+  24031964 cycles\\
+  24082702000 total ticks\\
+  
+  \item not actually drain! 4 loops (8 drains)\\
+  24082702000 total ticks
+		
+	
+\end{enumerate}
+
+\begin{table}[h!]
+	\resizebox{\textwidth}{!}{\begin{tabular}{| c | c | c | c | c | c | c | c | c | c |}
+	\hline
+   version & to 1 & 1& 1 to 2 & 2 & 2 to 3& 3 & 3 to 4 & 4 & 4 to end\\[1ex]
+   \hline
+   drain & 9295 & 43 & 8389 & 8 & 30589 & 285 & 2233 & 684 & 24029922\\[1ex]
+   \hline
+   no drain & 9295 & - & 8434 & - & 30555 & - & 2454 & - & 24031964\\[1ex]
+   \hline
+ \end{tabular}}
+ \caption{tick time line}
+ \label{tab:sum}
+\end{table}
+
+After cpu commit stage has detected the nextPC in PIM, it will deschedule the tick event, set cpu::PIMRestorePC and cpu::PIMRestoreFlag and schedule the switch to PIM or switch from PIM event which will reset all stages\\
+
+The commit stage pc will be advanced to the next pc therefore after every commit, the cpu->pcState() would be the next pc and it seems that cpu::PIMRestorePC is not needed.\\
+
+In lsq\_unit\_impl, I can set the dcacheport of that unit(a thread) to the pim dataport when switch to pim port. Add a function to lsq to switch the data port.
 
 \end{document}
