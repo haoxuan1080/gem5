@@ -350,20 +350,24 @@ DefaultCommit<Impl>::setROB(ROB *rob_ptr)
     rob = rob_ptr;
 }
 
+template<class Impl>
+void DefaultCommit<Impl>::resetStage() {
+    rob->setActiveThreads(activeThreads);
+    rob->resetEntries();
+    // Broadcast the number of free entries.
+    for (ThreadID tid = 0; tid < numThreads; tid++) {
+        toIEW->commitInfo[tid].usedROB = true;
+        toIEW->commitInfo[tid].freeROBEntries
+            = rob->numFreeEntries(tid);
+        toIEW->commitInfo[tid].emptyROB = true;
+    }
+}
+
 template <class Impl>
 void
 DefaultCommit<Impl>::startupStage()
 {
-    rob->setActiveThreads(activeThreads);
-    rob->resetEntries();
-
-    // Broadcast the number of free entries.
-    for (ThreadID tid = 0; tid < numThreads; tid++) {
-        toIEW->commitInfo[tid].usedROB = true;
-        toIEW->commitInfo[tid].freeROBEntries = rob->numFreeEntries(tid);
-        toIEW->commitInfo[tid].emptyROB = true;
-    }
-
+    resetStage();
     // Commit must broadcast the number of free entries it has at the
     // start of the simulation, so it starts as active.
     cpu->activateStage(O3CPU::CommitIdx);
@@ -1087,9 +1091,13 @@ DefaultCommit<Impl>::commitInsts()
                     <<"Next PC is: "<<std::hex<<head_inst->pcState().npc()
                     <<" should drain due to pim now: switch to PIM!"
                     <<endl;
-                    cpu->PIM_mode = true;
-                    cpu->dmDrain();
-                    cpu->drain_due_to_pim = true;
+//                    cpu->PIM_mode = true;
+//                    DrainState drain_state = cpu->dmDrain();
+//                    cpu->dmDrain();
+//                    cpu->drain_due_to_pim = true;
+                    cpu->markToPIMSwitching();
+//                    cpu->schedule(SwitchToPIMEvent);
+                    // do I need squashing here?
                 }
                 else if (cpu->PCExitPIMList(head_inst) && (cpu->PIM_mode)
                         && !cpu->NextPCInPIMList(head_inst)) {
@@ -1098,9 +1106,10 @@ DefaultCommit<Impl>::commitInsts()
                     <<"Next PC is: "<<std::hex<<head_inst->pcState().npc()
                     <<" should drain due to pim now: switch from PIM!"
                     <<endl;
-                    cpu->PIM_mode = false;
-                    cpu->dmDrain();
-                    cpu->drain_due_to_pim = true;
+//                    cpu->PIM_mode = false;
+//                    cpu->dmDrain();
+//                    cpu->drain_due_to_pim = true;
+                    cpu->markFromPIMSwitching();
                 }
 
                 // at this point store conditionals should either have

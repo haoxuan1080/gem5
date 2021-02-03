@@ -152,7 +152,7 @@ public:
 
 public:
     enum Status {
-        Running, Idle, Halted, Blocked, SwitchedOut
+        Running, Idle, Halted, Blocked, SwitchedOut, ToPIMSwitch, FromPIMSwitch
     };
 
     BaseTLB *itb;
@@ -169,6 +169,13 @@ public:
 
     bool drain_due_to_pim;
 
+public:
+    void markToPIMSwitching();
+
+    void markFromPIMSwitching();
+
+    bool CPUUsingCache();
+
 private:
 
     /** The tick event used for scheduling CPU ticks. */
@@ -176,6 +183,11 @@ private:
 
     /** The exit event used for terminating all ready-to-exit threads */
     EventFunctionWrapper threadExitEvent;
+
+    /** PIM Switching event **/
+    EventFunctionWrapper switchToPIMEvent;
+
+    EventFunctionWrapper switchFromPIMEvent;
 
     /** Schedule tick event, regardless of its current state. */
     void scheduleTickEvent(Cycles delay) {
@@ -258,6 +270,9 @@ public:
 
     //the reverse operation of ShrinkWidth
     void ExpandWidth();
+
+    //restart the cpu after pim switching
+    void ResumeFromPIMSwitching();
 
     /** Registers statistics. */
     void regStats() override;

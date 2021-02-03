@@ -327,6 +327,8 @@ class DefaultCommit
     /** Reads the micro PC of a specific thread. */
     Addr microPC(ThreadID tid) { return pc[tid].microPC(); }
 
+    void resetStage();
+
   private:
     /** Time buffer interface. */
     TimeBuffer<TimeStruct> *timeBuffer;

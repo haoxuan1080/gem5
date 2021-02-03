@@ -606,6 +606,9 @@ with draining (10000 tick delay in DRAM\_CTRL):\\
 with draining (1000000 tick delay in DRAM\_CTRL):\\
 24091549000 ticks.\\
 
+with draining (1000000 tick delay in DRAM\_CTRL) and shrinking the mem\_ctrl delay:\\
+16385135000 ticks.\\
+
 why this is the case? why draining has fewer cycles?\\
 
 Problem encountered: from decode to fetch, decodeunblock[tid] is true across the drain and drain resume. That is caused by blocking in decode in second last tick and decode unblocking in last tick. The fetch will make the stall to be true when it detects the deocode block or remain the stall if decode block remains in true. The stall should be cleared when the fetch in the next tick see the deocode unblock. However, in drain resume, stall is cleared but decode unblocking is not. \\
@@ -613,5 +616,38 @@ Problem encountered: from decode to fetch, decodeunblock[tid] is true across the
 My current solution is to only clear stall if decodeUnblock is not true.\\
 
 Why they have block and unblock? maybe they need to determine whether get inst in inst queue or skid queue?
+
+\subsection{Create My Own Draining}
+\begin{enumerate}
+	\item detect the loop in fetch and stall fetch, drain and then switch
+	
+	\item detect the loop in commit and squash all not committed or reset all stages
+\end{enumerate}
+
+\textbf{CPU pc is the commit pc\\}
+
+\textbf{Switching Strategy\\}
+
+when commit detect the next pc is a switch, reset all stages, store the next pc somewhere in cpu, reset rob. send package to mem, deschedule ticks. After receiving package from mem, set fetch pc to be the previously stored pc and reschedule the cpu tick event.\\
+
+\textbf{Helper Functions to Create:\\}
+
+\begin{enumerate}
+	\item cpu::ResetAllStages()
+	
+	\item cpu::PIMRestorePC
+	
+	\item cpu::PIMRestoreFlag: Used to indicate that the cpu is restoring from PIM and the fetch should start to fetch the nextPC.
+	
+	\item cpu::switchToPIM()
+	
+	\item cpu::switchFromPIM()
+\end{enumerate}
+
+After cpu commit stage has detected the nextPC in PIM, it will deschedule the tick event, set cpu::PIMRestorePC and cpu::PIMRestoreFlag and schedule the switch to PIM or switch from PIM event which will reset all stages\\
+
+The commit stage pc will be advanced to the next pc therefore after every commit, the cpu->pcState() would be the next pc and it seems that cpu::PIMRestorePC is not needed.\\
+
+In lsq_unit_impl, I can set the dcacheport of that unit(a thread) to the pim dataport when switch to pim port. Add a function to lsq to switch the data port.
 
 \end{document}

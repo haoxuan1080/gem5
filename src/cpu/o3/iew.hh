@@ -295,6 +295,7 @@ class DefaultIEW
      * Writeback to run for one cycle.
      */
     void tick();
+    void resetStage();
 
   private:
     /** Updates execution stats based on the instruction. */

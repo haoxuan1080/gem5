@@ -204,10 +204,11 @@ class DefaultRename
     /** Debugging function used to dump history buffer of renamings. */
     void dumpHistory();
 
-  private:
+//  private:
     /** Reset this pipeline stage */
     void resetStage();
 
+  private:
     /** Determines what to do based on rename's current status.
      * @param status_change rename() sets this variable if there was a status
      * change (ie switching from blocking to unblocking).

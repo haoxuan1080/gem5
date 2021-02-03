@@ -280,10 +280,12 @@ class DefaultFetch
 
     /** For priority-based fetch policies, need to keep update priorityList */
     void deactivateThread(ThreadID tid);
-  private:
+//  private:
     /** Reset this pipeline stage */
     void resetStage();
 
+    void switchToActiveAfterPIM();
+    private:
     /** Changes the status of this stage to active, and indicates this
      * to the CPU.
      */

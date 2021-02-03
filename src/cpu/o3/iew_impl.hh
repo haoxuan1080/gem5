@@ -302,19 +302,35 @@ DefaultIEW<Impl>::regStats()
 }
 
 template<class Impl>
+void DefaultIEW<Impl>::resetStage() {
+    for (ThreadID tid = 0; tid < numThreads; tid++) {
+        toRename->iewInfo[tid].usedIQ = true;
+        toRename->iewInfo[tid].freeIQEntries = instQueue.numFreeEntries(tid);
+        toRename->iewInfo[tid].usedLSQ = true;
+        toRename->iewInfo[tid].freeLQEntries = ldstQueue.numFreeLoadEntries(
+                tid);
+        toRename->iewInfo[tid].freeSQEntries = ldstQueue.numFreeStoreEntries(
+                tid);
+    }
+    // Initialize the checker's dcache port here
+    if (cpu->checker) {
+        cpu->checker->setDcachePort(&ldstQueue.getDataPort());
+    }
+}
+
+template<class Impl>
 void
 DefaultIEW<Impl>::startupStage()
 {
     for (ThreadID tid = 0; tid < numThreads; tid++) {
         toRename->iewInfo[tid].usedIQ = true;
-        toRename->iewInfo[tid].freeIQEntries =
-            instQueue.numFreeEntries(tid);
-
+        toRename->iewInfo[tid].freeIQEntries = instQueue.numFreeEntries(tid);
         toRename->iewInfo[tid].usedLSQ = true;
-        toRename->iewInfo[tid].freeLQEntries = ldstQueue.numFreeLoadEntries(tid);
-        toRename->iewInfo[tid].freeSQEntries = ldstQueue.numFreeStoreEntries(tid);
+        toRename->iewInfo[tid].freeLQEntries = ldstQueue.numFreeLoadEntries(
+                tid);
+        toRename->iewInfo[tid].freeSQEntries = ldstQueue.numFreeStoreEntries(
+                tid);
     }
-
     // Initialize the checker's dcache port here
     if (cpu->checker) {
         cpu->checker->setDcachePort(&ldstQueue.getDataPort());

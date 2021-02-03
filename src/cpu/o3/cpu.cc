@@ -107,12 +107,13 @@ FullO3CPU<Impl>::PIMPort::recvTimingResp(PacketPtr resp_pkt)
         needRetry = true;
         return false;
     }
+    /*
     if (cpu->drainState() != DrainState::Drained) {
         cout<<"cpu is not in DrainState::Drained state when \
             received packet from mem_ctrl pim port"<<endl;
         needRetry = true;
         return false;
-    }
+    }*/
     cout<<"cpu pim port received pkt from mem ctrl"<<endl;
     uint8_t* resp_data = resp_pkt->getPtr<uint8_t>();
     bool has_error = false;
@@ -134,10 +135,11 @@ FullO3CPU<Impl>::PIMPort::recvTimingResp(PacketPtr resp_pkt)
             cout<<"CPU in non PIM mode and memory also notified \
             cpu that it is in non pim now"<<endl;
     }
-    assert(cpu->drainState() == DrainState::Drained);
+//    assert(cpu->drainState() == DrainState::Drained);
 
     if (!has_error) {
-        cpu->dmDrainResume();
+//        cpu->dmDrainResume();
+        cpu->ResumeFromPIMSwitching();
     }
     return true;
 }
@@ -192,6 +194,10 @@ FullO3CPU<Impl>::FullO3CPU(DerivO3CPUParams *params)
                 false, Event::CPU_Tick_Pri),
       threadExitEvent([this]{ exitThreads(); }, "FullO3CPU exit threads",
                 false, Event::CPU_Exit_Pri),
+      switchToPIMEvent([this]{ SwitchToPIM(); },
+              "FullO3CPU Switch to PIM Event"),
+      switchFromPIMEvent([this]{ SwitchBackFromPIM(); },
+              "FullO3CPU Switch From PIM Event"),
 #ifndef NDEBUG
       instcount(0),
 #endif
@@ -493,6 +499,28 @@ FullO3CPU<Impl>::~FullO3CPU()
  * ******/
 
 template <class Impl>
+void
+FullO3CPU<Impl>::markToPIMSwitching()
+{
+    _status = ToPIMSwitch;
+}
+
+template <class Impl>
+void
+FullO3CPU<Impl>::markFromPIMSwitching()
+{
+    _status = FromPIMSwitch;
+}
+
+template <class Impl>
+bool
+FullO3CPU<Impl>::CPUUsingCache()
+{
+    return (_status != ToPIMSwitch) && (_status != FromPIMSwitch);
+            //&& (!PIM_mode);
+}
+
+template <class Impl>
 bool
 FullO3CPU<Impl>::isInPIMList(uint64_t currentPC)
 {
@@ -551,13 +579,44 @@ FullO3CPU<Impl>::MainCPUNextPCInPIMList(const DynInstPtr &inst)
     return PIM_mode && NextPCInPIMList(inst);
 }
 
-//TODO: This method is probably not going to be used and will be deleted.
 template <class Impl>
 void
 FullO3CPU<Impl>::SwitchToPIM()
 {
     PIM_mode = true;
-    // system->PIM_mode = true;
+
+    //reset all the stages.
+    cout<<"reset all stages"<<endl;
+    fetch.resetStage();
+    decode.resetStage();
+    rename.resetStage();
+    iew.resetStage();
+    commit.resetStage();
+
+    if (tickEvent.scheduled()) {
+        cout<<"why is the tickEvent scheduled?"<<endl;
+        deschedule(tickEvent);
+    }
+
+    //The following steps are the same as in drain()
+    // Flush out any old data from the time buffers.  In
+    // particular, there might be some data in flight from the
+    // fetch stage that isn't visible in any of the CPU buffers we
+    // test in isCpuDrained().
+    for (int i = 0; i < timeBuffer.getSize(); ++i) {
+        timeBuffer.advance();
+        fetchQueue.advance();
+        decodeQueue.advance();
+        renameQueue.advance();
+        iewQueue.advance();
+    }
+
+    //shrink the cpu
+    ShrinkWidth();
+
+    // send signal to mem
+    SendPIMSignalToMem(true);
+
 }
 
 template <class Impl>
@@ -566,6 +625,7 @@ FullO3CPU<Impl>::SendPIMSignalToMem(bool to_pim)
 {
     RequestPtr req_ptr = std::make_shared<Request>();
     PacketPtr pim_pkt = new Packet(req_ptr, MemCmd(MemCmd::WriteReq));
+   // cout<<"set data"<<endl;
     pim_pkt->dataStatic<uint8_t>((uint8_t*)new char((uint8_t)to_pim));
     cout<<"Send packet to mem; to_pim is: "<<to_pim<<endl;
     PimPort.sendPacket(pim_pkt);
@@ -577,6 +637,40 @@ FullO3CPU<Impl>::SwitchBackFromPIM()
 {
     PIM_mode = false;
     // system->PIM_mode = false;
+    //reset all the stages.
+        fetch.resetStage();
+        decode.resetStage();
+        rename.resetStage();
+        iew.resetStage();
+        commit.resetStage();
+
+        if (tickEvent.scheduled())
+            deschedule(tickEvent);
+
+        //The following steps are the same as in drain()
+        // Flush out any old data from the time buffers.  In
+        // particular, there might be some data in flight from the
+        // fetch stage that isn't visible in any of the CPU buffers we
+        // test in isCpuDrained().
+        for (int i = 0; i < timeBuffer.getSize(); ++i) {
+            timeBuffer.advance();
+            fetchQueue.advance();
+            decodeQueue.advance();
+            renameQueue.advance();
+            iewQueue.advance();
+        }
+
+        //shrink the cpu
+        ExpandWidth();
+
+        fetch.resetStage();
+        decode.resetStage();
+        rename.resetStage();
+        iew.resetStage();
+        commit.resetStage();
+
+        // send signal to mem
+        SendPIMSignalToMem(false);
 }
 
 template <class Impl>
@@ -593,6 +687,34 @@ void
 FullO3CPU<Impl>::ExpandWidth()
 {
     cout<<"Expand the CPU Width"<<endl;
+}
+
+template <class Impl>
+void
+FullO3CPU<Impl>::ResumeFromPIMSwitching()
+{
+    fetch.resetStage();
+    fetch.switchToActiveAfterPIM();
+    activateStage(O3CPU::IEWIdx);
+    activateStage(O3CPU::CommitIdx);
+    activityThisCycle();
+
+    _status = Idle;
+    for (ThreadID i = 0; i < thread.size(); i++) {
+        if (thread[i]->status() == ThreadContext::Active) {
+            DPRINTF(O3CPU, "Activating thread: %i\n", i);
+            fetch.clearStates(i);
+            activateThread(i);
+            _status = Running;
+        }
+    }
+
+    assert(!tickEvent.scheduled());
+    if (_status == Running) {
+        cout<<"reschedule tick event!"<<endl;
+        schedule(tickEvent, nextCycle());
+    }
+    assert(tickEvent.scheduled());
 }
 
 template <class Impl>
@@ -790,6 +912,8 @@ void
 FullO3CPU<Impl>::tick()
 {
     DPRINTF(O3CPU, "\n\nFullO3CPU: Ticking main, FullO3CPU.\n");
+    DPRINTF(O3CPU, "status is: %u\n", _status);
+    DPRINTF(O3CPU, "pc is: %x\n", pcState(0).instAddr());
     assert(!switchedOut());
     assert(drainState() != DrainState::Drained);
 
@@ -799,14 +923,19 @@ FullO3CPU<Impl>::tick()
 //    activity = false;
 
     //Tick each of the stages
+//    cout<<"fetch.tick()"<<endl;
     fetch.tick();
 
+//    cout<<"decode.tick()"<<endl;
     decode.tick();
 
+//    cout<<"rename.tick()"<<endl;
     rename.tick();
 
+//    cout<<"iew.tick()"<<endl;
     iew.tick();
 
+//    cout<<"commit.tick()"<<endl;
     commit.tick();
 
     // Now advance the time buffers
@@ -824,7 +953,23 @@ FullO3CPU<Impl>::tick()
     }
 
     if (!tickEvent.scheduled()) {
-        if (_status == SwitchedOut) {
+          if (_status == ToPIMSwitch)
+          {
+            //switching due to pim, shouldn't schedule next tick()
+            DPRINTF(O3CPU, "Doing TO PIM Switching");
+            lastRunningCycle = curCycle();
+            // schedule the event after 10 ns.
+            schedule(switchToPIMEvent, curTick() + 10000);
+          }
+          else if (_status == FromPIMSwitch)
+          {
+              //switching due to pim, shouldn't schedule next tick()
+              DPRINTF(O3CPU, "Doing From PIM Switching");
+              lastRunningCycle = curCycle();
+            // schedule the event after 10 ns.
+              schedule(switchFromPIMEvent, curTick() + 10000);
+          }
+          else if (_status == SwitchedOut) {
             DPRINTF(O3CPU, "Switched out!\n");
             // increment stat
             lastRunningCycle = curCycle();
@@ -841,21 +986,22 @@ FullO3CPU<Impl>::tick()
     if (!FullSystem)
         updateThreadPriority();
 
-    bool drained_seen_first_time = tryDrain();
-    if (drained_seen_first_time && drain_due_to_pim) {
-        if (PIM_mode) {
-            ShrinkWidth();
-            cout<<"send signal to memory"<<endl;
-            SendPIMSignalToMem(true);
-            cout<<"finished send signal to memory"<<endl;
-        }
-        else {
-            ExpandWidth();
-            cout<<"send signal to memory"<<endl;
-            SendPIMSignalToMem(false);
-            cout<<"finished send signal to memory"<<endl;
-        }
-    }
+    tryDrain();
+//    bool drained_seen_first_time = tryDrain();
+//    if (drained_seen_first_time && drain_due_to_pim) {
+//        if (PIM_mode) {
+//            ShrinkWidth();
+//            cout<<"send signal to memory"<<endl;
+//            SendPIMSignalToMem(true);
+//            cout<<"finished send signal to memory"<<endl;
+//        }
+//        else {
+//            ExpandWidth();
+//            cout<<"send signal to memory"<<endl;
+//            SendPIMSignalToMem(false);
+//            cout<<"finished send signal to memory"<<endl;
+//        }
+//    }
 }
 
 template <class Impl>
@@ -1390,6 +1536,7 @@ FullO3CPU<Impl>::drainResume()
     // Reschedule any power gating event (if any)
     schedulePowerGatingEvent();
 }
+
 
 template <class Impl>
 void

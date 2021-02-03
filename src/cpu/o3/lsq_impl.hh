@@ -1194,6 +1194,8 @@ template <class Impl>
 bool
 LSQ<Impl>::DcachePort::recvTimingResp(PacketPtr pkt)
 {
+    if (!cpu->CPUUsingCache())
+        return false;
     return lsq->recvTimingResp(pkt);
 }
 
@@ -1201,6 +1203,8 @@ template <class Impl>
 void
 LSQ<Impl>::DcachePort::recvTimingSnoopReq(PacketPtr pkt)
 {
+    if (!cpu->CPUUsingCache())
+        return;
     for (ThreadID tid = 0; tid < cpu->numThreads; tid++) {
         if (cpu->getCpuAddrMonitor(tid)->doMonitor(pkt)) {
             cpu->wakeup(tid);
@@ -1213,6 +1217,8 @@ template <class Impl>
 void
 LSQ<Impl>::DcachePort::recvReqRetry()
 {
+    if (!cpu->CPUUsingCache())
+        return;
     lsq->recvReqRetry();
 }
 

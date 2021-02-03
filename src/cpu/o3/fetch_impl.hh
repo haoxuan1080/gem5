@@ -436,6 +436,7 @@ DefaultFetch<Impl>::drainResume()
         if (!fromDecode->decodeUnblock[i])
             stalls[i].decode = false;
         stalls[i].drain = false;
+        cout<<"Fetch Resume! PC is: "<<std::hex<<pc[i].instAddr()<<endl;
     }
 }
 
@@ -515,6 +516,19 @@ DefaultFetch<Impl>::wakeFromQuiesce()
     // Hopefully this is safe
     // @todo: Allow other threads to wake from quiesce.
     fetchStatus[0] = Running;
+}
+
+template <class Impl>
+void
+DefaultFetch<Impl>::switchToActiveAfterPIM()
+{
+    if (_status == Inactive) {
+        DPRINTF(Activity, "Activating stage after PIM.\n");
+
+        cpu->activateStage(O3CPU::FetchIdx);
+
+        _status = Active;
+    }
 }
 
 template <class Impl>
@@ -1420,6 +1434,13 @@ template<class Impl>
 void
 DefaultFetch<Impl>::recvReqRetry()
 {
+    if (!cpu->CPUUsingCache()) {
+        retryPkt = NULL;
+        fetchStatus[retryTid]=Idle;
+        retryTid = InvalidThreadID;
+        cacheBlocked = false;
+        return;
+    }
     if (retryPkt != NULL) {
         assert(cacheBlocked);
         assert(retryTid != InvalidThreadID);
@@ -1467,6 +1488,7 @@ DefaultFetch<Impl>::getFetchingThread()
     } else {
         list<ThreadID>::iterator thread = activeThreads->begin();
         if (thread == activeThreads->end()) {
+            DPRINTF(Fetch, "Reach thread end!\n");
             return InvalidThreadID;
         }
 
@@ -1477,6 +1499,9 @@ DefaultFetch<Impl>::getFetchingThread()
             fetchStatus[tid] == Idle) {
             return tid;
         } else {
+            DPRINTF(Fetch,
+                "not running, Icache complelet or Idle, fetchStatus: %u",
+                fetchStatus[tid]);
             return InvalidThreadID;
         }
     }
@@ -1677,6 +1702,11 @@ template<class Impl>
 bool
 DefaultFetch<Impl>::IcachePort::recvTimingResp(PacketPtr pkt)
 {
+    if (!fetch->cpu->CPUUsingCache())
+    {
+        cout<<"recv icache port response when not using cache!"<<endl;
+        return false;
+    }
     DPRINTF(O3CPU, "Fetch unit received timing\n");
     // We shouldn't ever get a cacheable block in Modified state
     assert(pkt->req->isUncacheable() ||
