@@ -68,6 +68,8 @@ DRAMCtrl::DRAMCtrl(const DRAMCtrlParams* p) :
     retryRdReq(false), retryWrReq(false),
     nextReqEvent([this]{ processNextReqEvent(); }, name()),
     respondEvent([this]{ processRespondEvent(); }, name()),
+    SwitchToPIMEvent([this]{ processSwitchToPIMEvent();}, name()),
+    SwitchFromPIMEvent([this]{ processSwitchFromPIMEvent();}, name()),
     deviceSize(p->device_size),
     deviceBusWidth(p->device_bus_width), burstLength(p->burst_length),
     deviceRowBufferSize(p->device_rowbuffer_size),
@@ -2336,6 +2338,18 @@ DRAMCtrl::Rank::processPowerEvent()
 }
 
 void
+DRAMCtrl::processSwitchToPIMEvent()
+{
+    SwitchToPIM();
+}
+
+void
+DRAMCtrl::processSwitchFromPIMEvent()
+{
+    SwitchFromPIM();
+}
+
+void
 DRAMCtrl::Rank::updatePowerStats()
 {
     // All commands up to refresh have completed
@@ -2871,32 +2885,14 @@ DRAMCtrl::PIMPort::recvTimingReq(PacketPtr pkt)
         needRetry = true;
         return false;
     }
-
-//    Addr resq_addr = pkt->addr;
     uint8_t* resq_data = pkt->getPtr<uint8_t>();
-    MemCmd::Command resp_cmd = pkt->cmd.responseCommand();
-//    if (resq_addr != 0x20000000) {
-//        panic("The request to memory ctrl pim port is not correct!");
-//    }
     if (*resq_data == 1) {
-        dram_ctrl->SwitchToPIM();
-        cout<<"switch to pim request received by mem_ctrl!"
-        <<"Start Start doing switch"<<endl;
-        // send response
-        RequestPtr req_ptr = std::make_shared<Request>();
-        PacketPtr resp_pkt = new Packet(req_ptr, MemCmd(resp_cmd));
-        //this means ddr_ctrl has finished switching
-        resp_pkt->dataStatic<uint8_t>((uint8_t*)new char(1));
-        sendPacket(resp_pkt);
+        dram_ctrl->schedule(dram_ctrl->SwitchToPIMEvent,
+            curTick() + 1000000);
     }
     else if (*resq_data == 0) {
-        dram_ctrl->SwitchFromPIM();
-        cout<<"switch from pim request received by mem_ctrl!"
-         <<"Start Start doing switch"<<endl;
-        RequestPtr req_ptr = std::make_shared<Request>();
-        PacketPtr resp_pkt = new Packet(req_ptr, MemCmd(resp_cmd));
-        resp_pkt->dataStatic<uint8_t>((uint8_t*)new char(0));
-                sendPacket(resp_pkt);
+        dram_ctrl->schedule(dram_ctrl->SwitchFromPIMEvent,
+            curTick() + 1000000);
     }
     else {
         panic("mem_ctrl: pim packet data is not 0 or 1");
@@ -2923,14 +2919,31 @@ DRAMCtrl::PIMPort::recvRespRetry()
     }
 }
 
+void DRAMCtrl::SendResponseToCPU(int to_pim) {
+    //Do the switching
+//    MemCmd::Command resp_cmd = pkt->cmd.responseCommand();
+    RequestPtr req_ptr = std::make_shared<Request>();
+    PacketPtr resp_pkt = new Packet(req_ptr, MemCmd(MemCmd::WriteResp));
+    resp_pkt->dataStatic<uint8_t>((uint8_t*) ((new char(to_pim))));
+    pim_port.sendPacket(resp_pkt);
+}
+
 void DRAMCtrl::SwitchToPIM()
 {
     cout<<"virtual switching to PIM in mem_ctrl"<<endl;
+    //do switching
+    assert(!in_pim);
+    in_pim = true;
+    SendResponseToCPU(1);
 }
 
 void DRAMCtrl::SwitchFromPIM()
 {
     cout<<"virtual switching from PIM in mem_ctrl"<<endl;
+    //do switching
+    assert(in_pim);
+    in_pim = false;
+    SendResponseToCPU(0);
 }
 
 DRAMCtrl*

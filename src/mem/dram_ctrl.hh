@@ -146,6 +146,9 @@ class DRAMCtrl : public QoS::MemCtrl
             bool recvTimingReq(PacketPtr) override;
 
             void recvRespRetry() override;
+            void switchToPIMAndSendResp(MemCmd::Command resp_cmd);
+            void switchFromPIMAndSendResp(MemCmd::Command resp_cmd);
+        public:
             void sendPacket(PacketPtr resp_pkt);
     };
 
@@ -771,6 +774,12 @@ class DRAMCtrl : public QoS::MemCtrl
     void processRespondEvent();
     EventFunctionWrapper respondEvent;
 
+    void processSwitchToPIMEvent();
+    EventFunctionWrapper SwitchToPIMEvent;
+
+    void processSwitchFromPIMEvent();
+    EventFunctionWrapper SwitchFromPIMEvent;
+
     /**
      * Check if the read queue has room for more entries
      *
@@ -1009,29 +1018,29 @@ class DRAMCtrl : public QoS::MemCtrl
      * Basic memory timing parameters initialized based on parameter
      * values.
      */
-    const Tick M5_CLASS_VAR_USED tCK;
-    const Tick tRTW;
-    const Tick tCS;
-    const Tick tBURST;
-    const Tick tCCD_L_WR;
-    const Tick tCCD_L;
-    const Tick tRCD;
-    const Tick tCL;
-    const Tick tRP;
-    const Tick tRAS;
-    const Tick tWR;
-    const Tick tRTP;
-    const Tick tRFC;
-    const Tick tREFI;
-    const Tick tRRD;
-    const Tick tRRD_L;
-    const Tick tXAW;
-    const Tick tXP;
-    const Tick tXS;
+    Tick M5_CLASS_VAR_USED tCK;
+    Tick tRTW;
+    Tick tCS;
+    Tick tBURST;
+    Tick tCCD_L_WR;
+    Tick tCCD_L;
+    Tick tRCD;
+    Tick tCL;
+    Tick tRP;
+    Tick tRAS;
+    Tick tWR;
+    Tick tRTP;
+    Tick tRFC;
+    Tick tREFI;
+    Tick tRRD;
+    Tick tRRD_L;
+    Tick tXAW;
+    Tick tXP;
+    Tick tXS;
     const uint32_t activationLimit;
-    const Tick rankToRankDly;
-    const Tick wrToRdDly;
-    const Tick rdToWrDly;
+    Tick rankToRankDly;
+    Tick wrToRdDly;
+    Tick rdToWrDly;
 
     /**
      * Memory controller configuration initialized based on parameter
@@ -1240,7 +1249,7 @@ class DRAMCtrl : public QoS::MemCtrl
     Tick recvAtomic(PacketPtr pkt);
     void recvFunctional(PacketPtr pkt);
     bool recvTimingReq(PacketPtr pkt);
-
+    void SendResponseToCPU(int to_pim);
 };
 
 #endif //__MEM_DRAM_CTRL_HH__
