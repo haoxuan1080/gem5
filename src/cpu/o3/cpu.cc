@@ -586,6 +586,7 @@ FullO3CPU<Impl>::ShrinkWidth()
     // reduce the functional unit count in FU pool
     // maybe modify the interface after created PIM_FU_Pool
     cout<<"Shrink the CPU Width"<<endl;
+    iew.SwitchToPIM();
 }
 
 template <class Impl>
@@ -593,6 +594,7 @@ void
 FullO3CPU<Impl>::ExpandWidth()
 {
     cout<<"Expand the CPU Width"<<endl;
+    iew.SwitchFromPIM();
 }
 
 template <class Impl>
@@ -790,6 +792,8 @@ void
 FullO3CPU<Impl>::tick()
 {
     DPRINTF(O3CPU, "\n\nFullO3CPU: Ticking main, FullO3CPU.\n");
+    DPRINTF(O3CPU, "status is: %u\n", _status);
+    DPRINTF(O3CPU, "pc is: %x\n", pcState(0).instAddr());
     assert(!switchedOut());
     assert(drainState() != DrainState::Drained);
 
@@ -1384,8 +1388,10 @@ FullO3CPU<Impl>::drainResume()
     }
 
     assert(!tickEvent.scheduled());
-    if (_status == Running)
+    if (_status == Running) {
         schedule(tickEvent, nextCycle());
+        DPRINTF(O3CPU, "Rescheduling tick event in drainResume()!");
+    }
 
     // Reschedule any power gating event (if any)
     schedulePowerGatingEvent();

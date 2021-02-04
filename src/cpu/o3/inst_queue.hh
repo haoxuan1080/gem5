@@ -272,6 +272,12 @@ class InstructionQueue
     /** Debug function to print all instructions. */
     void printInsts();
 
+    /**
+     * PIM Helper Functions
+     */
+    void SwitchToPIM();
+    void SwitchFromPIM();
+
   private:
     /** Does the actual squashing. */
     void doSquash(ThreadID tid);
@@ -307,6 +313,8 @@ class InstructionQueue
 
     /** Function unit pool. */
     FUPool *fuPool;
+    FUPool *const default_fuPool;
+    FUPool *const pim_fuPool;
 
     //////////////////////////////////////
     // Instruction lists, ready queues, and ordering

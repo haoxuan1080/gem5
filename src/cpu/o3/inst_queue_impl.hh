@@ -90,6 +90,8 @@ InstructionQueue<Impl>::InstructionQueue(O3CPU *cpu_ptr, IEW *iew_ptr,
     : cpu(cpu_ptr),
       iewStage(iew_ptr),
       fuPool(params->fuPool),
+      default_fuPool(params->fuPool),
+      pim_fuPool(params->pimfuPool),
       iqPolicy(params->smtIQPolicy),
       numEntries(params->numIQEntries),
       totalWidth(params->issueWidth),
@@ -1361,6 +1363,25 @@ InstructionQueue<Impl>::doSquash(ThreadID tid)
         instList[tid].erase(squash_it--);
         ++iqSquashedInstsExamined;
     }
+}
+
+/**
+ * PIM Helper Functions
+ */
+template <class Impl>
+void
+InstructionQueue<Impl>::SwitchToPIM()
+{
+    std::cout<<"Inst Queue Switch to pim fuPool!"<<std::endl;
+    fuPool = pim_fuPool;
+}
+
+template <class Impl>
+void
+InstructionQueue<Impl>::SwitchFromPIM()
+{
+    std::cout<<"Inst Queue Switch to default fuPool!"<<std::endl;
+    fuPool = default_fuPool;
 }
 
 template <class Impl>

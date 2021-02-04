@@ -212,13 +212,18 @@ FUPool::dump()
     cout << "Free List:\n";
 
     for (int i = 0; i < numFU; ++i) {
-        if (unitBusy[i]) {
-            continue;
-        }
+//        if (unitBusy[i]) {
+//            continue;
+//        }
 
         cout << "  [" << i << "] : ";
 
         cout << funcUnits[i]->name << " ";
+        if (unitBusy[i]) {
+            cout<<": BUSY";
+        }
+        else
+            cout<<": Free";
 
         cout << "\n";
     }

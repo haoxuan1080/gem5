@@ -363,10 +363,16 @@ class DefaultIEW
 
     /** Pointer to the functional unit pool. */
     FUPool *fuPool;
+    FUPool *const default_fuPool;
+    FUPool *const pim_fuPool;
     /** Records if the LSQ needs to be updated on the next cycle, so that
      * IEW knows if there will be activity on the next cycle.
      */
     bool updateLSQNextCycle;
+
+  public:
+    void SwitchToPIM();
+    void SwitchFromPIM();
 
   private:
     /** Records if there is a fetch redirect on this cycle for each thread. */

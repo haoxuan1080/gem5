@@ -48,6 +48,10 @@ class IntALU(FUDesc):
     opList = [ OpDesc(opClass='IntAlu') ]
     count = 6
 
+class PIMIntALU(FUDesc):
+    opList = [ OpDesc(opClass='IntAlu') ]
+    count = 1
+
 class IntMultDiv(FUDesc):
     opList = [ OpDesc(opClass='IntMult', opLat=3),
                OpDesc(opClass='IntDiv', opLat=20, pipelined=False) ]
@@ -59,13 +63,32 @@ class IntMultDiv(FUDesc):
     if buildEnv['TARGET_ISA'] in ('x86'):
         opList[1].opLat=1
 
-    count=2
+    count=1
+
+class PIMIntMultDiv(FUDesc):
+    opList = [ OpDesc(opClass='IntMult', opLat=3),
+               OpDesc(opClass='IntDiv', opLat=20, pipelined=False) ]
+
+    # DIV and IDIV instructions in x86 are implemented using a loop which
+    # issues division microops.  The latency of these microops should really be
+    # one (or a small number) cycle each since each of these computes one bit
+    # of the quotient.
+    if buildEnv['TARGET_ISA'] in ('x86'):
+        opList[1].opLat=1
+
+    count=1
 
 class FP_ALU(FUDesc):
     opList = [ OpDesc(opClass='FloatAdd', opLat=2),
                OpDesc(opClass='FloatCmp', opLat=2),
                OpDesc(opClass='FloatCvt', opLat=2) ]
     count = 4
+
+class PIM_FP_ALU(FUDesc):
+    opList = [ OpDesc(opClass='FloatAdd', opLat=2),
+               OpDesc(opClass='FloatCmp', opLat=2),
+               OpDesc(opClass='FloatCvt', opLat=2) ]
+    count = 1
 
 class FP_MultDiv(FUDesc):
     opList = [ OpDesc(opClass='FloatMult', opLat=4),
@@ -74,6 +97,14 @@ class FP_MultDiv(FUDesc):
                OpDesc(opClass='FloatDiv', opLat=12, pipelined=False),
                OpDesc(opClass='FloatSqrt', opLat=24, pipelined=False) ]
     count = 2
+
+class PIM_FP_MultDiv(FUDesc):
+    opList = [OpDesc(opClass='FloatMult', opLat=4),
+              OpDesc(opClass='FloatMultAcc', opLat=5),
+              OpDesc(opClass='FloatMisc', opLat=3),
+              OpDesc(opClass='FloatDiv', opLat=12, pipelined=False),
+              OpDesc(opClass='FloatSqrt', opLat=24, pipelined=False)]
+    count = 1
 
 class SIMD_Unit(FUDesc):
     opList = [ OpDesc(opClass='SimdAdd'),
@@ -103,6 +134,35 @@ class SIMD_Unit(FUDesc):
                OpDesc(opClass='SimdFloatReduceAdd'),
                OpDesc(opClass='SimdFloatReduceCmp') ]
     count = 4
+
+class PIM_SIMD_Unit(FUDesc):
+    opList = [ OpDesc(opClass='SimdAdd'),
+               OpDesc(opClass='SimdAddAcc'),
+               OpDesc(opClass='SimdAlu'),
+               OpDesc(opClass='SimdCmp'),
+               OpDesc(opClass='SimdCvt'),
+               OpDesc(opClass='SimdMisc'),
+               OpDesc(opClass='SimdMult'),
+               OpDesc(opClass='SimdMultAcc'),
+               OpDesc(opClass='SimdShift'),
+               OpDesc(opClass='SimdShiftAcc'),
+               OpDesc(opClass='SimdDiv'),
+               OpDesc(opClass='SimdSqrt'),
+               OpDesc(opClass='SimdFloatAdd'),
+               OpDesc(opClass='SimdFloatAlu'),
+               OpDesc(opClass='SimdFloatCmp'),
+               OpDesc(opClass='SimdFloatCvt'),
+               OpDesc(opClass='SimdFloatDiv'),
+               OpDesc(opClass='SimdFloatMisc'),
+               OpDesc(opClass='SimdFloatMult'),
+               OpDesc(opClass='SimdFloatMultAcc'),
+               OpDesc(opClass='SimdFloatSqrt'),
+               OpDesc(opClass='SimdReduceAdd'),
+               OpDesc(opClass='SimdReduceAlu'),
+               OpDesc(opClass='SimdReduceCmp'),
+               OpDesc(opClass='SimdFloatReduceAdd'),
+               OpDesc(opClass='SimdFloatReduceCmp') ]
+    count = 1
 
 class PredALU(FUDesc):
     opList = [ OpDesc(opClass='SimdPredAlu') ]

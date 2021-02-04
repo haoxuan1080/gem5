@@ -71,6 +71,8 @@ DefaultIEW<Impl>::DefaultIEW(O3CPU *_cpu, DerivO3CPUParams *params)
       instQueue(_cpu, this, params),
       ldstQueue(_cpu, this, params),
       fuPool(params->fuPool),
+      default_fuPool(params->fuPool),
+      pim_fuPool(params->pimfuPool),
       commitToIEWDelay(params->commitToIEWDelay),
       renameToIEWDelay(params->renameToIEWDelay),
       issueToExecuteDelay(params->issueToExecuteDelay),
@@ -1200,6 +1202,35 @@ DefaultIEW<Impl>::printAvailableInsts()
     }
 
     std::cout << "\n";
+}
+
+/**
+ * PIM Helpers
+ */
+template <class Impl>
+void
+DefaultIEW<Impl>::SwitchToPIM()
+{
+    cout<<"Switch to PIM FUPool"<<endl;
+//    cout<<"old FUpool:"<<endl;
+//    fuPool->dump();
+    fuPool = pim_fuPool;
+//    cout<<"New FUPool:"<<endl;
+//    fuPool->dump();
+    instQueue.SwitchToPIM();
+}
+
+template <class Impl>
+void
+DefaultIEW<Impl>::SwitchFromPIM()
+{
+    cout<<"Switch to Default FUPool"<<endl;
+//    cout<<"old FUpool:"<<endl;
+//    fuPool->dump();
+    fuPool = default_fuPool;
+//    cout<<"New FUPool:"<<endl;
+//    fuPool->dump();
+    instQueue.SwitchFromPIM();
 }
 
 template <class Impl>
