@@ -685,7 +685,14 @@ Experiment on 3852adc62ba801c7da4ec6a1616b04fc97a2d59f node( 10 tick delay in DR
   51632000 Drain done\\
   51634000 new tick continues\\
   24029922 cycles\\
-  24081556000 total ticks
+  24081556000 total ticks (955 branch mispredicted, 14268 squashed insts, 2137730 committed insts, 135 int alu not available)\\
+  24080660000 (2 int alus)
+  24082272000 (1 int alus, 968 int alu not available) ?
+  The number of ticks didn't changed much after changing the fupool.
+  
+  \item only 1 loop offloaded(2 drains) and memory not divided:\\
+	24082272000 ticks (loop 39, second loop offloaded)\\ (952 branch mispredicted, 14250 squashed insts, 2137730 committed insts)\\
+  24081556000 ticks (loop 15, first loop offloaded)\\
   
   \item not actually drain! first 2 loops( 4 drains)\\
   9295000 recognized the draining point\\
@@ -714,7 +721,9 @@ Experiment on 3852adc62ba801c7da4ec6a1616b04fc97a2d59f node( 10 tick delay in DR
 	\hline
    version & to 1 & 1& 1 to 2 & 2 & 2 to 3& 3 & 3 to 4 & 4 & 4 to end\\[1ex]
    \hline
-   drain & 9295 & 43 & 8389 & 8 & 30589 & 285 & 2233 & 684 & 24029922\\[1ex]
+   drain & 9295 & 43(9338) & 8389 + 2(17729) & 8 (17737) & 30689 + 2(48428) & 285(48713) & 2233 + 2(resuming to nextPC) & 684 (51632) & 24029922\\[1ex]
+   \hline
+   only second & - & - & - & - & 48284(all ticks)& 285(48569) & 2235 (50804)& 684(51488) & 24030784\\[1ex]
    \hline
    no drain & 9295 & - & 8434 & - & 30555 & - & 2454 & - & 24031964\\[1ex]
    \hline
