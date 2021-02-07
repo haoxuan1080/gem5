@@ -63,7 +63,7 @@ class IntMultDiv(FUDesc):
     if buildEnv['TARGET_ISA'] in ('x86'):
         opList[1].opLat=1
 
-    count=1
+    count=4
 
 class PIMIntMultDiv(FUDesc):
     opList = [ OpDesc(opClass='IntMult', opLat=3),
