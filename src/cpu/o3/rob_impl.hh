@@ -57,6 +57,7 @@ using namespace std;
 template <class Impl>
 ROB<Impl>::ROB(O3CPU *_cpu, DerivO3CPUParams *params)
     : robPolicy(params->smtROBPolicy),
+      PIM_mode(false),
       cpu(_cpu),
       numEntries(params->numROBEntries),
       squashWidth(params->squashWidth),
@@ -96,6 +97,78 @@ ROB<Impl>::ROB(O3CPU *_cpu, DerivO3CPUParams *params)
         maxEntries[tid] = 0;
     }
 
+    resetState();
+}
+
+template <class Impl>
+void
+ROB<Impl>::SwitchToPIM()
+{
+    assert(!PIM_mode);
+    PIM_mode = true;
+    numEntries = numEntries / 4;
+    //Figure out rob policy
+    if (robPolicy == SMTQueuePolicy::Dynamic) {
+        //Set Max Entries to Total ROB Capacity
+        for (ThreadID tid = 0; tid < numThreads; tid++) {
+            maxEntries[tid] = numEntries;
+        }
+
+    } else if (robPolicy == SMTQueuePolicy::Partitioned) {
+        DPRINTF(Fetch, "ROB sharing policy set to Partitioned\n");
+
+        //@todo:make work if part_amt doesnt divide evenly.
+        int part_amt = numEntries / numThreads;
+
+        //Divide ROB up evenly
+        for (ThreadID tid = 0; tid < numThreads; tid++) {
+            maxEntries[tid] = part_amt;
+        }
+
+    } else if (robPolicy == SMTQueuePolicy::Threshold) {
+        DPRINTF(Fetch, "ROB sharing policy set to Threshold\n");
+        ;
+    }
+
+    for (ThreadID tid = numThreads; tid < Impl::MaxThreads; tid++) {
+        maxEntries[tid] = 0;
+    }
+    resetState();
+}
+
+template <class Impl>
+void
+ROB<Impl>::SwitchFromPIM()
+{
+    assert(PIM_mode);
+    PIM_mode = false;
+    numEntries = numEntries * 4;
+    //Figure out rob policy
+    if (robPolicy == SMTQueuePolicy::Dynamic) {
+        //Set Max Entries to Total ROB Capacity
+        for (ThreadID tid = 0; tid < numThreads; tid++) {
+            maxEntries[tid] = numEntries;
+        }
+
+    } else if (robPolicy == SMTQueuePolicy::Partitioned) {
+        DPRINTF(Fetch, "ROB sharing policy set to Partitioned\n");
+
+        //@todo:make work if part_amt doesnt divide evenly.
+        int part_amt = numEntries / numThreads;
+
+        //Divide ROB up evenly
+        for (ThreadID tid = 0; tid < numThreads; tid++) {
+            maxEntries[tid] = part_amt;
+        }
+
+    } else if (robPolicy == SMTQueuePolicy::Threshold) {
+        DPRINTF(Fetch, "ROB sharing policy set to Threshold\n");
+        ;
+    }
+
+    for (ThreadID tid = numThreads; tid < Impl::MaxThreads; tid++) {
+        maxEntries[tid] = 0;
+    }
     resetState();
 }
 

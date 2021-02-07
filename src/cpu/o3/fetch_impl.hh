@@ -89,6 +89,7 @@ DefaultFetch<Impl>::DefaultFetch(O3CPU *_cpu, DerivO3CPUParams *params)
       iewToFetchDelay(params->iewToFetchDelay),
       commitToFetchDelay(params->commitToFetchDelay),
       fetchWidth(params->fetchWidth),
+      PIM_mode(false),
       decodeWidth(params->decodeWidth),
       retryPkt(NULL),
       retryTid(InvalidThreadID),
@@ -147,6 +148,24 @@ DefaultFetch<Impl>::DefaultFetch(O3CPU *_cpu, DerivO3CPUParams *params)
         // which may not hold the entire cache line.
         fetchBuffer[tid] = new uint8_t[fetchBufferSize];
     }
+}
+
+template <class Impl>
+void
+DefaultFetch<Impl>::SwitchToPIM()
+{
+    assert(!PIM_mode);
+    PIM_mode = true;
+    fetchWidth = fetchWidth / 2;
+}
+
+template <class Impl>
+void
+DefaultFetch<Impl>::SwitchFromPIM()
+{
+    assert(PIM_mode);
+    PIM_mode = false;
+    fetchWidth = fetchWidth * 2;
 }
 
 template <class Impl>

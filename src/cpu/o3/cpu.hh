@@ -239,25 +239,14 @@ public:
     //return true if the next PC is the end PC of a loop
     bool PCExitPIMList(const DynInstPtr &inst);
 
-    // return true if  currently running on main cpu and
-    // inst->nextPC is within a loop node in PIM_list
-    bool MainCPUNextPCInPIMList(const DynInstPtr &inst);
-
-    //set the PIM flag to be true and set the PIM flag in system
-    //also to be true
-    void SwitchToPIM();
-
     //send PIM signal to Mem
     void SendPIMSignalToMem(bool to_pim);
 
-    //switch abck from PIM to Main
-    void SwitchBackFromPIM();
-
     //shrink the dispatch width and the FU pool
-    void ShrinkWidth();
+    void SwitchToPIM();
 
     //the reverse operation of ShrinkWidth
-    void ExpandWidth();
+    void SwitchFromPIM();
 
     /** Registers statistics. */
     void regStats() override;

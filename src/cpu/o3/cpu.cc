@@ -545,22 +545,6 @@ FullO3CPU<Impl>::PCExitPIMList(const DynInstPtr &inst)
 }
 
 template <class Impl>
-bool
-FullO3CPU<Impl>::MainCPUNextPCInPIMList(const DynInstPtr &inst)
-{
-    return PIM_mode && NextPCInPIMList(inst);
-}
-
-//TODO: This method is probably not going to be used and will be deleted.
-template <class Impl>
-void
-FullO3CPU<Impl>::SwitchToPIM()
-{
-    PIM_mode = true;
-    // system->PIM_mode = true;
-}
-
-template <class Impl>
 void
 FullO3CPU<Impl>::SendPIMSignalToMem(bool to_pim)
 {
@@ -573,28 +557,24 @@ FullO3CPU<Impl>::SendPIMSignalToMem(bool to_pim)
 
 template <class Impl>
 void
-FullO3CPU<Impl>::SwitchBackFromPIM()
-{
-    PIM_mode = false;
-    // system->PIM_mode = false;
-}
-
-template <class Impl>
-void
-FullO3CPU<Impl>::ShrinkWidth()
+FullO3CPU<Impl>::SwitchToPIM()
 {
     // reduce the functional unit count in FU pool
     // maybe modify the interface after created PIM_FU_Pool
     cout<<"Shrink the CPU Width"<<endl;
     iew.SwitchToPIM();
+    commit.rob->SwitchToPIM();
+    fetch.SwitchToPIM();
 }
 
 template <class Impl>
 void
-FullO3CPU<Impl>::ExpandWidth()
+FullO3CPU<Impl>::SwitchFromPIM()
 {
     cout<<"Expand the CPU Width"<<endl;
     iew.SwitchFromPIM();
+    commit.rob->SwitchFromPIM();
+    fetch.SwitchFromPIM();
 }
 
 template <class Impl>
@@ -848,13 +828,13 @@ FullO3CPU<Impl>::tick()
     bool drained_seen_first_time = tryDrain();
     if (drained_seen_first_time && drain_due_to_pim) {
         if (PIM_mode) {
-            ShrinkWidth();
+            SwitchToPIM();
             cout<<"send signal to memory"<<endl;
             SendPIMSignalToMem(true);
             cout<<"finished send signal to memory"<<endl;
         }
         else {
-            ExpandWidth();
+            SwitchFromPIM();
             cout<<"send signal to memory"<<endl;
             SendPIMSignalToMem(false);
             cout<<"finished send signal to memory"<<endl;

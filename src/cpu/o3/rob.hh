@@ -83,12 +83,22 @@ class ROB
     /** ROB resource sharing policy for SMT mode. */
     SMTQueuePolicy robPolicy;
 
+    /** ROB in PIM **/
+    bool PIM_mode;
+
   public:
     /** ROB constructor.
      *  @param _cpu   The cpu object pointer.
      *  @param params The cpu params including several ROB-specific parameters.
      */
     ROB(O3CPU *_cpu, DerivO3CPUParams *params);
+
+    /**
+     * PIM Helper Functions
+     */
+    void SwitchToPIM();
+
+    void SwitchFromPIM();
 
     std::string name() const;
 

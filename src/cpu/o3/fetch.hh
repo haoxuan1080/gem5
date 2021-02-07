@@ -222,6 +222,13 @@ class DefaultFetch
     /** DefaultFetch constructor. */
     DefaultFetch(O3CPU *_cpu, DerivO3CPUParams *params);
 
+    /**
+     * PIM Helpers
+     */
+    void SwitchToPIM();
+
+    void SwitchFromPIM();
+
     /** Returns the name of fetch. */
     std::string name() const;
 
@@ -478,6 +485,8 @@ class DefaultFetch
 
     /** The width of fetch in instructions. */
     unsigned fetchWidth;
+
+    bool PIM_mode;
 
     /** The width of decode in instructions. */
     unsigned decodeWidth;
