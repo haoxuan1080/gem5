@@ -64,9 +64,9 @@ Name: Haoxuan Zhang \bfseries  &  & \bfseries \course ~\semester\\
 %% adjustments for dynamic programming.
 
 %\titleformat{\subsection}{\bf}{Part \thesubsection:}{1ex}{}
-\titleformat{\section}[runin]{\normalsize\bfseries}{\thesection.}{5pt}{}
+\titleformat{\section}{\normalsize\bfseries}{\thesection.}{1ex}{}
 %\renewcommand{\thesubsection}{\alph{subsection}}
-\titleformat{\subsection}[runin]{\normalsize\bfseries}{\-\hspace{0.5cm}\thesubsection}{5pt}{}
+\titleformat{\subsection}{\normalsize\bfseries}{\-\hspace{0.5cm}\thesubsection}{1ex}{}
 %\titleformat{\section}{\wrap}{}{}{}{}
 
 
@@ -82,7 +82,7 @@ Name: Haoxuan Zhang \bfseries  &  & \bfseries \course ~\semester\\
 
 %\begin{multicols}{2}[\section{Learning Notes for O3 CPU}]
 
-\subsection{O3 CPU Attributes}
+\section{O3 CPU Attributes}
 	\begin{enumerate}
 		\item From Base CPU:\\
 		
@@ -736,6 +736,21 @@ After cpu commit stage has detected the nextPC in PIM, it will deschedule the ti
 
 The commit stage pc will be advanced to the next pc therefore after every commit, the cpu->pcState() would be the next pc and it seems that cpu::PIMRestorePC is not needed.\\
 
-In lsq\_unit\_impl, I can set the dcacheport of that unit(a thread) to the pim dataport when switch to pim port. Add a function to lsq to switch the data port.
+In lsq\_unit\_impl, I can set the dcacheport of that unit(a thread) to the pim dataport when switch to pim port. Add a function to lsq to switch the data port.\\
+
+\subsection{FU Pool Shrinking Test}
+Using Option: --l2\_size='1MB' --l1d\_size='128kB' --l1i\_size='32kB'\\
+
+With actual shrinking of the FU Pool(Int Add from 6 to 1, Int Mul from 4 to 1, FP\_ALU from 4 to 1, FP\_Mul from 2 to 1, SIMD\_unit from 4 to 1): 3944829000 ticks (9718 Int ALU full)\\
+
+Without actual shrinking of FU Pool: 3944153000 ticks (8560 Int ALU Full)\\
+
+Using loop2(fewer cross loop dependency, without optimization): 4102073000 ticks (1581164 Int ALU FULL, 114639 Mem read FULL, 41639 dcache demand miss, 421520 dcache demand hits, 0.089902 dcache demand miss rate, 0.664883 l2 demand miss rate)\\
+
+Without actual shrinking of FU Pool: 4102655000 ticks (4519 Int ALU FULL, 69634 MemRead FULL, 58000 dcache demand miss, 405116 hits, 0.125239  demand miss rate, 16654 l2 data miss, 8395 l2 data hits, 0.664857 l2 data miss rate, 0.984720 l2 inst miss rate)\\
+
+Using loop3(-O2 of loop2): 3837063000 ticks(1069434 IntALU full, almost no other full, 0.149472 dcache demand miss rate, 0.669696 l2 data miss rate, 0 iew idle cycle, 888121 iew LDST queue full event)\\
+
+Without actual shrinking of FU Pool: 3880152000 ticks (8568 IntALU full and almost no other full, 0.198803 dcache demand miss rate, 0.669817 l2cache demand miss rate, also iew idle cycle is 0, 888121 iew LDST queue full event)
 
 \end{document}
