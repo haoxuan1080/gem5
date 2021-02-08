@@ -65,6 +65,7 @@
 #include "debug/Loader.hh"
 #include "debug/WorkItems.hh"
 #include "mem/abstract_mem.hh"
+#include "mem/cache/cache.hh"
 #include "mem/physical.hh"
 #include "params/System.hh"
 #include "sim/byteswap.hh"
@@ -90,6 +91,7 @@ int System::numSystemsRunning = 0;
 
 System::System(Params *p)
     : SimObject(p), _systemPort("system_port", this),
+      caches(),
       multiThread(p->multi_thread),
       pagePtr(0),
       init_param(p->init_param),
@@ -232,6 +234,18 @@ System::init()
     // check that the system port is connected
     if (!_systemPort.isConnected())
         panic("System port on %s is not connected.\n", name());
+}
+
+void
+System::clearAllCaches()
+{
+    vector<Cache*>::iterator itr = caches.begin();
+    for (; itr != caches.end(); itr++)
+    {
+        cout<<"clearing cache: "<<name()<<endl;
+        (*itr)->memWriteback();
+        (*itr)->memInvalidate();
+    }
 }
 
 Port &

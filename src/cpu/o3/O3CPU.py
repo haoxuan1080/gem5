@@ -76,6 +76,8 @@ class DerivO3CPU(BaseCPU):
         return True
 
     pim_port = MasterPort("PIM Port")
+    pim_iport = MasterPort("PIM Inst Port")
+    pim_dport = MasterPort("PIM Data Port")
 
     activity = Param.Unsigned(0, "Initial count")
 
@@ -117,8 +119,8 @@ class DerivO3CPU(BaseCPU):
     issueWidth = Param.Unsigned(8, "Issue width")
     wbWidth = Param.Unsigned(8, "Writeback width")
     fuPool = Param.FUPool(DefaultFUPool(), "Functional Unit pool")
-    # pimfuPool = Param.FUPool(DefaultFUPool(), "Functional Unit pool")
-    pimfuPool = Param.FUPool(PIMFUPool(), "PIM Functional Unit pool")
+    pimfuPool = Param.FUPool(DefaultFUPool(), "Functional Unit pool")
+    # pimfuPool = Param.FUPool(PIMFUPool(), "PIM Functional Unit pool")
 
     iewToCommitDelay = Param.Cycles(1, "Issue/Execute/Writeback to commit "
                "delay")

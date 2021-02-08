@@ -389,6 +389,8 @@ class DefaultFetch
 
     MasterPort &getInstPort() { return icachePort; }
 
+    MasterPort &getPIMInstPort() {return pimIPort; }
+
   private:
     DynInstPtr buildInst(ThreadID tid, StaticInstPtr staticInst,
                          StaticInstPtr curMacroop, TheISA::PCState thisPC,
@@ -551,6 +553,11 @@ class DefaultFetch
 
     /** Instruction port. Note that it has to appear after the fetch stage. */
     IcachePort icachePort;
+
+    /** PIM Inst Port **/
+    IcachePort pimIPort;
+
+    IcachePort* instPort;
 
     /** Set to true if a pipelined I-cache request should be issued. */
     bool issuePipelinedIfetch[Impl::MaxThreads];

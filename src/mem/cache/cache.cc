@@ -75,6 +75,7 @@ Cache::Cache(const CacheParams *p)
     : BaseCache(p, p->system->cacheLineSize()),
       doFastWrites(true)
 {
+    system->caches.push_back(this);
 }
 
 void

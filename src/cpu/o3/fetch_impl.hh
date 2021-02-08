@@ -100,6 +100,8 @@ DefaultFetch<Impl>::DefaultFetch(O3CPU *_cpu, DerivO3CPUParams *params)
       numThreads(params->numThreads),
       numFetchingThreads(params->smtNumFetchingThreads),
       icachePort(this, _cpu),
+      pimIPort(this, _cpu),
+      instPort(&icachePort),
       finishTranslationEvent(this)
 {
     if (numThreads > Impl::MaxThreads)
@@ -157,6 +159,7 @@ DefaultFetch<Impl>::SwitchToPIM()
     assert(!PIM_mode);
     PIM_mode = true;
     fetchWidth = fetchWidth / 2;
+    instPort = &pimIPort;
 }
 
 template <class Impl>
@@ -166,6 +169,7 @@ DefaultFetch<Impl>::SwitchFromPIM()
     assert(PIM_mode);
     PIM_mode = false;
     fetchWidth = fetchWidth * 2;
+    instPort = &icachePort;
 }
 
 template <class Impl>
@@ -715,7 +719,7 @@ DefaultFetch<Impl>::finishTranslation(const Fault &fault,
         fetchedCacheLines++;
 
         // Access the cache.
-        if (!icachePort.sendTimingReq(data_pkt)) {
+        if (!instPort->sendTimingReq(data_pkt)) {
             assert(retryPkt == NULL);
             assert(retryTid == InvalidThreadID);
             DPRINTF(Fetch, "[tid:%i] Out of MSHRs!\n", tid);
@@ -1444,7 +1448,7 @@ DefaultFetch<Impl>::recvReqRetry()
         assert(retryTid != InvalidThreadID);
         assert(fetchStatus[retryTid] == IcacheWaitRetry);
 
-        if (icachePort.sendTimingReq(retryPkt)) {
+        if (instPort->sendTimingReq(retryPkt)) {
             fetchStatus[retryTid] = IcacheWaitResponse;
             // Notify Fetch Request probe when a retryPkt is successfully sent.
             // Note that notify must be called before retryPkt is set to NULL.

@@ -825,6 +825,11 @@ class LSQ
     LSQ(O3CPU *cpu_ptr, IEW *iew_ptr, DerivO3CPUParams *params);
     ~LSQ() { }
 
+    /** PIM Helper Functions **/
+    void SwitchToPIM();
+
+    void SwitchFromPIM();
+
     /** Returns the name of the LSQ. */
     std::string name() const;
 
@@ -1059,6 +1064,8 @@ class LSQ
 
     MasterPort &getDataPort() { return dcachePort; }
 
+    MasterPort &getPIMDataPort() {return pimDPort; }
+
   protected:
     /** D-cache is blocked */
     bool _cacheBlocked;
@@ -1114,6 +1121,8 @@ class LSQ
 
     /** Data port. */
     DcachePort dcachePort;
+
+    DcachePort pimDPort;
 
     /** The LSQ units for individual threads. */
     std::vector<LSQUnit> thread;

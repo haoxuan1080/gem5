@@ -73,6 +73,7 @@ class BaseRemoteGDB;
 class KvmVM;
 class ObjectFile;
 class ThreadContext;
+class Cache;
 
 class System : public SimObject, public PCEventScope
 {
@@ -103,12 +104,18 @@ class System : public SimObject, public PCEventScope
     SystemPort _systemPort;
 
   public:
+    std::vector<Cache*> caches;
+
+  public:
 
     /**
      * After all objects have been created and all ports are
      * connected, check that the system port is connected.
      */
     void init() override;
+
+    /** PIM Helper Functions **/
+    void clearAllCaches();
 
     /**
      * Get a reference to the system port that can be used by

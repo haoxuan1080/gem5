@@ -73,6 +73,7 @@ LSQ<Impl>::LSQ(O3CPU *cpu_ptr, IEW *iew_ptr, DerivO3CPUParams *params)
       maxSQEntries(maxLSQAllocation(lsqPolicy, SQEntries, params->numThreads,
                   params->smtLSQThreshold)),
       dcachePort(this, cpu_ptr),
+      pimDPort(this, cpu_ptr),
       numThreads(params->numThreads)
 {
     assert(numThreads > 0 && numThreads <= Impl::MaxThreads);
@@ -85,7 +86,7 @@ LSQ<Impl>::LSQ(O3CPU *cpu_ptr, IEW *iew_ptr, DerivO3CPUParams *params)
         if (lsqPolicy == SMTQueuePolicy::Dynamic) {
         DPRINTF(LSQ, "LSQ sharing policy set to Dynamic\n");
     } else if (lsqPolicy == SMTQueuePolicy::Partitioned) {
-        DPRINTF(Fetch, "LSQ sharing policy set to Partitioned: "
+        DPRINTF(LSQ, "LSQ sharing policy set to Partitioned: "
                 "%i entries per LQ | %i entries per SQ\n",
                 maxLQEntries,maxSQEntries);
     } else if (lsqPolicy == SMTQueuePolicy::Threshold) {
@@ -105,6 +106,28 @@ LSQ<Impl>::LSQ(O3CPU *cpu_ptr, IEW *iew_ptr, DerivO3CPUParams *params)
     for (ThreadID tid = 0; tid < numThreads; tid++) {
         thread.emplace_back(maxLQEntries, maxSQEntries);
         thread[tid].init(cpu, iew_ptr, params, this, tid);
+        thread[tid].setDcachePort(&dcachePort);
+    }
+}
+
+template<class Impl>
+void
+LSQ<Impl>::SwitchToPIM()
+{
+    for (ThreadID tid = 0; tid < numThreads; tid++) {
+        cout<<"set thread["<<tid<<"] to use pimDPort!!!"<<endl;
+        thread[tid].drainSanityCheck();
+        thread[tid].setDcachePort(&pimDPort);
+    }
+}
+
+template<class Impl>
+void
+LSQ<Impl>::SwitchFromPIM()
+{
+    for (ThreadID tid = 0; tid < numThreads; tid++) {
+        cout<<"set thread["<<tid<<"] to use dcachePort!!!"<<endl;
+        thread[tid].drainSanityCheck();
         thread[tid].setDcachePort(&dcachePort);
     }
 }

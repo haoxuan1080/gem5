@@ -801,6 +801,10 @@ public:
             return getInstPort();
         else if (if_name == "pim_port")
             return getPimPort();
+        else if (if_name == "pim_iport")
+            return getPIMInstPort();
+        else if (if_name == "pim_dport")
+            return getPIMDataPort();
         else
             return ClockedObject::getPort(if_name, idx);
     }
@@ -812,11 +816,23 @@ public:
         return this->fetch.getInstPort();
     }
 
+    Port &
+    getPIMInstPort()
+    {
+        return this->fetch.getPIMInstPort();
+    }
+
     /** Get the dcache port (used to find block size for translations). */
     Port &
     getDataPort() override
     {
         return this->iew.ldstQueue.getDataPort();
+    }
+
+    Port &
+    getPIMDataPort()
+    {
+        return this->iew.ldstQueue.getPIMDataPort();
     }
 
     Port &

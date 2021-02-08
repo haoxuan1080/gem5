@@ -184,6 +184,12 @@ class SystemXBar(CoherentXBar):
     # unification.
     point_of_unification = True
 
+class SystemXBarNonCoherent(NoncoherentXBar):
+    width = 16
+    frontend_latency = 3
+    forward_latency = 4
+    response_latency = 2
+
 # In addition to the system interconnect, we typically also have one
 # or more on-chip I/O crossbars. Note that at some point we might want
 # to also define an off-chip I/O crossbar such as PCIe.

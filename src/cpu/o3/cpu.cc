@@ -562,7 +562,9 @@ FullO3CPU<Impl>::SwitchToPIM()
     // reduce the functional unit count in FU pool
     // maybe modify the interface after created PIM_FU_Pool
     cout<<"Shrink the CPU Width"<<endl;
+    system->clearAllCaches();
     iew.SwitchToPIM();
+    iew.ldstQueue.SwitchToPIM();
     commit.rob->SwitchToPIM();
     fetch.SwitchToPIM();
 }
@@ -573,6 +575,7 @@ FullO3CPU<Impl>::SwitchFromPIM()
 {
     cout<<"Expand the CPU Width"<<endl;
     iew.SwitchFromPIM();
+    iew.ldstQueue.SwitchFromPIM();
     commit.rob->SwitchFromPIM();
     fetch.SwitchFromPIM();
 }
