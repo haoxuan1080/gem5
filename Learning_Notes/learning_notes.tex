@@ -774,5 +774,27 @@ ROB, Fetch and FU: 3880780000 ticks (loop3): (2631 iew block cycles, 0.395519 ie
 
 Next step, change the memory port, firstly don't decrease memory delay and sim cycle number should increase compared to not changing port. secondly decrease memory delay and sim cycle number should decrease compared to changing port but not decreasing memory delay.
 
+\subsection{Switching inst Port to Connecting memory}
+Using loop 3 and the same cache config as before:\\
+
+Changing the port: 3882596000 ticks (fetch rate: 0.208383 inst per cycle, 23650 icache stall cycle)\\
+
+Not Changing the port: 3880152000 ticks (fetch rage: 0.208564 inst per cycle, 22620 icache stall cycle)\\
+
+How to let fetching speed matter in the system? Why program pattern will make fetch speed the bottleneck?\\
+
+\subsection{Switching data Port to Connecting memory}
+Using loop 3 and the same cache config as before(without changing fetch, icache port, fu pool, ROB and the memory timing parameters):\\
+
+invalidating cache blocks: 4008917000 ticks\\
+
+not invalidating cache blocks: 3880152000 ticks\\
+
+Changing the data port(also switch the inst port): 22126171000 ticks\\
+
+Next steps: how to tune the parameters(including Xbar latencies) to change bottleneck so that modifying fu pool, fetch width, ROB will actually impact the run time on a large scale.\\
+
+Develop testbenches, which has high locality and low locality.\\  
+
 
 \end{document}
