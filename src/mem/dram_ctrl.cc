@@ -2890,11 +2890,11 @@ DRAMCtrl::PIMPort::recvTimingReq(PacketPtr pkt)
     uint8_t* resq_data = pkt->getPtr<uint8_t>();
     if (*resq_data == 1) {
         dram_ctrl->schedule(dram_ctrl->SwitchToPIMEvent,
-            curTick() + 10);
+            curTick() + 1000000);
     }
     else if (*resq_data == 0) {
         dram_ctrl->schedule(dram_ctrl->SwitchFromPIMEvent,
-            curTick() + 10);
+            curTick() + 1000000);
     }
     else {
         panic("mem_ctrl: pim packet data is not 0 or 1");
