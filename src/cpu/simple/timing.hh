@@ -105,7 +105,7 @@ class TimingSimpleCPU : public BaseSimpleCPU
             BranchNode& insertLoop(Addr BranchPC,\
                         Addr TargetPC, TimingSimpleCPU&);
             //to test whether an encountered loop is already in the list
-            std::list<BranchNode*>& IsInALoop(Addr CurPC);
+            std::list<BranchNode*>* IsInALoop(Addr CurPC);
             bool IsInList(Addr BranchPC, Addr TargetPC);
             void IncreamentList(Addr BranchPC, Addr TargetPC);
             void updateList(Addr BranchPC, Addr TargetPC, TimingSimpleCPU&);

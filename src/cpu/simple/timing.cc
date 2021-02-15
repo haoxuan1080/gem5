@@ -139,7 +139,7 @@ void TimingSimpleCPU::regStats_BN(BranchNode& bn, int n)
 
 }
 
-std::list<BranchNode*>&
+std::list<BranchNode*>*
 TimingSimpleCPU::LoopList::IsInALoop(Addr CurPC)
 {
     std::list<BranchNode*>* activeLoops = new std::list<BranchNode*>();
@@ -150,7 +150,7 @@ TimingSimpleCPU::LoopList::IsInALoop(Addr CurPC)
             activeLoops->push_back(*current);
         }
     }
-    return *activeLoops;
+    return activeLoops;
 }
 
 bool TimingSimpleCPU::LoopList::IsInList(Addr BranchPC, Addr TargetPC)
@@ -939,10 +939,6 @@ TimingSimpleCPU::completeIfetch(PacketPtr pkt)
     //---------- For Profiling -----------//
     Addr prevPC, postPC;
     prevPC = t_info.pcState().instAddr();
-    bool new_inst = false;
-    new_inst = (curStaticInst && (!curStaticInst->isMicroop()
-        || curStaticInst->isFirstMicroop()));
-    new_inst = true;
     //-------- end For Profiling ----------//
 
     //---------For PIM Statistics----------//
@@ -994,11 +990,11 @@ TimingSimpleCPU::completeIfetch(PacketPtr pkt)
 
      //---------For profiling -----------//
 
-     std::list<BranchNode*> activeLoops = ll.IsInALoop(prevPC);
-     if (!activeLoops.empty() && new_inst) {
-         std::list<BranchNode*>::iterator current = activeLoops.begin();
-         for (current = activeLoops.begin();
-             current != activeLoops.end(); current++) {
+     std::list<BranchNode*>* activeLoops = ll.IsInALoop(prevPC);
+     if (!activeLoops->empty()) {
+         std::list<BranchNode*>::iterator current = activeLoops->begin();
+         for (current = activeLoops->begin();
+             current != activeLoops->end(); current++) {
              if (curStaticInst && curStaticInst->isLoad()) {
                  (*current)->LoadNum++;
              }
@@ -1012,23 +1008,28 @@ TimingSimpleCPU::completeIfetch(PacketPtr pkt)
              }
          }
      }
-     activeLoops.clear();
+     activeLoops->clear();
+     delete activeLoops;
      //----------End for Profiling--------//
 
      //---------For PIM statistics--------//
-     if (In_PIM && new_inst) {
-         cout<<"In PIM Node and the PC is:"<<std::hex<<prevPC<<endl;
+     if (In_PIM) {
+         //cout<<"In PIM Node and the PC is:"<<std::hex<<prevPC<<endl;
          if (curStaticInst && (curStaticInst->isStore()
                  || curStaticInst->isStoreConditional())) {
              t_info.PIM_StoreNum++;
+             //cout<<"0x"<<std::hex<<prevPC<<": Is Store"<<endl;
          }
          if (curStaticInst && curStaticInst->isLoad()) {
              t_info.PIM_LoadNum++;
+             //cout<<"0x"<<std::hex<<prevPC<<": Is Load"<<endl;
          }
          if (curStaticInst && (curStaticInst->isFloating()
                  || curStaticInst->isInteger())) {
              t_info.PIM_ArthmNum++;
+             //cout<<"0x"<<std::hex<<prevPC<<": Is Arthm"<<endl;
          }
+         //cout<<"In PIM Node at PC"<<std::hex<<prevPC<<"end"<<endl;
      }
      //----------End for statistics--------//
 
@@ -1083,16 +1084,18 @@ TimingSimpleCPU::completeIfetch(PacketPtr pkt)
     if (PrfIsBranch) {
         postPC = t_info.pcState().instAddr();
         if (postPC < prevPC) { // this means that it is a loop
-            if (postPC == 0x4010a1 && prevPC == 0x4010bf)
-                cout<<"encountered the loop!"<<endl;
+//            if (postPC == 0x4010a1 && prevPC == 0x4010bf)
+//                cout<<"encountered the loop!"<<endl;
             if (ll.IsInList(prevPC, postPC)) {
                 ll.IncreamentList(prevPC, postPC);
             }
             else {
-                if (postPC == 0x4010a1 && prevPC == 0x4010bf)
-                                cout<<"add the loop!"<<endl;
+//                if (postPC == 0x4010a1 && prevPC == 0x4010bf)
+//                                cout<<"add the loop!"<<endl;
                 BranchNode& bn = ll.insertLoop(prevPC, postPC, *this);
                 regStats_BN(bn, ll.l.size()-1);
+                cout<<"Add loop "<<postPC<<"---->"
+                    <<prevPC<<"to loop list!"<<endl;
                 ll.IncreamentList(prevPC, postPC);
             }
         }

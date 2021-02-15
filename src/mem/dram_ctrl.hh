@@ -1018,7 +1018,7 @@ class DRAMCtrl : public QoS::MemCtrl
      * Basic memory timing parameters initialized based on parameter
      * values.
      */
-    Tick M5_CLASS_VAR_USED tCK;
+    const Tick M5_CLASS_VAR_USED tCK;
     Tick tRTW;
     Tick tCS;
     Tick tBURST;

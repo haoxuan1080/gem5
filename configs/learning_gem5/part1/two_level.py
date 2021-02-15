@@ -71,7 +71,8 @@ isa = str(m5.defines.buildEnv['TARGET_ISA']).lower()
 thispath = os.path.dirname(os.path.realpath(__file__))
 #binary = os.path.join(thispath, '../../../',
 #                      'tests/test-progs/hello/bin/', isa, 'linux/hello')
-binary = os.path.join('/home/haoxuan/Gem5/Haoxuan_Gem5/gem5/tests/loop/a.out')
+binary = os.path.join(
+    '/home/haoxuan/Gem5/Haoxuan_Gem5/gem5/tests/Test_Loop/a.out')
 
 # Check if there was a binary passed in via the command line and error if
 # there are too many arguments
@@ -91,7 +92,7 @@ system.clk_domain.voltage_domain = VoltageDomain()
 
 # Set up the system
 system.mem_mode = 'timing'               # Use timing accesses
-system.mem_ranges = [AddrRange('512MB')] # Create an address range
+system.mem_ranges = [AddrRange('2GB')] # Create an address range
 
 # Create a simple CPU
 #system.cpu = TimingSimpleCPU()
@@ -123,8 +124,17 @@ system.membus.forward_latency = 0
 system.membus.response_latency = 0
 system.membus.snoop_response_latency = 0
 
+system.pimbus = SystemXBarNonCoherent()
+system.pimbus.frontend_latency = 10
+system.pimbus.forward_latency = 0
+system.pimbus.response_latency = 0
+
+system.membus.master = system.pimbus.slave
+
 # Connect the L2 cache to the membus
 system.l2cache.connectMemSideBus(system.membus)
+system.cpu.pim_iport = system.pimbus.slave
+system.cpu.pim_dport = system.pimbus.slave
 
 # create the interrupt controller for the CPU
 system.cpu.createInterruptController()
@@ -142,7 +152,8 @@ system.system_port = system.membus.slave
 # Create a DDR3 memory controller
 system.mem_ctrl = DDR3_1600_8x8()
 system.mem_ctrl.range = system.mem_ranges[0]
-system.mem_ctrl.port = system.membus.master
+system.mem_ctrl.port = system.pimbus.master
+system.cpu.pim_port = system.mem_ctrl.pim_port
 
 # Create a process for a simple "Hello World" application
 process = Process()
