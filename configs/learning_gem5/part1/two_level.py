@@ -138,6 +138,12 @@ system.membus.forward_latency = 0
 system.membus.response_latency = 0
 system.membus.snoop_response_latency = 0
 
+system.pim_l2_slave_bus = SystemXBar()
+system.pim_l2_slave_bus.frontend_latency = 10
+system.pim_l2_slave_bus.forward_latency = 0
+system.pim_l2_slave_bus.response_latency = 0
+system.pim_l2_slave_bus.snoop_response_latency = 0
+
 system.pimbus = SystemXBarNonCoherent()
 system.pimbus.frontend_latency = 10
 system.pimbus.forward_latency = 0
@@ -151,7 +157,8 @@ system.l2cache.connectMemSideBus(system.membus)
 # system.cpu.pim_iport = system.pimbus.slave
 # system.cpu.pim_dport = system.pimbus.slave
 
-system.pim_l2cache.connectMemSideBus(system.pimbus)
+system.pim_l2cache.connectMemSideBus(system.pim_l2_slave_bus)
+system.pim_l2_slave_bus.master = system.pimbus.slave
 
 # create the interrupt controller for the CPU
 system.cpu.createInterruptController()
