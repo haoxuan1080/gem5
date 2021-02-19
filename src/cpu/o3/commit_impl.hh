@@ -1087,9 +1087,10 @@ DefaultCommit<Impl>::commitInsts()
                     <<"Next PC is: "<<std::hex<<head_inst->pcState().npc()
                     <<" should drain due to pim now: switch to PIM!"
                     <<endl;
-                    cpu->PIM_mode = true;
-                    cpu->dmDrain();
-                    cpu->drain_due_to_pim = true;
+                    cout<<"Not actually draining for Comparison"<<endl;
+                    //cpu->PIM_mode = true;
+                    //cpu->dmDrain();
+                    //cpu->drain_due_to_pim = true;
                 }
                 else if (cpu->PCExitPIMList(head_inst) && (cpu->PIM_mode)
                         && !cpu->NextPCInPIMList(head_inst)) {
@@ -1098,9 +1099,10 @@ DefaultCommit<Impl>::commitInsts()
                     <<"Next PC is: "<<std::hex<<head_inst->pcState().npc()
                     <<" should drain due to pim now: switch from PIM!"
                     <<endl;
-                    cpu->PIM_mode = false;
-                    cpu->dmDrain();
-                    cpu->drain_due_to_pim = true;
+                    cout<<"Not actually draining for Comparison"<<endl;
+                    //cpu->PIM_mode = false;
+                    //cpu->dmDrain();
+                    //cpu->drain_due_to_pim = true;
                 }
 
                 // at this point store conditionals should either have
