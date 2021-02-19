@@ -71,8 +71,8 @@ isa = str(m5.defines.buildEnv['TARGET_ISA']).lower()
 thispath = os.path.dirname(os.path.realpath(__file__))
 #binary = os.path.join(thispath, '../../../',
 #                      'tests/test-progs/hello/bin/', isa, 'linux/hello')
-binary = os.path.join(
-    '../../../tests/Test_Loop/a.out')
+binary = os.path.join(thispath, '../../../',
+                      'tests/Test_Loop/a.out')
 
 # Check if there was a binary passed in via the command line and error if
 # there are too many arguments
@@ -151,7 +151,7 @@ system.l2cache.connectMemSideBus(system.membus)
 # system.cpu.pim_iport = system.pimbus.slave
 # system.cpu.pim_dport = system.pimbus.slave
 
-system.pim_l2bus.connectMemSideBus(system.pimbus)
+system.pim_l2cache.connectMemSideBus(system.pimbus)
 
 # create the interrupt controller for the CPU
 system.cpu.createInterruptController()

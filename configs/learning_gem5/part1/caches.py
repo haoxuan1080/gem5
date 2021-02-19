@@ -104,14 +104,14 @@ class L1PIMICache(L1Cache):
         self.size = opts.pim_l1i_size
 
     def connectCPU(self, cpu):
-        """Connect this cache's port to a CPU icache port"""
+        """Connect this cache's port to a CPU pim icache port"""
         self.cpu_side = cpu.pim_iport
 
 class L1DCache(L1Cache):
     """Simple L1 data cache with default values"""
 
     # Set the default size
-    size = '16kB'
+    size = '64kB'
 
     SimpleOpts.add_option('--l1d_size',
                           help="L1 data cache size. Default: %s" % size)
@@ -127,10 +127,10 @@ class L1DCache(L1Cache):
         self.cpu_side = cpu.dcache_port
 
 class L1PIMDCache(L1Cache):
-    """Simple L1 data cache with default values"""
+    """Simple PIM L1 data cache with default values"""
 
     # Set the default size
-    size = '64kB'
+    size = '16kB'
 
     SimpleOpts.add_option('--pim_l1d_size',
                           help="PIM L1 data cache size. "
@@ -143,7 +143,7 @@ class L1PIMDCache(L1Cache):
         self.size = opts.pim_l1d_size
 
     def connectCPU(self, cpu):
-        """Connect this cache's port to a CPU dcache port"""
+        """Connect this cache's port to a CPU pim dcache port"""
         self.cpu_side = cpu.pim_dport
 
 class L2Cache(Cache):
@@ -173,7 +173,7 @@ class L2Cache(Cache):
         self.mem_side = bus.slave
 
 class PIML2Cache(Cache):
-    size = '64KB'
+    size = '64kB'
     assoc = 8
     tag_latency = 20
     data_latency = 20
