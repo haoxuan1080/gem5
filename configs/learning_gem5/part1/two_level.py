@@ -71,8 +71,8 @@ isa = str(m5.defines.buildEnv['TARGET_ISA']).lower()
 thispath = os.path.dirname(os.path.realpath(__file__))
 #binary = os.path.join(thispath, '../../../',
 #                      'tests/test-progs/hello/bin/', isa, 'linux/hello')
-binary = os.path.join(
-    '/home/haoxuan/Gem5/Haoxuan_Gem5/gem5/tests/Test_Loop/a.out')
+binary = os.path.join(thispath, '../../../',
+                      'tests/Test_Loop/a.out')
 
 # Check if there was a binary passed in via the command line and error if
 # there are too many arguments
@@ -102,20 +102,34 @@ system.cpu = DerivO3CPU()
 system.cpu.icache = L1ICache(opts)
 system.cpu.dcache = L1DCache(opts)
 
+system.cpu.pim_icache = L1PIMICache(opts)
+system.cpu.pim_dcache = L1PIMDCache(opts)
+
 # Connect the instruction and data caches to the CPU
 system.cpu.icache.connectCPU(system.cpu)
 system.cpu.dcache.connectCPU(system.cpu)
 
+system.cpu.pim_icache.connectCPU(system.cpu)
+system.cpu.pim_dcache.connectCPU(system.cpu)
+
 # Create a memory bus, a coherent crossbar, in this case
 system.l2bus = L2XBar()
+
+system.pim_l2bus = L2XBar()
 
 # Hook the CPU ports up to the l2bus
 system.cpu.icache.connectBus(system.l2bus)
 system.cpu.dcache.connectBus(system.l2bus)
 
+system.cpu.pim_icache.connectBus(system.pim_l2bus)
+system.cpu.pim_dcache.connectBus(system.pim_l2bus)
+
 # Create an L2 cache and connect it to the l2bus
 system.l2cache = L2Cache(opts)
 system.l2cache.connectCPUSideBus(system.l2bus)
+
+system.pim_l2cache = PIML2Cache(opts)
+system.pim_l2cache.connectCPUSideBus(system.pim_l2bus)
 
 # Create a memory bus
 system.membus = SystemXBar()
@@ -133,8 +147,11 @@ system.membus.master = system.pimbus.slave
 
 # Connect the L2 cache to the membus
 system.l2cache.connectMemSideBus(system.membus)
-system.cpu.pim_iport = system.pimbus.slave
-system.cpu.pim_dport = system.pimbus.slave
+
+# system.cpu.pim_iport = system.pimbus.slave
+# system.cpu.pim_dport = system.pimbus.slave
+
+system.pim_l2cache.connectMemSideBus(system.pimbus)
 
 # create the interrupt controller for the CPU
 system.cpu.createInterruptController()

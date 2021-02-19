@@ -95,8 +95,8 @@ isa = str(m5.defines.buildEnv['TARGET_ISA']).lower()
 thispath = os.path.dirname(os.path.realpath(__file__))
 # binary = os.path.join(thispath, '../../../',
 #                      'tests/test-progs/hello/bin/', isa, 'linux/hello')
-binary = os.path.join(
-        '/home/haoxuan/Gem5/Haoxuan_Gem5/gem5/tests/Test_Loop/a.out')
+binary = os.path.join(thispath, '../../../',
+                      'tests/Test_Loop/a.out')
 
 
 # Create a process for a simple "Hello World" application
