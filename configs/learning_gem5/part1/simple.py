@@ -56,11 +56,11 @@ system.clk_domain.voltage_domain = VoltageDomain()
 
 # Set up the system
 system.mem_mode = 'timing'               # Use timing accesses
-system.mem_ranges = [AddrRange('512MB')] # Create an address range
+system.mem_ranges = [AddrRange('1GB')] # Create an address range
 
 # Create a simple CPU
-#system.cpu = TimingSimpleCPU()
-system.cpu = DerivO3CPU()
+system.cpu = TimingSimpleCPU()
+# system.cpu = DerivO3CPU()
 
 # Create a memory bus, a system crossbar, in this case
 system.membus = SystemXBar()
@@ -93,9 +93,10 @@ isa = str(m5.defines.buildEnv['TARGET_ISA']).lower()
 # Default to running 'hello', use the compiled ISA to find the binary
 # grab the specific path to the binary
 thispath = os.path.dirname(os.path.realpath(__file__))
-#binary = os.path.join(thispath, '../../../',
+# binary = os.path.join(thispath, '../../../',
 #                      'tests/test-progs/hello/bin/', isa, 'linux/hello')
-binary = os.path.join('/home/haoxuan/Gem5/Haoxuan_Gem5/gem5/tests/loop/a.out')
+binary = os.path.join(
+        '/home/haoxuan/Gem5/Haoxuan_Gem5/gem5/tests/Test_Loop/a.out')
 
 
 # Create a process for a simple "Hello World" application
