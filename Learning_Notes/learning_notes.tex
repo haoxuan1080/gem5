@@ -755,7 +755,9 @@ Without actual shrinking of FU Pool: 3880152000 ticks (8568 IntALU full and almo
 
 \textbf{Using 10000 repeat loop3:}\\
 
-With FU Shrinking:
+Shrink:     9182069466000 ticks
+
+not Shrink: 6316238743000 ticks
 
 \subsection{ROB Shrinking Test}
 Using loop3(-O2 of loop2): \\
@@ -799,6 +801,22 @@ Changing the data port(also switch the inst port): 22126171000 ticks\\
 Next steps: how to tune the parameters(including Xbar latencies) to change bottleneck so that modifying fu pool, fetch width, ROB will actually impact the run time on a large scale.\\
 
 Develop testbenches, which has high locality and low locality.\\  
+
+\section{Things TODO Now: Feb 18}
+
+\begin{enumerate}
+	\item modify the program or the cache size so that a high locality one won't even fit in l2 cache. make the array size to be 128 * 4 * 4 KB = 2 MB \textgreater 1MB (l2 cache size)
+	
+	\item run profiling for it
+	
+	\item add caches to the PIM port and make them 4 times smaller than the main cpu cache
+	
+	\item simulate PIM, normal system, only low locality PIM and pure PIM
+	
+	\item the cache line size used before is actually 64 bytes. The l2 cache used before actually have size of 256 KB. Therefore I don't have to change the program and run a new profiling. Therefore let's change the array size back to 65536 elements and run profiling again just for safety.
+	
+	
+\end{enumerate}
 
 
 \end{document}

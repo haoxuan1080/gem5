@@ -90,11 +90,28 @@ class L1ICache(L1Cache):
         """Connect this cache's port to a CPU icache port"""
         self.cpu_side = cpu.icache_port
 
+class L1PIMICache(L1Cache):
+    size = '4kB'
+
+    SimpleOpts.add_option('--pim_l1i_size',
+                          help="PIM L1 instruction "
+                               "cache size. Default: %s" % size)
+
+    def __init__(self, opts=None):
+        super(L1PIMICache, self).__init__(opts)
+        if not opts or not opts.pim_l1i_size:
+            return
+        self.size = opts.pim_l1i_size
+
+    def connectCPU(self, cpu):
+        """Connect this cache's port to a CPU icache port"""
+        self.cpu_side = cpu.pim_iport
+
 class L1DCache(L1Cache):
     """Simple L1 data cache with default values"""
 
     # Set the default size
-    size = '64kB'
+    size = '16kB'
 
     SimpleOpts.add_option('--l1d_size',
                           help="L1 data cache size. Default: %s" % size)
@@ -108,6 +125,26 @@ class L1DCache(L1Cache):
     def connectCPU(self, cpu):
         """Connect this cache's port to a CPU dcache port"""
         self.cpu_side = cpu.dcache_port
+
+class L1PIMDCache(L1Cache):
+    """Simple L1 data cache with default values"""
+
+    # Set the default size
+    size = '64kB'
+
+    SimpleOpts.add_option('--pim_l1d_size',
+                          help="PIM L1 data cache size. "
+                               "Default: %s" % size)
+
+    def __init__(self, opts=None):
+        super(L1PIMDCache, self).__init__(opts)
+        if not opts or not opts.pim_l1d_size:
+            return
+        self.size = opts.pim_l1d_size
+
+    def connectCPU(self, cpu):
+        """Connect this cache's port to a CPU dcache port"""
+        self.cpu_side = cpu.pim_dport
 
 class L2Cache(Cache):
     """Simple L2 Cache with default values"""
@@ -128,6 +165,30 @@ class L2Cache(Cache):
         if not opts or not opts.l2_size:
             return
         self.size = opts.l2_size
+
+    def connectCPUSideBus(self, bus):
+        self.cpu_side = bus.master
+
+    def connectMemSideBus(self, bus):
+        self.mem_side = bus.slave
+
+class PIML2Cache(Cache):
+    size = '64KB'
+    assoc = 8
+    tag_latency = 20
+    data_latency = 20
+    response_latency = 20
+    mshrs = 20
+    tgts_per_mshr = 12
+
+    SimpleOpts.add_option('--pim_l2_size',
+                          help="PIM L2 cache size. Default: %s" % size)
+
+    def __init__(self, opts=None):
+        super(PIML2Cache, self).__init__()
+        if not opts or not opts.pim_l2_size:
+            return
+        self.size = opts.pim_l2_size
 
     def connectCPUSideBus(self, bus):
         self.cpu_side = bus.master
