@@ -574,6 +574,9 @@ void
 FullO3CPU<Impl>::SwitchFromPIM()
 {
     cout<<"Expand the CPU Width"<<endl;
+    //now pim memory hierarchy also has caches,
+    //need to write back and clear them first!
+    system->clearAllCaches();
     iew.SwitchFromPIM();
     iew.ldstQueue.SwitchFromPIM();
     commit.rob->SwitchFromPIM();
