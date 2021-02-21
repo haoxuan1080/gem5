@@ -45,6 +45,13 @@ from __future__ import absolute_import
 import m5
 # import all of the SimObjects
 from m5.objects import *
+m5.util.addToPath('../../')
+from common import SimpleOpts
+
+SimpleOpts.add_option('--binary', help="binary location",
+                      default='tests/Test_Loop/a.out')
+SimpleOpts.set_usage("usage: %prog [options] <binary to execute>")
+(opts, args) = SimpleOpts.parse_args()
 
 # create the system we are going to simulate
 system = System()
@@ -92,11 +99,11 @@ isa = str(m5.defines.buildEnv['TARGET_ISA']).lower()
 
 # Default to running 'hello', use the compiled ISA to find the binary
 # grab the specific path to the binary
-thispath = os.path.dirname(os.path.realpath(__file__))
+# thispath = os.path.dirname(os.path.realpath(__file__))
 # binary = os.path.join(thispath, '../../../',
 #                      'tests/test-progs/hello/bin/', isa, 'linux/hello')
-binary = os.path.join(thispath, '../../../',
-                      'tests/Test_Loop/a.out')
+cwd = os.getcwd()
+binary = os.path.join(cwd, opts.binary)
 
 
 # Create a process for a simple "Hello World" application
