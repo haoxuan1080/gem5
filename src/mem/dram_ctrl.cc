@@ -190,6 +190,7 @@ DRAMCtrl::DRAMCtrl(const DRAMCtrlParams* p) :
         }
     }
 
+    SwitchToPIM();
 }
 
 void
@@ -2957,7 +2958,8 @@ void DRAMCtrl::SwitchToPIM()
     wrToRdDly = wrToRdDly/2;
     rdToWrDly = rdToWrDly/2;
     in_pim = true;
-    SendResponseToCPU(1);
+
+    //SendResponseToCPU(1);
 }
 
 void DRAMCtrl::SwitchFromPIM()

@@ -1079,28 +1079,30 @@ DefaultCommit<Impl>::commitInsts()
                 }
 
                 // Determine whether to drain due to PIM switching
-                if ((!cpu->PIM_mode)) {
+                if ((!cpu->PIM_mode)
+                        && cpu->NextPCInPIMList(head_inst)) {
                     //should drain due to pim now.
                     cout<<"PC: 0x"
                     <<std::hex<<head_inst->pcState().instAddr()
                     <<"Next PC is: "<<std::hex<<head_inst->pcState().npc()
                     <<" should drain due to pim now: switch to PIM!"
                     <<endl;
-                    cout<<"Swith to PIM mode if not in PIM mode"<<endl;
-                    cpu->PIM_mode = true;
-                    cpu->dmDrain();
-                    cpu->drain_due_to_pim = true;
+                    cout<<"Not actually draining for Comparison"<<endl;
+                    //cpu->PIM_mode = true;
+                    //cpu->dmDrain();
+                    //cpu->drain_due_to_pim = true;
                 }
-                else if (0) {
+                else if (cpu->PCExitPIMList(head_inst) && (cpu->PIM_mode)
+                        && !cpu->NextPCInPIMList(head_inst)) {
                     cout<<"PC: 0x"
                     <<std::hex<<head_inst->pcState().instAddr()
                     <<"Next PC is: "<<std::hex<<head_inst->pcState().npc()
                     <<" should drain due to pim now: switch from PIM!"
                     <<endl;
-                    cout<<"This version should not switch from PIM mode"<<endl;
-                    cpu->PIM_mode = false;
-                    cpu->dmDrain();
-                    cpu->drain_due_to_pim = true;
+                    cout<<"Not actually draining for Comparison"<<endl;
+                    //cpu->PIM_mode = false;
+                    //cpu->dmDrain();
+                    //cpu->drain_due_to_pim = true;
                 }
 
                 // at this point store conditionals should either have

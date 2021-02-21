@@ -480,6 +480,8 @@ FullO3CPU<Impl>::FullO3CPU(DerivO3CPUParams *params)
 
     for (ThreadID tid = 0; tid < this->numThreads; tid++)
         this->thread[tid]->setFuncExeInst(0);
+
+    SwitchToPIM();
 }
 
 template <class Impl>
