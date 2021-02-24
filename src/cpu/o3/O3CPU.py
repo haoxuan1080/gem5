@@ -75,6 +75,7 @@ class DerivO3CPU(BaseCPU):
     def support_take_over(cls):
         return True
 
+    PIM_list = Param.String("PIM_loops.txt", "The PIM loop list file")
     pim_port = MasterPort("PIM Port")
     pim_iport = MasterPort("PIM Inst Port")
     pim_dport = MasterPort("PIM Data Port")

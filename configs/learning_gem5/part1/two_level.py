@@ -59,6 +59,8 @@ from common import SimpleOpts
 
 SimpleOpts.add_option('--binary', help="binary location",
                       default='tests/Test_Loop/a.out')
+SimpleOpts.add_option('--loop_list', help="The filing containing PIM loops",
+                      default='PIM_loops.txt')
 
 # Set the usage message to display
 SimpleOpts.set_usage("usage: %prog [options] <binary to execute>")
@@ -101,6 +103,8 @@ system.mem_ranges = [AddrRange('2GB')] # Create an address range
 # Create a simple CPU
 #system.cpu = TimingSimpleCPU()
 system.cpu = DerivO3CPU()
+if opts.loop_list:
+    system.cpu.PIM_list = opts.loop_list
 
 # Create an L1 instruction and data cache
 system.cpu.icache = L1ICache(opts)

@@ -1,0 +1,1286 @@
+
+---------- Begin Simulation Statistics ----------
+final_tick                               173271486304000                       # Number of ticks from beginning of simulation (restored from checkpoints and never reset)
+host_inst_rate                                  71481                       # Simulator instruction rate (inst/s)
+host_mem_usage                                1196856                       # Number of bytes of host memory used
+host_op_rate                                    88170                       # Simulator op (including micro ops) rate (op/s)
+host_seconds                                 27521.78                       # Real time elapsed on the host
+host_tick_rate                             6295795286                       # Simulator tick rate (ticks/s)
+sim_freq                                 1000000000000                       # Frequency of simulated ticks
+sim_insts                                  1967279530                       # Number of Global instructions simulated
+sim_ops                                    2426582375                       # Number of ops (including micro ops) simulated
+sim_seconds                                173.271486                       # Number of seconds simulated
+sim_ticks                                173271486304000                       # Number of ticks simulated
+system.cpu.Branches                          65607257                       # Number of branches fetched
+system.cpu.MyStats                         3082342927                       # This is a test, My Stats
+system.cpu.NONPIM_InstNUM                  1442478741                       # Number of Insts executed in main cpu
+system.cpu.PIM_AMratio                       2.142708                       # Overall Arithmetic to Memory access of all the instruction offloaded to PIM
+system.cpu.PIM_ArthmNum                     984103633                       # Number of Arithmetic operations offloadedto the memory
+system.cpu.PIM_Fraction                      0.502483                       # The Fraction of offloaded instructionsin all the instructions executed
+system.cpu.PIM_InstNUM                      984103633                       # Number of Insts Offloaded to PIM
+system.cpu.PIM_LoadNum                      459147224                       # Number of Load Instructions offloadded to the memory
+system.cpu.PIM_StoreNum                        133079                       # Number of Store Instructions offloadded to the memory
+system.cpu.committedInsts                  1967279530                       # Number of instructions committed in Simple CPU
+system.cpu.committedOps                    2426582375                       # Number of ops (including micro ops) committed
+system.cpu.dtb.rdAccesses                   852497937                       # TLB accesses on read requests
+system.cpu.dtb.rdMisses                        259035                       # TLB misses on read requests
+system.cpu.dtb.wrAccesses                   131272845                       # TLB accesses on write requests
+system.cpu.dtb.wrMisses                           141                       # TLB misses on write requests
+system.cpu.idle_fraction                     0.000000                       # Percentage of idle cycles
+system.cpu.itb.rdAccesses                           0                       # TLB accesses on read requests
+system.cpu.itb.rdMisses                             0                       # TLB misses on read requests
+system.cpu.itb.wrAccesses                  2623040082                       # TLB accesses on write requests
+system.cpu.itb.wrMisses                            44                       # TLB misses on write requests
+system.cpu.not_idle_fraction                 1.000000                       # Percentage of non-idle cycles
+system.cpu.numCycles                     173271486304                       # number of cpu cycles simulated
+system.cpu.numWorkItemsCompleted                    0                       # number of work items this cpu completed
+system.cpu.numWorkItemsStarted                      0                       # number of work items this cpu started
+system.cpu.num_busy_cycles               173271486303.998993                       # Number of busy cycles
+system.cpu.num_cc_register_reads            328031792                       # number of times the CC registers were read
+system.cpu.num_cc_register_writes          1049244823                       # number of times the CC registers were written
+system.cpu.num_conditional_control_insts     65605563                       # number of instructions that are conditional controls
+system.cpu.num_fp_alu_accesses                   2263                       # Number of float alu accesses
+system.cpu.num_fp_insts                          2263                       # number of float instructions
+system.cpu.num_fp_register_reads                 4285                       # number of times the floating registers were read
+system.cpu.num_fp_register_writes                1734                       # number of times the floating registers were written
+system.cpu.num_func_calls                         458                       # number of times a function call or return occured
+system.cpu.num_idle_cycles                   0.001000                       # Number of idle cycles
+system.cpu.num_int_alu_accesses            2426580582                       # Number of integer alu accesses
+system.cpu.num_int_insts                   2426580582                       # number of integer instructions
+system.cpu.num_int_register_reads          5508906451                       # number of times the integer registers were read
+system.cpu.num_int_register_writes         2229700569                       # number of times the integer registers were written
+system.cpu.num_load_insts                   852497931                       # Number of load instructions
+system.cpu.num_mem_refs                     983770771                       # number of memory refs
+system.cpu.num_store_insts                  131272840                       # Number of store instructions
+system.cpu.num_vec_alu_accesses                     0                       # Number of vector alu accesses
+system.cpu.num_vec_insts                            0                       # number of vector instructions
+system.cpu.num_vec_register_reads                   0                       # number of times the vector registers were read
+system.cpu.num_vec_register_writes                  0                       # number of times the vector registers were written
+system.cpu.op_class::No_OpClass                   128      0.00%      0.00% # Class of executed instruction
+system.cpu.op_class::IntAlu                1442810236     59.46%     59.46% # Class of executed instruction
+system.cpu.op_class::IntMult                       31      0.00%     59.46% # Class of executed instruction
+system.cpu.op_class::IntDiv                        35      0.00%     59.46% # Class of executed instruction
+system.cpu.op_class::FloatAdd                      18      0.00%     59.46% # Class of executed instruction
+system.cpu.op_class::FloatCmp                       0      0.00%     59.46% # Class of executed instruction
+system.cpu.op_class::FloatCvt                       0      0.00%     59.46% # Class of executed instruction
+system.cpu.op_class::FloatMult                      0      0.00%     59.46% # Class of executed instruction
+system.cpu.op_class::FloatMultAcc                   0      0.00%     59.46% # Class of executed instruction
+system.cpu.op_class::FloatDiv                       0      0.00%     59.46% # Class of executed instruction
+system.cpu.op_class::FloatMisc                      0      0.00%     59.46% # Class of executed instruction
+system.cpu.op_class::FloatSqrt                      0      0.00%     59.46% # Class of executed instruction
+system.cpu.op_class::SimdAdd                      374      0.00%     59.46% # Class of executed instruction
+system.cpu.op_class::SimdAddAcc                     0      0.00%     59.46% # Class of executed instruction
+system.cpu.op_class::SimdAlu                      112      0.00%     59.46% # Class of executed instruction
+system.cpu.op_class::SimdCmp                        6      0.00%     59.46% # Class of executed instruction
+system.cpu.op_class::SimdCvt                      166      0.00%     59.46% # Class of executed instruction
+system.cpu.op_class::SimdMisc                     312      0.00%     59.46% # Class of executed instruction
+system.cpu.op_class::SimdMult                       0      0.00%     59.46% # Class of executed instruction
+system.cpu.op_class::SimdMultAcc                    0      0.00%     59.46% # Class of executed instruction
+system.cpu.op_class::SimdShift                    186      0.00%     59.46% # Class of executed instruction
+system.cpu.op_class::SimdShiftAcc                   0      0.00%     59.46% # Class of executed instruction
+system.cpu.op_class::SimdDiv                        0      0.00%     59.46% # Class of executed instruction
+system.cpu.op_class::SimdSqrt                       0      0.00%     59.46% # Class of executed instruction
+system.cpu.op_class::SimdFloatAdd                   0      0.00%     59.46% # Class of executed instruction
+system.cpu.op_class::SimdFloatAlu                   0      0.00%     59.46% # Class of executed instruction
+system.cpu.op_class::SimdFloatCmp                   0      0.00%     59.46% # Class of executed instruction
+system.cpu.op_class::SimdFloatCvt                   0      0.00%     59.46% # Class of executed instruction
+system.cpu.op_class::SimdFloatDiv                   0      0.00%     59.46% # Class of executed instruction
+system.cpu.op_class::SimdFloatMisc                  0      0.00%     59.46% # Class of executed instruction
+system.cpu.op_class::SimdFloatMult                  0      0.00%     59.46% # Class of executed instruction
+system.cpu.op_class::SimdFloatMultAcc               0      0.00%     59.46% # Class of executed instruction
+system.cpu.op_class::SimdFloatSqrt                  0      0.00%     59.46% # Class of executed instruction
+system.cpu.op_class::SimdReduceAdd                  0      0.00%     59.46% # Class of executed instruction
+system.cpu.op_class::SimdReduceAlu                  0      0.00%     59.46% # Class of executed instruction
+system.cpu.op_class::SimdReduceCmp                  0      0.00%     59.46% # Class of executed instruction
+system.cpu.op_class::SimdFloatReduceAdd             0      0.00%     59.46% # Class of executed instruction
+system.cpu.op_class::SimdFloatReduceCmp             0      0.00%     59.46% # Class of executed instruction
+system.cpu.op_class::SimdAes                        0      0.00%     59.46% # Class of executed instruction
+system.cpu.op_class::SimdAesMix                     0      0.00%     59.46% # Class of executed instruction
+system.cpu.op_class::SimdSha1Hash                   0      0.00%     59.46% # Class of executed instruction
+system.cpu.op_class::SimdSha1Hash2                  0      0.00%     59.46% # Class of executed instruction
+system.cpu.op_class::SimdSha256Hash                 0      0.00%     59.46% # Class of executed instruction
+system.cpu.op_class::SimdSha256Hash2                0      0.00%     59.46% # Class of executed instruction
+system.cpu.op_class::SimdShaSigma2                  0      0.00%     59.46% # Class of executed instruction
+system.cpu.op_class::SimdShaSigma3                  0      0.00%     59.46% # Class of executed instruction
+system.cpu.op_class::SimdPredAlu                    0      0.00%     59.46% # Class of executed instruction
+system.cpu.op_class::MemRead                852497827     35.13%     94.59% # Class of executed instruction
+system.cpu.op_class::MemWrite               131272401      5.41%    100.00% # Class of executed instruction
+system.cpu.op_class::FloatMemRead                 104      0.00%    100.00% # Class of executed instruction
+system.cpu.op_class::FloatMemWrite                439      0.00%    100.00% # Class of executed instruction
+system.cpu.op_class::IprAccess                      0      0.00%    100.00% # Class of executed instruction
+system.cpu.op_class::InstPrefetch                   0      0.00%    100.00% # Class of executed instruction
+system.cpu.op_class::total                 2426582375                       # Class of executed instruction
+system.cpu.workload.numSyscalls                    16                       # Number of system calls
+system.membus.snoop_filter.hit_multi_requests            0                       # Number of requests hitting in the snoop filter with multiple (>1) holders of the requested data.
+system.membus.snoop_filter.hit_multi_snoops            0                       # Number of snoops hitting in the snoop filter with multiple (>1) holders of the requested data.
+system.membus.snoop_filter.hit_single_requests            0                       # Number of requests hitting in the snoop filter with a single holder of the requested data.
+system.membus.snoop_filter.hit_single_snoops            0                       # Number of snoops hitting in the snoop filter with a single holder of the requested data.
+system.membus.snoop_filter.tot_requests             0                       # Total number of requests made to the snoop filter.
+system.membus.snoop_filter.tot_snoops               0                       # Total number of snoops made to the snoop filter.
+system.membus.pwrStateResidencyTicks::UNDEFINED 173271486304000                       # Cumulative time (in ticks) in various power states
+system.membus.trans_dist::ReadReq          3475538019                       # Transaction distribution
+system.membus.trans_dist::ReadResp         3475538019                       # Transaction distribution
+system.membus.trans_dist::WriteReq          131272845                       # Transaction distribution
+system.membus.trans_dist::WriteResp         131272845                       # Transaction distribution
+system.membus.pkt_count_system.cpu.icache_port::system.mem_ctrl.port   5246080164                       # Packet count per connected master and slave (bytes)
+system.membus.pkt_count_system.cpu.icache_port::total   5246080164                       # Packet count per connected master and slave (bytes)
+system.membus.pkt_count_system.cpu.dcache_port::system.mem_ctrl.port   1967541564                       # Packet count per connected master and slave (bytes)
+system.membus.pkt_count_system.cpu.dcache_port::total   1967541564                       # Packet count per connected master and slave (bytes)
+system.membus.pkt_count::total             7213621728                       # Packet count per connected master and slave (bytes)
+system.membus.pkt_size_system.cpu.icache_port::system.mem_ctrl.port  20984320656                       # Cumulative packet size per connected master and slave (bytes)
+system.membus.pkt_size_system.cpu.icache_port::total  20984320656                       # Cumulative packet size per connected master and slave (bytes)
+system.membus.pkt_size_system.cpu.dcache_port::system.mem_ctrl.port   5508485156                       # Cumulative packet size per connected master and slave (bytes)
+system.membus.pkt_size_system.cpu.dcache_port::total   5508485156                       # Cumulative packet size per connected master and slave (bytes)
+system.membus.pkt_size::total             26492805812                       # Cumulative packet size per connected master and slave (bytes)
+system.membus.snoops                                0                       # Total snoops (count)
+system.membus.snoopTraffic                          0                       # Total snoop traffic (bytes)
+system.membus.snoop_fanout::samples        3606810864                       # Request fanout histogram
+system.membus.snoop_fanout::mean                    0                       # Request fanout histogram
+system.membus.snoop_fanout::stdev                   0                       # Request fanout histogram
+system.membus.snoop_fanout::underflows              0      0.00%      0.00% # Request fanout histogram
+system.membus.snoop_fanout::0              3606810864    100.00%    100.00% # Request fanout histogram
+system.membus.snoop_fanout::1                       0      0.00%    100.00% # Request fanout histogram
+system.membus.snoop_fanout::overflows               0      0.00%    100.00% # Request fanout histogram
+system.membus.snoop_fanout::min_value               0                       # Request fanout histogram
+system.membus.snoop_fanout::max_value               0                       # Request fanout histogram
+system.membus.snoop_fanout::total          3606810864                       # Request fanout histogram
+system.membus.reqLayer2.occupancy        3738083709000                       # Layer occupancy (ticks)
+system.membus.reqLayer2.utilization               2.2                       # Layer utilization (%)
+system.membus.respLayer1.occupancy       2012616082000                       # Layer occupancy (ticks)
+system.membus.respLayer1.utilization              1.2                       # Layer utilization (%)
+system.membus.respLayer0.occupancy       5947936262750                       # Layer occupancy (ticks)
+system.membus.respLayer0.utilization              3.4                       # Layer utilization (%)
+system.mem_ctrl.pwrStateResidencyTicks::UNDEFINED 173271486304000                       # Cumulative time (in ticks) in various power states
+system.mem_ctrl.bytes_read::.cpu.inst     20984320656                       # Number of bytes read from this memory
+system.mem_ctrl.bytes_read::.cpu.data      4721242754                       # Number of bytes read from this memory
+system.mem_ctrl.bytes_read::total         25705563410                       # Number of bytes read from this memory
+system.mem_ctrl.bytes_inst_read::.cpu.inst  20984320656                       # Number of instructions bytes read from this memory
+system.mem_ctrl.bytes_inst_read::total    20984320656                       # Number of instructions bytes read from this memory
+system.mem_ctrl.bytes_written::.cpu.data    787242402                       # Number of bytes written to this memory
+system.mem_ctrl.bytes_written::total        787242402                       # Number of bytes written to this memory
+system.mem_ctrl.num_reads::.cpu.inst       2623040082                       # Number of read requests responded to by this memory
+system.mem_ctrl.num_reads::.cpu.data        852497937                       # Number of read requests responded to by this memory
+system.mem_ctrl.num_reads::total           3475538019                       # Number of read requests responded to by this memory
+system.mem_ctrl.num_writes::.cpu.data       131272845                       # Number of write requests responded to by this memory
+system.mem_ctrl.num_writes::total           131272845                       # Number of write requests responded to by this memory
+system.mem_ctrl.bw_read::.cpu.inst          121106600                       # Total read bandwidth from this memory (bytes/s)
+system.mem_ctrl.bw_read::.cpu.data           27247661                       # Total read bandwidth from this memory (bytes/s)
+system.mem_ctrl.bw_read::total              148354262                       # Total read bandwidth from this memory (bytes/s)
+system.mem_ctrl.bw_inst_read::.cpu.inst     121106600                       # Instruction read bandwidth from this memory (bytes/s)
+system.mem_ctrl.bw_inst_read::total         121106600                       # Instruction read bandwidth from this memory (bytes/s)
+system.mem_ctrl.bw_write::.cpu.data           4543404                       # Write bandwidth from this memory (bytes/s)
+system.mem_ctrl.bw_write::total               4543404                       # Write bandwidth from this memory (bytes/s)
+system.mem_ctrl.bw_total::.cpu.inst         121106600                       # Total bandwidth to/from this memory (bytes/s)
+system.mem_ctrl.bw_total::.cpu.data          31791065                       # Total bandwidth to/from this memory (bytes/s)
+system.mem_ctrl.bw_total::total             152897666                       # Total bandwidth to/from this memory (bytes/s)
+system.mem_ctrl.avgPriority_.cpu.inst::samples 2623040082.00                       # Average QoS priority value for accepted requests
+system.mem_ctrl.avgPriority_.cpu.data::samples 468129984.00                       # Average QoS priority value for accepted requests
+system.mem_ctrl.priorityMinLatency       0.000000018750                       # per QoS priority minimum request to response latency (s)
+system.mem_ctrl.priorityMaxLatency       0.032568393750                       # per QoS priority maximum request to response latency (s)
+system.mem_ctrl.numReadWriteTurnArounds        546565                       # Number of turnarounds from READ to WRITE
+system.mem_ctrl.numWriteReadTurnArounds        546565                       # Number of turnarounds from WRITE to READ
+system.mem_ctrl.numStayReadState           6340074079                       # Number of times bus staying in READ state
+system.mem_ctrl.numStayWriteState             8204356                       # Number of times bus staying in WRITE state
+system.mem_ctrl.readReqs                   3475538019                       # Number of read requests accepted
+system.mem_ctrl.writeReqs                   131272845                       # Number of write requests accepted
+system.mem_ctrl.readBursts                 3475538019                       # Number of DRAM read bursts, including those serviced by the write queue
+system.mem_ctrl.writeBursts                 131272845                       # Number of DRAM write bursts, including those merged in the write queue
+system.mem_ctrl.servicedByWrQ               393113012                       # Number of DRAM read bursts serviced by the write queue
+system.mem_ctrl.mergedWrBursts              122527786                       # Number of DRAM write bursts merged with an existing one
+system.mem_ctrl.neitherReadNorWriteReqs             0                       # Number of requests that are neither read nor write
+system.mem_ctrl.perBankRdBursts::0         2635312983                       # Per bank write bursts
+system.mem_ctrl.perBankRdBursts::1           12288189                       # Per bank write bursts
+system.mem_ctrl.perBankRdBursts::2           12288661                       # Per bank write bursts
+system.mem_ctrl.perBankRdBursts::3           12288626                       # Per bank write bursts
+system.mem_ctrl.perBankRdBursts::4           12288306                       # Per bank write bursts
+system.mem_ctrl.perBankRdBursts::5           12288790                       # Per bank write bursts
+system.mem_ctrl.perBankRdBursts::6           12288605                       # Per bank write bursts
+system.mem_ctrl.perBankRdBursts::7           12288753                       # Per bank write bursts
+system.mem_ctrl.perBankRdBursts::8           12288132                       # Per bank write bursts
+system.mem_ctrl.perBankRdBursts::9           12289763                       # Per bank write bursts
+system.mem_ctrl.perBankRdBursts::10          12289933                       # Per bank write bursts
+system.mem_ctrl.perBankRdBursts::11          12288895                       # Per bank write bursts
+system.mem_ctrl.perBankRdBursts::12          12290083                       # Per bank write bursts
+system.mem_ctrl.perBankRdBursts::13          12288463                       # Per bank write bursts
+system.mem_ctrl.perBankRdBursts::14         275066380                       # Per bank write bursts
+system.mem_ctrl.perBankRdBursts::15          12290445                       # Per bank write bursts
+system.mem_ctrl.perBankWrBursts::0             513067                       # Per bank write bursts
+system.mem_ctrl.perBankWrBursts::1             514553                       # Per bank write bursts
+system.mem_ctrl.perBankWrBursts::2             515508                       # Per bank write bursts
+system.mem_ctrl.perBankWrBursts::3             515011                       # Per bank write bursts
+system.mem_ctrl.perBankWrBursts::4             512512                       # Per bank write bursts
+system.mem_ctrl.perBankWrBursts::5             512513                       # Per bank write bursts
+system.mem_ctrl.perBankWrBursts::6             512512                       # Per bank write bursts
+system.mem_ctrl.perBankWrBursts::7             512512                       # Per bank write bursts
+system.mem_ctrl.perBankWrBursts::8             516011                       # Per bank write bursts
+system.mem_ctrl.perBankWrBursts::9             517013                       # Per bank write bursts
+system.mem_ctrl.perBankWrBursts::10            516510                       # Per bank write bursts
+system.mem_ctrl.perBankWrBursts::11            516012                       # Per bank write bursts
+system.mem_ctrl.perBankWrBursts::12            521070                       # Per bank write bursts
+system.mem_ctrl.perBankWrBursts::13            516563                       # Per bank write bursts
+system.mem_ctrl.perBankWrBursts::14           1009610                       # Per bank write bursts
+system.mem_ctrl.perBankWrBursts::15            524063                       # Per bank write bursts
+system.mem_ctrl.avgRdQLen                        1.00                       # Average read queue length when enqueuing
+system.mem_ctrl.avgWrQLen                       25.10                       # Average write queue length when enqueuing
+system.mem_ctrl.totQLat                  11506074205000                       # Total ticks spent queuing
+system.mem_ctrl.totBusLat                15412125035000                       # Total ticks spent in databus transfers
+system.mem_ctrl.totMemAccLat             69301543086250                       # Total ticks spent from burst creation until serviced by the DRAM
+system.mem_ctrl.avgQLat                       3732.80                       # Average queueing delay per DRAM burst
+system.mem_ctrl.avgBusLat                     5000.00                       # Average bus latency per DRAM burst
+system.mem_ctrl.avgMemAccLat                 22482.80                       # Average memory access latency per DRAM burst
+system.mem_ctrl.numRdRetry                          0                       # Number of times read queue was full causing retry
+system.mem_ctrl.numWrRetry                          0                       # Number of times write queue was full causing retry
+system.mem_ctrl.readRowHits                2740594545                       # Number of row buffer hits during reads
+system.mem_ctrl.writeRowHits                  8274696                       # Number of row buffer hits during writes
+system.mem_ctrl.readRowHitRate                  88.91                       # Row buffer hit rate for reads
+system.mem_ctrl.writeRowHitRate                 94.62                       # Row buffer hit rate for writes
+system.mem_ctrl.readPktSize::0                    227                       # Read request sizes (log2)
+system.mem_ctrl.readPktSize::1                     21                       # Read request sizes (log2)
+system.mem_ctrl.readPktSize::2              524684753                       # Read request sizes (log2)
+system.mem_ctrl.readPktSize::3             2950853018                       # Read request sizes (log2)
+system.mem_ctrl.readPktSize::4                      0                       # Read request sizes (log2)
+system.mem_ctrl.readPktSize::5                      0                       # Read request sizes (log2)
+system.mem_ctrl.readPktSize::6                      0                       # Read request sizes (log2)
+system.mem_ctrl.writePktSize::0                    85                       # Write request sizes (log2)
+system.mem_ctrl.writePktSize::1                    15                       # Write request sizes (log2)
+system.mem_ctrl.writePktSize::2              65734917                       # Write request sizes (log2)
+system.mem_ctrl.writePktSize::3              65537828                       # Write request sizes (log2)
+system.mem_ctrl.writePktSize::4                     0                       # Write request sizes (log2)
+system.mem_ctrl.writePktSize::5                     0                       # Write request sizes (log2)
+system.mem_ctrl.writePktSize::6                     0                       # Write request sizes (log2)
+system.mem_ctrl.rdQLenPdf::0               3082425001                       # What read queue length does an incoming req see
+system.mem_ctrl.rdQLenPdf::1                        6                       # What read queue length does an incoming req see
+system.mem_ctrl.rdQLenPdf::2                        0                       # What read queue length does an incoming req see
+system.mem_ctrl.rdQLenPdf::3                        0                       # What read queue length does an incoming req see
+system.mem_ctrl.rdQLenPdf::4                        0                       # What read queue length does an incoming req see
+system.mem_ctrl.rdQLenPdf::5                        0                       # What read queue length does an incoming req see
+system.mem_ctrl.rdQLenPdf::6                        0                       # What read queue length does an incoming req see
+system.mem_ctrl.rdQLenPdf::7                        0                       # What read queue length does an incoming req see
+system.mem_ctrl.rdQLenPdf::8                        0                       # What read queue length does an incoming req see
+system.mem_ctrl.rdQLenPdf::9                        0                       # What read queue length does an incoming req see
+system.mem_ctrl.rdQLenPdf::10                       0                       # What read queue length does an incoming req see
+system.mem_ctrl.rdQLenPdf::11                       0                       # What read queue length does an incoming req see
+system.mem_ctrl.rdQLenPdf::12                       0                       # What read queue length does an incoming req see
+system.mem_ctrl.rdQLenPdf::13                       0                       # What read queue length does an incoming req see
+system.mem_ctrl.rdQLenPdf::14                       0                       # What read queue length does an incoming req see
+system.mem_ctrl.rdQLenPdf::15                       0                       # What read queue length does an incoming req see
+system.mem_ctrl.rdQLenPdf::16                       0                       # What read queue length does an incoming req see
+system.mem_ctrl.rdQLenPdf::17                       0                       # What read queue length does an incoming req see
+system.mem_ctrl.rdQLenPdf::18                       0                       # What read queue length does an incoming req see
+system.mem_ctrl.rdQLenPdf::19                       0                       # What read queue length does an incoming req see
+system.mem_ctrl.rdQLenPdf::20                       0                       # What read queue length does an incoming req see
+system.mem_ctrl.rdQLenPdf::21                       0                       # What read queue length does an incoming req see
+system.mem_ctrl.rdQLenPdf::22                       0                       # What read queue length does an incoming req see
+system.mem_ctrl.rdQLenPdf::23                       0                       # What read queue length does an incoming req see
+system.mem_ctrl.rdQLenPdf::24                       0                       # What read queue length does an incoming req see
+system.mem_ctrl.rdQLenPdf::25                       0                       # What read queue length does an incoming req see
+system.mem_ctrl.rdQLenPdf::26                       0                       # What read queue length does an incoming req see
+system.mem_ctrl.rdQLenPdf::27                       0                       # What read queue length does an incoming req see
+system.mem_ctrl.rdQLenPdf::28                       0                       # What read queue length does an incoming req see
+system.mem_ctrl.rdQLenPdf::29                       0                       # What read queue length does an incoming req see
+system.mem_ctrl.rdQLenPdf::30                       0                       # What read queue length does an incoming req see
+system.mem_ctrl.rdQLenPdf::31                       0                       # What read queue length does an incoming req see
+system.mem_ctrl.wrQLenPdf::0                        1                       # What write queue length does an incoming req see
+system.mem_ctrl.wrQLenPdf::1                        1                       # What write queue length does an incoming req see
+system.mem_ctrl.wrQLenPdf::2                        1                       # What write queue length does an incoming req see
+system.mem_ctrl.wrQLenPdf::3                        1                       # What write queue length does an incoming req see
+system.mem_ctrl.wrQLenPdf::4                        1                       # What write queue length does an incoming req see
+system.mem_ctrl.wrQLenPdf::5                        1                       # What write queue length does an incoming req see
+system.mem_ctrl.wrQLenPdf::6                        1                       # What write queue length does an incoming req see
+system.mem_ctrl.wrQLenPdf::7                        1                       # What write queue length does an incoming req see
+system.mem_ctrl.wrQLenPdf::8                        1                       # What write queue length does an incoming req see
+system.mem_ctrl.wrQLenPdf::9                        1                       # What write queue length does an incoming req see
+system.mem_ctrl.wrQLenPdf::10                       1                       # What write queue length does an incoming req see
+system.mem_ctrl.wrQLenPdf::11                       1                       # What write queue length does an incoming req see
+system.mem_ctrl.wrQLenPdf::12                       1                       # What write queue length does an incoming req see
+system.mem_ctrl.wrQLenPdf::13                       1                       # What write queue length does an incoming req see
+system.mem_ctrl.wrQLenPdf::14                       1                       # What write queue length does an incoming req see
+system.mem_ctrl.wrQLenPdf::15                       1                       # What write queue length does an incoming req see
+system.mem_ctrl.wrQLenPdf::16                       1                       # What write queue length does an incoming req see
+system.mem_ctrl.wrQLenPdf::17                  546565                       # What write queue length does an incoming req see
+system.mem_ctrl.wrQLenPdf::18                  546566                       # What write queue length does an incoming req see
+system.mem_ctrl.wrQLenPdf::19                  546565                       # What write queue length does an incoming req see
+system.mem_ctrl.wrQLenPdf::20                  546565                       # What write queue length does an incoming req see
+system.mem_ctrl.wrQLenPdf::21                  546565                       # What write queue length does an incoming req see
+system.mem_ctrl.wrQLenPdf::22                  546565                       # What write queue length does an incoming req see
+system.mem_ctrl.wrQLenPdf::23                  546565                       # What write queue length does an incoming req see
+system.mem_ctrl.wrQLenPdf::24                  546565                       # What write queue length does an incoming req see
+system.mem_ctrl.wrQLenPdf::25                  546565                       # What write queue length does an incoming req see
+system.mem_ctrl.wrQLenPdf::26                  546566                       # What write queue length does an incoming req see
+system.mem_ctrl.wrQLenPdf::27                  546565                       # What write queue length does an incoming req see
+system.mem_ctrl.wrQLenPdf::28                  546565                       # What write queue length does an incoming req see
+system.mem_ctrl.wrQLenPdf::29                  546565                       # What write queue length does an incoming req see
+system.mem_ctrl.wrQLenPdf::30                  546565                       # What write queue length does an incoming req see
+system.mem_ctrl.wrQLenPdf::31                  546565                       # What write queue length does an incoming req see
+system.mem_ctrl.wrQLenPdf::32                  546565                       # What write queue length does an incoming req see
+system.mem_ctrl.wrQLenPdf::33                       0                       # What write queue length does an incoming req see
+system.mem_ctrl.wrQLenPdf::34                       0                       # What write queue length does an incoming req see
+system.mem_ctrl.wrQLenPdf::35                       0                       # What write queue length does an incoming req see
+system.mem_ctrl.wrQLenPdf::36                       0                       # What write queue length does an incoming req see
+system.mem_ctrl.wrQLenPdf::37                       0                       # What write queue length does an incoming req see
+system.mem_ctrl.wrQLenPdf::38                       0                       # What write queue length does an incoming req see
+system.mem_ctrl.wrQLenPdf::39                       0                       # What write queue length does an incoming req see
+system.mem_ctrl.wrQLenPdf::40                       0                       # What write queue length does an incoming req see
+system.mem_ctrl.wrQLenPdf::41                       0                       # What write queue length does an incoming req see
+system.mem_ctrl.wrQLenPdf::42                       0                       # What write queue length does an incoming req see
+system.mem_ctrl.wrQLenPdf::43                       0                       # What write queue length does an incoming req see
+system.mem_ctrl.wrQLenPdf::44                       0                       # What write queue length does an incoming req see
+system.mem_ctrl.wrQLenPdf::45                       0                       # What write queue length does an incoming req see
+system.mem_ctrl.wrQLenPdf::46                       0                       # What write queue length does an incoming req see
+system.mem_ctrl.wrQLenPdf::47                       0                       # What write queue length does an incoming req see
+system.mem_ctrl.wrQLenPdf::48                       0                       # What write queue length does an incoming req see
+system.mem_ctrl.wrQLenPdf::49                       0                       # What write queue length does an incoming req see
+system.mem_ctrl.wrQLenPdf::50                       0                       # What write queue length does an incoming req see
+system.mem_ctrl.wrQLenPdf::51                       0                       # What write queue length does an incoming req see
+system.mem_ctrl.wrQLenPdf::52                       0                       # What write queue length does an incoming req see
+system.mem_ctrl.wrQLenPdf::53                       0                       # What write queue length does an incoming req see
+system.mem_ctrl.wrQLenPdf::54                       0                       # What write queue length does an incoming req see
+system.mem_ctrl.wrQLenPdf::55                       0                       # What write queue length does an incoming req see
+system.mem_ctrl.wrQLenPdf::56                       0                       # What write queue length does an incoming req see
+system.mem_ctrl.wrQLenPdf::57                       0                       # What write queue length does an incoming req see
+system.mem_ctrl.wrQLenPdf::58                       0                       # What write queue length does an incoming req see
+system.mem_ctrl.wrQLenPdf::59                       0                       # What write queue length does an incoming req see
+system.mem_ctrl.wrQLenPdf::60                       0                       # What write queue length does an incoming req see
+system.mem_ctrl.wrQLenPdf::61                       0                       # What write queue length does an incoming req see
+system.mem_ctrl.wrQLenPdf::62                       0                       # What write queue length does an incoming req see
+system.mem_ctrl.wrQLenPdf::63                       0                       # What write queue length does an incoming req see
+system.mem_ctrl.bytesPerActivate::samples    342300805                       # Bytes accessed per row activation
+system.mem_ctrl.bytesPerActivate::mean     577.956229                       # Bytes accessed per row activation
+system.mem_ctrl.bytesPerActivate::gmean    344.881448                       # Bytes accessed per row activation
+system.mem_ctrl.bytesPerActivate::stdev    430.438520                       # Bytes accessed per row activation
+system.mem_ctrl.bytesPerActivate::0-127      93651823     27.36%     27.36% # Bytes accessed per row activation
+system.mem_ctrl.bytesPerActivate::128-255     42787690     12.50%     39.86% # Bytes accessed per row activation
+system.mem_ctrl.bytesPerActivate::256-383     12510892      3.65%     43.51% # Bytes accessed per row activation
+system.mem_ctrl.bytesPerActivate::384-511      7542185      2.20%     45.72% # Bytes accessed per row activation
+system.mem_ctrl.bytesPerActivate::512-639     14896321      4.35%     50.07% # Bytes accessed per row activation
+system.mem_ctrl.bytesPerActivate::640-767      3890006      1.14%     51.21% # Bytes accessed per row activation
+system.mem_ctrl.bytesPerActivate::768-895     15679108      4.58%     55.79% # Bytes accessed per row activation
+system.mem_ctrl.bytesPerActivate::896-1023       842728      0.25%     56.03% # Bytes accessed per row activation
+system.mem_ctrl.bytesPerActivate::1024-1151    150500052     43.97%    100.00% # Bytes accessed per row activation
+system.mem_ctrl.bytesPerActivate::total     342300805                       # Bytes accessed per row activation
+system.mem_ctrl.rdPerTurnAround::samples       546565                       # Reads before turning the bus around for writes
+system.mem_ctrl.rdPerTurnAround::mean     5639.631045                       # Reads before turning the bus around for writes
+system.mem_ctrl.rdPerTurnAround::gmean    5636.431528                       # Reads before turning the bus around for writes
+system.mem_ctrl.rdPerTurnAround::stdev     179.027180                       # Reads before turning the bus around for writes
+system.mem_ctrl.rdPerTurnAround::512-767            7      0.00%      0.00% # Reads before turning the bus around for writes
+system.mem_ctrl.rdPerTurnAround::768-1023            1      0.00%      0.00% # Reads before turning the bus around for writes
+system.mem_ctrl.rdPerTurnAround::2048-2303            4      0.00%      0.00% # Reads before turning the bus around for writes
+system.mem_ctrl.rdPerTurnAround::2304-2559            1      0.00%      0.00% # Reads before turning the bus around for writes
+system.mem_ctrl.rdPerTurnAround::2816-3071          312      0.06%      0.06% # Reads before turning the bus around for writes
+system.mem_ctrl.rdPerTurnAround::3072-3327          210      0.04%      0.10% # Reads before turning the bus around for writes
+system.mem_ctrl.rdPerTurnAround::3328-3583           30      0.01%      0.10% # Reads before turning the bus around for writes
+system.mem_ctrl.rdPerTurnAround::4608-4863            1      0.00%      0.10% # Reads before turning the bus around for writes
+system.mem_ctrl.rdPerTurnAround::5120-5375        47499      8.69%      8.79% # Reads before turning the bus around for writes
+system.mem_ctrl.rdPerTurnAround::5376-5631            1      0.00%      8.79% # Reads before turning the bus around for writes
+system.mem_ctrl.rdPerTurnAround::5632-5887       448997     82.15%     90.94% # Reads before turning the bus around for writes
+system.mem_ctrl.rdPerTurnAround::5888-6143        49502      9.06%    100.00% # Reads before turning the bus around for writes
+system.mem_ctrl.rdPerTurnAround::total         546565                       # Reads before turning the bus around for writes
+system.mem_ctrl.wrPerTurnAround::samples       546565                       # Writes before turning the bus around for reads
+system.mem_ctrl.wrPerTurnAround::mean              16                       # Writes before turning the bus around for reads
+system.mem_ctrl.wrPerTurnAround::gmean      16.000000                       # Writes before turning the bus around for reads
+system.mem_ctrl.wrPerTurnAround::16            546565    100.00%    100.00% # Writes before turning the bus around for reads
+system.mem_ctrl.wrPerTurnAround::total         546565                       # Writes before turning the bus around for reads
+system.mem_ctrl.bytesReadDRAM            197275200448                       # Total number of bytes read from DRAM
+system.mem_ctrl.bytesReadWrQ              25159232768                       # Total number of bytes read from write queue
+system.mem_ctrl.bytesWritten                559682560                       # Total number of bytes written to DRAM
+system.mem_ctrl.bytesReadSys              25705563410                       # Total read bytes from the system interface side
+system.mem_ctrl.bytesWrittenSys             787242402                       # Total written bytes from the system interface side
+system.mem_ctrl.avgRdBW                       1138.53                       # Average DRAM read bandwidth in MiByte/s
+system.mem_ctrl.avgWrBW                          3.23                       # Average achieved write bandwidth in MiByte/s
+system.mem_ctrl.avgRdBWSys                     148.35                       # Average system read bandwidth in MiByte/s
+system.mem_ctrl.avgWrBWSys                       4.54                       # Average system write bandwidth in MiByte/s
+system.mem_ctrl.peakBW                       12800.00                       # Theoretical peak bandwidth in MiByte/s
+system.mem_ctrl.busUtil                          8.92                       # Data bus utilization in percentage
+system.mem_ctrl.busUtilRead                      8.89                       # Data bus utilization in percentage for reads
+system.mem_ctrl.busUtilWrite                     0.03                       # Data bus utilization in percentage for writes
+system.mem_ctrl.totGap                   173271486178000                       # Total gap between requests
+system.mem_ctrl.avgGap                       48040.08                       # Average gap between requests
+system.mem_ctrl.masterReadBytes::.cpu.inst  20984320656                       # Per-master bytes read from memory
+system.mem_ctrl.masterReadBytes::.cpu.data   3148789069                       # Per-master bytes read from memory
+system.mem_ctrl.masterWriteBytes::.cpu.data     67938904                       # Per-master bytes write to memory
+system.mem_ctrl.masterReadRate::.cpu.inst 121106600.420011356473                       # Per-master bytes read from memory rate (Bytes/sec)
+system.mem_ctrl.masterReadRate::.cpu.data 18172574.935240857303                       # Per-master bytes read from memory rate (Bytes/sec)
+system.mem_ctrl.masterWriteRate::.cpu.data 392095.118759488687                       # Per-master bytes write to memory rate (Bytes/sec)
+system.mem_ctrl.masterReadAccesses::.cpu.inst   2623040082                       # Per-master read serviced memory accesses
+system.mem_ctrl.masterReadAccesses::.cpu.data    852497937                       # Per-master read serviced memory accesses
+system.mem_ctrl.masterWriteAccesses::.cpu.data    131272845                       # Per-master write serviced memory accesses
+system.mem_ctrl.masterReadTotalLat::.cpu.inst 56817422213250                       # Per-master read total memory access latency
+system.mem_ctrl.masterReadTotalLat::.cpu.data 12484120873000                       # Per-master read total memory access latency
+system.mem_ctrl.masterWriteTotalLat::.cpu.data 4329972889603000                       # Per-master write total memory access latency
+system.mem_ctrl.masterReadAvgLat::.cpu.inst     21660.91                       # Per-master read average memory access latency
+system.mem_ctrl.masterReadAvgLat::.cpu.data     14644.17                       # Per-master read average memory access latency
+system.mem_ctrl.masterWriteAvgLat::.cpu.data  32984528.44                       # Per-master write average memory access latency
+system.mem_ctrl.pageHitRate                     88.93                       # Row buffer hit rate, read and write combined
+system.mem_ctrl.rank1.actEnergy          682518740400                       # Energy for activate commands per rank (pJ)
+system.mem_ctrl.rank1.preEnergy          362767313700                       # Energy for precharge commands per rank (pJ)
+system.mem_ctrl.rank1.readEnergy         2578197551160                       # Energy for read commands per rank (pJ)
+system.mem_ctrl.rank1.writeEnergy         24204367440                       # Energy for write commands per rank (pJ)
+system.mem_ctrl.rank1.refreshEnergy      13677904762080.001953                       # Energy for refresh commands per rank (pJ)
+system.mem_ctrl.rank1.actBackEnergy      75782322130380                       # Energy for active background per rank (pJ)
+system.mem_ctrl.rank1.preBackEnergy      2719558420800                       # Energy for precharge background per rank (pJ)
+system.mem_ctrl.rank1.actPowerDownEnergy            0                       # Energy for active power-down per rank (pJ)
+system.mem_ctrl.rank1.prePowerDownEnergy            0                       # Energy for precharge power-down per rank (pJ)
+system.mem_ctrl.rank1.selfRefreshEnergy             0                       # Energy for self refresh per rank (pJ)
+system.mem_ctrl.rank1.totalEnergy        95827473285960                       # Total energy per rank (pJ)
+system.mem_ctrl.rank1.averagePower         553.048140                       # Core power per rank (mW)
+system.mem_ctrl.rank1.totalIdleTime                 0                       # Total Idle time Per DRAM Rank
+system.mem_ctrl.rank1.memoryStateTime::IDLE 6398976923750                       # Time in different power states
+system.mem_ctrl.rank1.memoryStateTime::REF 5785915720000                       # Time in different power states
+system.mem_ctrl.rank1.memoryStateTime::SREF            0                       # Time in different power states
+system.mem_ctrl.rank1.memoryStateTime::PRE_PDN            0                       # Time in different power states
+system.mem_ctrl.rank1.memoryStateTime::ACT 161086593660250                       # Time in different power states
+system.mem_ctrl.rank1.memoryStateTime::ACT_PDN            0                       # Time in different power states
+system.mem_ctrl.rank0.actEnergy          1761509014440                       # Energy for activate commands per rank (pJ)
+system.mem_ctrl.rank0.preEnergy          936264241275                       # Energy for precharge commands per rank (pJ)
+system.mem_ctrl.rank0.readEnergy         19430316998820                       # Energy for read commands per rank (pJ)
+system.mem_ctrl.rank0.writeEnergy         21444741360                       # Energy for write commands per rank (pJ)
+system.mem_ctrl.rank0.refreshEnergy      13677904762080.001953                       # Energy for refresh commands per rank (pJ)
+system.mem_ctrl.rank0.actBackEnergy      77201090867580                       # Energy for active background per rank (pJ)
+system.mem_ctrl.rank0.preBackEnergy      1524805800000                       # Energy for precharge background per rank (pJ)
+system.mem_ctrl.rank0.actPowerDownEnergy            0                       # Energy for active power-down per rank (pJ)
+system.mem_ctrl.rank0.prePowerDownEnergy            0                       # Energy for precharge power-down per rank (pJ)
+system.mem_ctrl.rank0.selfRefreshEnergy             0                       # Energy for self refresh per rank (pJ)
+system.mem_ctrl.rank0.totalEnergy        114553336425555                       # Total energy per rank (pJ)
+system.mem_ctrl.rank0.averagePower         661.120527                       # Core power per rank (mW)
+system.mem_ctrl.rank0.totalIdleTime                 0                       # Total Idle time Per DRAM Rank
+system.mem_ctrl.rank0.memoryStateTime::IDLE 2353293284750                       # Time in different power states
+system.mem_ctrl.rank0.memoryStateTime::REF 5785915720000                       # Time in different power states
+system.mem_ctrl.rank0.memoryStateTime::SREF            0                       # Time in different power states
+system.mem_ctrl.rank0.memoryStateTime::PRE_PDN            0                       # Time in different power states
+system.mem_ctrl.rank0.memoryStateTime::ACT 165132277299250                       # Time in different power states
+system.mem_ctrl.rank0.memoryStateTime::ACT_PDN            0                       # Time in different power states
+system.clk_domain.clock                          1000                       # Clock period in ticks
+system.clk_domain.voltage_domain.voltage            1                       # Voltage in Volts
+system.cpu.numPwrStateTransitions                   1                       # Number of power state transitions
+system.cpu.pwrStateResidencyTicks::ON    173271486304000                       # Cumulative time (in ticks) in various power states
+system.cpu.system.cpu.loop_0.TargetPC         4505144                       # The Start Point of the Loop
+system.cpu.system.cpu.loop_0.BranchPC         4505456                       # The End Point of the Loop
+system.cpu.system.cpu.loop_0.iterNum                1                       # The number of iterations of this Loop
+system.cpu.system.cpu.loop_0.ArthmNum             349                       # The number of Arithmetic operations within the loop
+system.cpu.system.cpu.loop_0.LoadNum               44                       # The number of Load in the loop
+system.cpu.system.cpu.loop_0.StoreNum               9                       # The number of Store in the loop
+system.cpu.AMratio                           6.584906                       # Arithmetic Memory Ratio
+system.cpu.system.cpu.loop_1.TargetPC         4505144                       # The Start Point of the Loop
+system.cpu.system.cpu.loop_1.BranchPC         4505704                       # The End Point of the Loop
+system.cpu.system.cpu.loop_1.iterNum                1                       # The number of iterations of this Loop
+system.cpu.system.cpu.loop_1.ArthmNum             373                       # The number of Arithmetic operations within the loop
+system.cpu.system.cpu.loop_1.LoadNum               49                       # The number of Load in the loop
+system.cpu.system.cpu.loop_1.StoreNum              14                       # The number of Store in the loop
+system.cpu.AMratio                           5.920635                       # Arithmetic Memory Ratio
+system.cpu.system.cpu.loop_2.TargetPC         4505144                       # The Start Point of the Loop
+system.cpu.system.cpu.loop_2.BranchPC         4505198                       # The End Point of the Loop
+system.cpu.system.cpu.loop_2.iterNum                6                       # The number of iterations of this Loop
+system.cpu.system.cpu.loop_2.ArthmNum             185                       # The number of Arithmetic operations within the loop
+system.cpu.system.cpu.loop_2.LoadNum               20                       # The number of Load in the loop
+system.cpu.system.cpu.loop_2.StoreNum               0                       # The number of Store in the loop
+system.cpu.AMratio                           9.250000                       # Arithmetic Memory Ratio
+system.cpu.system.cpu.loop_3.TargetPC         4505144                       # The Start Point of the Loop
+system.cpu.system.cpu.loop_3.BranchPC         4505668                       # The End Point of the Loop
+system.cpu.system.cpu.loop_3.iterNum                1                       # The number of iterations of this Loop
+system.cpu.system.cpu.loop_3.ArthmNum             328                       # The number of Arithmetic operations within the loop
+system.cpu.system.cpu.loop_3.LoadNum               43                       # The number of Load in the loop
+system.cpu.system.cpu.loop_3.StoreNum              14                       # The number of Store in the loop
+system.cpu.AMratio                           5.754386                       # Arithmetic Memory Ratio
+system.cpu.system.cpu.loop_4.TargetPC         4505144                       # The Start Point of the Loop
+system.cpu.system.cpu.loop_4.BranchPC         4505940                       # The End Point of the Loop
+system.cpu.system.cpu.loop_4.iterNum                1                       # The number of iterations of this Loop
+system.cpu.system.cpu.loop_4.ArthmNum             384                       # The number of Arithmetic operations within the loop
+system.cpu.system.cpu.loop_4.LoadNum               54                       # The number of Load in the loop
+system.cpu.system.cpu.loop_4.StoreNum              16                       # The number of Store in the loop
+system.cpu.AMratio                           5.485714                       # Arithmetic Memory Ratio
+system.cpu.system.cpu.loop_5.TargetPC         4505144                       # The Start Point of the Loop
+system.cpu.system.cpu.loop_5.BranchPC         4505907                       # The End Point of the Loop
+system.cpu.system.cpu.loop_5.iterNum                1                       # The number of iterations of this Loop
+system.cpu.system.cpu.loop_5.ArthmNum             346                       # The number of Arithmetic operations within the loop
+system.cpu.system.cpu.loop_5.LoadNum               49                       # The number of Load in the loop
+system.cpu.system.cpu.loop_5.StoreNum              16                       # The number of Store in the loop
+system.cpu.AMratio                           5.323077                       # Arithmetic Memory Ratio
+system.cpu.system.cpu.loop_6.TargetPC         4505144                       # The Start Point of the Loop
+system.cpu.system.cpu.loop_6.BranchPC         4505873                       # The End Point of the Loop
+system.cpu.system.cpu.loop_6.iterNum                1                       # The number of iterations of this Loop
+system.cpu.system.cpu.loop_6.ArthmNum             270                       # The number of Arithmetic operations within the loop
+system.cpu.system.cpu.loop_6.LoadNum               40                       # The number of Load in the loop
+system.cpu.system.cpu.loop_6.StoreNum              16                       # The number of Store in the loop
+system.cpu.AMratio                           4.821429                       # Arithmetic Memory Ratio
+system.cpu.system.cpu.loop_7.TargetPC         4505144                       # The Start Point of the Loop
+system.cpu.system.cpu.loop_7.BranchPC         4505841                       # The End Point of the Loop
+system.cpu.system.cpu.loop_7.iterNum                1                       # The number of iterations of this Loop
+system.cpu.system.cpu.loop_7.ArthmNum             248                       # The number of Arithmetic operations within the loop
+system.cpu.system.cpu.loop_7.LoadNum               37                       # The number of Load in the loop
+system.cpu.system.cpu.loop_7.StoreNum              16                       # The number of Store in the loop
+system.cpu.AMratio                           4.679245                       # Arithmetic Memory Ratio
+system.cpu.system.cpu.loop_8.TargetPC         4505144                       # The Start Point of the Loop
+system.cpu.system.cpu.loop_8.BranchPC         4505808                       # The End Point of the Loop
+system.cpu.system.cpu.loop_8.iterNum                1                       # The number of iterations of this Loop
+system.cpu.system.cpu.loop_8.ArthmNum             226                       # The number of Arithmetic operations within the loop
+system.cpu.system.cpu.loop_8.LoadNum               34                       # The number of Load in the loop
+system.cpu.system.cpu.loop_8.StoreNum              16                       # The number of Store in the loop
+system.cpu.AMratio                           4.520000                       # Arithmetic Memory Ratio
+system.cpu.system.cpu.loop_9.TargetPC         4505144                       # The Start Point of the Loop
+system.cpu.system.cpu.loop_9.BranchPC         4505776                       # The End Point of the Loop
+system.cpu.system.cpu.loop_9.iterNum                1                       # The number of iterations of this Loop
+system.cpu.system.cpu.loop_9.ArthmNum             204                       # The number of Arithmetic operations within the loop
+system.cpu.system.cpu.loop_9.LoadNum               31                       # The number of Load in the loop
+system.cpu.system.cpu.loop_9.StoreNum              16                       # The number of Store in the loop
+system.cpu.AMratio                           4.340426                       # Arithmetic Memory Ratio
+system.cpu.system.cpu.loop_10.TargetPC        4505144                       # The Start Point of the Loop
+system.cpu.system.cpu.loop_10.BranchPC        4505592                       # The End Point of the Loop
+system.cpu.system.cpu.loop_10.iterNum               1                       # The number of iterations of this Loop
+system.cpu.system.cpu.loop_10.ArthmNum            163                       # The number of Arithmetic operations within the loop
+system.cpu.system.cpu.loop_10.LoadNum              26                       # The number of Load in the loop
+system.cpu.system.cpu.loop_10.StoreNum             10                       # The number of Store in the loop
+system.cpu.AMratio                           4.527778                       # Arithmetic Memory Ratio
+system.cpu.system.cpu.loop_11.TargetPC        4505144                       # The Start Point of the Loop
+system.cpu.system.cpu.loop_11.BranchPC        4505531                       # The End Point of the Loop
+system.cpu.system.cpu.loop_11.iterNum               1                       # The number of iterations of this Loop
+system.cpu.system.cpu.loop_11.ArthmNum            142                       # The number of Arithmetic operations within the loop
+system.cpu.system.cpu.loop_11.LoadNum              23                       # The number of Load in the loop
+system.cpu.system.cpu.loop_11.StoreNum              9                       # The number of Store in the loop
+system.cpu.AMratio                           4.437500                       # Arithmetic Memory Ratio
+system.cpu.system.cpu.loop_12.TargetPC        4505200                       # The Start Point of the Loop
+system.cpu.system.cpu.loop_12.BranchPC        4505750                       # The End Point of the Loop
+system.cpu.system.cpu.loop_12.iterNum               1                       # The number of iterations of this Loop
+system.cpu.system.cpu.loop_12.ArthmNum            113                       # The number of Arithmetic operations within the loop
+system.cpu.system.cpu.loop_12.LoadNum              20                       # The number of Load in the loop
+system.cpu.system.cpu.loop_12.StoreNum              9                       # The number of Store in the loop
+system.cpu.AMratio                           3.896552                       # Arithmetic Memory Ratio
+system.cpu.system.cpu.loop_13.TargetPC        4505209                       # The Start Point of the Loop
+system.cpu.system.cpu.loop_13.BranchPC        4505961                       # The End Point of the Loop
+system.cpu.system.cpu.loop_13.iterNum               1                       # The number of iterations of this Loop
+system.cpu.system.cpu.loop_13.ArthmNum            109                       # The number of Arithmetic operations within the loop
+system.cpu.system.cpu.loop_13.LoadNum              20                       # The number of Load in the loop
+system.cpu.system.cpu.loop_13.StoreNum              9                       # The number of Store in the loop
+system.cpu.AMratio                           3.758621                       # Arithmetic Memory Ratio
+system.cpu.system.cpu.loop_14.TargetPC        4198502                       # The Start Point of the Loop
+system.cpu.system.cpu.loop_14.BranchPC        4199046                       # The End Point of the Loop
+system.cpu.system.cpu.loop_14.iterNum               1                       # The number of iterations of this Loop
+system.cpu.system.cpu.loop_14.ArthmNum            661                       # The number of Arithmetic operations within the loop
+system.cpu.system.cpu.loop_14.LoadNum              95                       # The number of Load in the loop
+system.cpu.system.cpu.loop_14.StoreNum             71                       # The number of Store in the loop
+system.cpu.AMratio                           3.981928                       # Arithmetic Memory Ratio
+system.cpu.system.cpu.loop_15.TargetPC        4198721                       # The Start Point of the Loop
+system.cpu.system.cpu.loop_15.BranchPC        4198751                       # The End Point of the Loop
+system.cpu.system.cpu.loop_15.iterNum              23                       # The number of iterations of this Loop
+system.cpu.system.cpu.loop_15.ArthmNum            391                       # The number of Arithmetic operations within the loop
+system.cpu.system.cpu.loop_15.LoadNum              69                       # The number of Load in the loop
+system.cpu.system.cpu.loop_15.StoreNum             46                       # The number of Store in the loop
+system.cpu.AMratio                           3.400000                       # Arithmetic Memory Ratio
+system.cpu.system.cpu.loop_16.TargetPC        4200392                       # The Start Point of the Loop
+system.cpu.system.cpu.loop_16.BranchPC        4200404                       # The End Point of the Loop
+system.cpu.system.cpu.loop_16.iterNum               3                       # The number of iterations of this Loop
+system.cpu.system.cpu.loop_16.ArthmNum             27                       # The number of Arithmetic operations within the loop
+system.cpu.system.cpu.loop_16.LoadNum               3                       # The number of Load in the loop
+system.cpu.system.cpu.loop_16.StoreNum              0                       # The number of Store in the loop
+system.cpu.AMratio                                  9                       # Arithmetic Memory Ratio
+system.cpu.system.cpu.loop_17.TargetPC        4511435                       # The Start Point of the Loop
+system.cpu.system.cpu.loop_17.BranchPC        4511516                       # The End Point of the Loop
+system.cpu.system.cpu.loop_17.iterNum               2                       # The number of iterations of this Loop
+system.cpu.system.cpu.loop_17.ArthmNum             60                       # The number of Arithmetic operations within the loop
+system.cpu.system.cpu.loop_17.LoadNum               4                       # The number of Load in the loop
+system.cpu.system.cpu.loop_17.StoreNum              0                       # The number of Store in the loop
+system.cpu.AMratio                                 15                       # Arithmetic Memory Ratio
+system.cpu.system.cpu.loop_18.TargetPC        4511518                       # The Start Point of the Loop
+system.cpu.system.cpu.loop_18.BranchPC        4511533                       # The End Point of the Loop
+system.cpu.system.cpu.loop_18.iterNum               1                       # The number of iterations of this Loop
+system.cpu.system.cpu.loop_18.ArthmNum             14                       # The number of Arithmetic operations within the loop
+system.cpu.system.cpu.loop_18.LoadNum               4                       # The number of Load in the loop
+system.cpu.system.cpu.loop_18.StoreNum              0                       # The number of Store in the loop
+system.cpu.AMratio                           3.500000                       # Arithmetic Memory Ratio
+system.cpu.system.cpu.loop_19.TargetPC        4198792                       # The Start Point of the Loop
+system.cpu.system.cpu.loop_19.BranchPC        4199486                       # The End Point of the Loop
+system.cpu.system.cpu.loop_19.iterNum               1                       # The number of iterations of this Loop
+system.cpu.system.cpu.loop_19.ArthmNum             93                       # The number of Arithmetic operations within the loop
+system.cpu.system.cpu.loop_19.LoadNum              16                       # The number of Load in the loop
+system.cpu.system.cpu.loop_19.StoreNum             11                       # The number of Store in the loop
+system.cpu.AMratio                           3.444444                       # Arithmetic Memory Ratio
+system.cpu.system.cpu.loop_20.TargetPC        4511704                       # The Start Point of the Loop
+system.cpu.system.cpu.loop_20.BranchPC        4511784                       # The End Point of the Loop
+system.cpu.system.cpu.loop_20.iterNum               1                       # The number of iterations of this Loop
+system.cpu.system.cpu.loop_20.ArthmNum             31                       # The number of Arithmetic operations within the loop
+system.cpu.system.cpu.loop_20.LoadNum               3                       # The number of Load in the loop
+system.cpu.system.cpu.loop_20.StoreNum              5                       # The number of Store in the loop
+system.cpu.AMratio                           3.875000                       # Arithmetic Memory Ratio
+system.cpu.system.cpu.loop_21.TargetPC        4716568                       # The Start Point of the Loop
+system.cpu.system.cpu.loop_21.BranchPC        4716591                       # The End Point of the Loop
+system.cpu.system.cpu.loop_21.iterNum               5                       # The number of iterations of this Loop
+system.cpu.system.cpu.loop_21.ArthmNum             53                       # The number of Arithmetic operations within the loop
+system.cpu.system.cpu.loop_21.LoadNum               5                       # The number of Load in the loop
+system.cpu.system.cpu.loop_21.StoreNum              0                       # The number of Store in the loop
+system.cpu.AMratio                          10.600000                       # Arithmetic Memory Ratio
+system.cpu.system.cpu.loop_22.TargetPC        4321456                       # The Start Point of the Loop
+system.cpu.system.cpu.loop_22.BranchPC        4323523                       # The End Point of the Loop
+system.cpu.system.cpu.loop_22.iterNum               1                       # The number of iterations of this Loop
+system.cpu.system.cpu.loop_22.ArthmNum            778                       # The number of Arithmetic operations within the loop
+system.cpu.system.cpu.loop_22.LoadNum              72                       # The number of Load in the loop
+system.cpu.system.cpu.loop_22.StoreNum             28                       # The number of Store in the loop
+system.cpu.AMratio                           7.780000                       # Arithmetic Memory Ratio
+system.cpu.system.cpu.loop_23.TargetPC        4299840                       # The Start Point of the Loop
+system.cpu.system.cpu.loop_23.BranchPC        4299957                       # The End Point of the Loop
+system.cpu.system.cpu.loop_23.iterNum              30                       # The number of iterations of this Loop
+system.cpu.system.cpu.loop_23.ArthmNum           1530                       # The number of Arithmetic operations within the loop
+system.cpu.system.cpu.loop_23.LoadNum               0                       # The number of Load in the loop
+system.cpu.system.cpu.loop_23.StoreNum            240                       # The number of Store in the loop
+system.cpu.AMratio                           6.375000                       # Arithmetic Memory Ratio
+system.cpu.system.cpu.loop_24.TargetPC        4321501                       # The Start Point of the Loop
+system.cpu.system.cpu.loop_24.BranchPC        4321927                       # The End Point of the Loop
+system.cpu.system.cpu.loop_24.iterNum               1                       # The number of iterations of this Loop
+system.cpu.system.cpu.loop_24.ArthmNum            103                       # The number of Arithmetic operations within the loop
+system.cpu.system.cpu.loop_24.LoadNum              11                       # The number of Load in the loop
+system.cpu.system.cpu.loop_24.StoreNum              3                       # The number of Store in the loop
+system.cpu.AMratio                           7.357143                       # Arithmetic Memory Ratio
+system.cpu.system.cpu.loop_25.TargetPC        4321522                       # The Start Point of the Loop
+system.cpu.system.cpu.loop_25.BranchPC        4321779                       # The End Point of the Loop
+system.cpu.system.cpu.loop_25.iterNum               1                       # The number of iterations of this Loop
+system.cpu.system.cpu.loop_25.ArthmNum             46                       # The number of Arithmetic operations within the loop
+system.cpu.system.cpu.loop_25.LoadNum               3                       # The number of Load in the loop
+system.cpu.system.cpu.loop_25.StoreNum              1                       # The number of Store in the loop
+system.cpu.AMratio                          11.500000                       # Arithmetic Memory Ratio
+system.cpu.system.cpu.loop_26.TargetPC        4312156                       # The Start Point of the Loop
+system.cpu.system.cpu.loop_26.BranchPC        4313029                       # The End Point of the Loop
+system.cpu.system.cpu.loop_26.iterNum               5                       # The number of iterations of this Loop
+system.cpu.system.cpu.loop_26.ArthmNum            535                       # The number of Arithmetic operations within the loop
+system.cpu.system.cpu.loop_26.LoadNum              53                       # The number of Load in the loop
+system.cpu.system.cpu.loop_26.StoreNum             99                       # The number of Store in the loop
+system.cpu.AMratio                           3.519737                       # Arithmetic Memory Ratio
+system.cpu.system.cpu.loop_27.TargetPC        4312206                       # The Start Point of the Loop
+system.cpu.system.cpu.loop_27.BranchPC        4313769                       # The End Point of the Loop
+system.cpu.system.cpu.loop_27.iterNum               1                       # The number of iterations of this Loop
+system.cpu.system.cpu.loop_27.ArthmNum            649                       # The number of Arithmetic operations within the loop
+system.cpu.system.cpu.loop_27.LoadNum              64                       # The number of Load in the loop
+system.cpu.system.cpu.loop_27.StoreNum             90                       # The number of Store in the loop
+system.cpu.AMratio                           4.214286                       # Arithmetic Memory Ratio
+system.cpu.system.cpu.loop_28.TargetPC        4313159                       # The Start Point of the Loop
+system.cpu.system.cpu.loop_28.BranchPC        4314195                       # The End Point of the Loop
+system.cpu.system.cpu.loop_28.iterNum              10                       # The number of iterations of this Loop
+system.cpu.system.cpu.loop_28.ArthmNum            278                       # The number of Arithmetic operations within the loop
+system.cpu.system.cpu.loop_28.LoadNum              30                       # The number of Load in the loop
+system.cpu.system.cpu.loop_28.StoreNum              3                       # The number of Store in the loop
+system.cpu.AMratio                           8.424242                       # Arithmetic Memory Ratio
+system.cpu.system.cpu.loop_29.TargetPC        4310283                       # The Start Point of the Loop
+system.cpu.system.cpu.loop_29.BranchPC        4310498                       # The End Point of the Loop
+system.cpu.system.cpu.loop_29.iterNum               1                       # The number of iterations of this Loop
+system.cpu.system.cpu.loop_29.ArthmNum             37                       # The number of Arithmetic operations within the loop
+system.cpu.system.cpu.loop_29.LoadNum               5                       # The number of Load in the loop
+system.cpu.system.cpu.loop_29.StoreNum              3                       # The number of Store in the loop
+system.cpu.AMratio                           4.625000                       # Arithmetic Memory Ratio
+system.cpu.system.cpu.loop_30.TargetPC        4310352                       # The Start Point of the Loop
+system.cpu.system.cpu.loop_30.BranchPC        4311175                       # The End Point of the Loop
+system.cpu.system.cpu.loop_30.iterNum               1                       # The number of iterations of this Loop
+system.cpu.system.cpu.loop_30.ArthmNum             68                       # The number of Arithmetic operations within the loop
+system.cpu.system.cpu.loop_30.LoadNum               5                       # The number of Load in the loop
+system.cpu.system.cpu.loop_30.StoreNum              6                       # The number of Store in the loop
+system.cpu.AMratio                           6.181818                       # Arithmetic Memory Ratio
+system.cpu.system.cpu.loop_31.TargetPC        4310915                       # The Start Point of the Loop
+system.cpu.system.cpu.loop_31.BranchPC        4311307                       # The End Point of the Loop
+system.cpu.system.cpu.loop_31.iterNum               1                       # The number of iterations of this Loop
+system.cpu.system.cpu.loop_31.ArthmNum             38                       # The number of Arithmetic operations within the loop
+system.cpu.system.cpu.loop_31.LoadNum               3                       # The number of Load in the loop
+system.cpu.system.cpu.loop_31.StoreNum              5                       # The number of Store in the loop
+system.cpu.AMratio                           4.750000                       # Arithmetic Memory Ratio
+system.cpu.system.cpu.loop_32.TargetPC        4311012                       # The Start Point of the Loop
+system.cpu.system.cpu.loop_32.BranchPC        4311437                       # The End Point of the Loop
+system.cpu.system.cpu.loop_32.iterNum               1                       # The number of iterations of this Loop
+system.cpu.system.cpu.loop_32.ArthmNum             14                       # The number of Arithmetic operations within the loop
+system.cpu.system.cpu.loop_32.LoadNum               0                       # The number of Load in the loop
+system.cpu.system.cpu.loop_32.StoreNum              3                       # The number of Store in the loop
+system.cpu.AMratio                           4.666667                       # Arithmetic Memory Ratio
+system.cpu.system.cpu.loop_33.TargetPC        4309710                       # The Start Point of the Loop
+system.cpu.system.cpu.loop_33.BranchPC        4311046                       # The End Point of the Loop
+system.cpu.system.cpu.loop_33.iterNum               1                       # The number of iterations of this Loop
+system.cpu.system.cpu.loop_33.ArthmNum            303                       # The number of Arithmetic operations within the loop
+system.cpu.system.cpu.loop_33.LoadNum              49                       # The number of Load in the loop
+system.cpu.system.cpu.loop_33.StoreNum             22                       # The number of Store in the loop
+system.cpu.AMratio                           4.267606                       # Arithmetic Memory Ratio
+system.cpu.system.cpu.loop_34.TargetPC        4311938                       # The Start Point of the Loop
+system.cpu.system.cpu.loop_34.BranchPC        4314984                       # The End Point of the Loop
+system.cpu.system.cpu.loop_34.iterNum               4                       # The number of iterations of this Loop
+system.cpu.system.cpu.loop_34.ArthmNum           1710                       # The number of Arithmetic operations within the loop
+system.cpu.system.cpu.loop_34.LoadNum             198                       # The number of Load in the loop
+system.cpu.system.cpu.loop_34.StoreNum            160                       # The number of Store in the loop
+system.cpu.AMratio                           4.776536                       # Arithmetic Memory Ratio
+system.cpu.system.cpu.loop_35.TargetPC        4321578                       # The Start Point of the Loop
+system.cpu.system.cpu.loop_35.BranchPC        4321867                       # The End Point of the Loop
+system.cpu.system.cpu.loop_35.iterNum               1                       # The number of iterations of this Loop
+system.cpu.system.cpu.loop_35.ArthmNum             30                       # The number of Arithmetic operations within the loop
+system.cpu.system.cpu.loop_35.LoadNum               2                       # The number of Load in the loop
+system.cpu.system.cpu.loop_35.StoreNum              1                       # The number of Store in the loop
+system.cpu.AMratio                                 10                       # Arithmetic Memory Ratio
+system.cpu.system.cpu.loop_36.TargetPC        4314837                       # The Start Point of the Loop
+system.cpu.system.cpu.loop_36.BranchPC        4315210                       # The End Point of the Loop
+system.cpu.system.cpu.loop_36.iterNum               6                       # The number of iterations of this Loop
+system.cpu.system.cpu.loop_36.ArthmNum            205                       # The number of Arithmetic operations within the loop
+system.cpu.system.cpu.loop_36.LoadNum              17                       # The number of Load in the loop
+system.cpu.system.cpu.loop_36.StoreNum             18                       # The number of Store in the loop
+system.cpu.AMratio                           5.857143                       # Arithmetic Memory Ratio
+system.cpu.system.cpu.loop_37.TargetPC        4311938                       # The Start Point of the Loop
+system.cpu.system.cpu.loop_37.BranchPC        4314849                       # The End Point of the Loop
+system.cpu.system.cpu.loop_37.iterNum               6                       # The number of iterations of this Loop
+system.cpu.system.cpu.loop_37.ArthmNum           1463                       # The number of Arithmetic operations within the loop
+system.cpu.system.cpu.loop_37.LoadNum             171                       # The number of Load in the loop
+system.cpu.system.cpu.loop_37.StoreNum            141                       # The number of Store in the loop
+system.cpu.AMratio                           4.689103                       # Arithmetic Memory Ratio
+system.cpu.system.cpu.loop_38.TargetPC        4253862                       # The Start Point of the Loop
+system.cpu.system.cpu.loop_38.BranchPC        4253906                       # The End Point of the Loop
+system.cpu.system.cpu.loop_38.iterNum               7                       # The number of iterations of this Loop
+system.cpu.system.cpu.loop_38.ArthmNum            222                       # The number of Arithmetic operations within the loop
+system.cpu.system.cpu.loop_38.LoadNum              55                       # The number of Load in the loop
+system.cpu.system.cpu.loop_38.StoreNum              0                       # The number of Store in the loop
+system.cpu.AMratio                           4.036364                       # Arithmetic Memory Ratio
+system.cpu.system.cpu.loop_39.TargetPC        4486003                       # The Start Point of the Loop
+system.cpu.system.cpu.loop_39.BranchPC        4486029                       # The End Point of the Loop
+system.cpu.system.cpu.loop_39.iterNum              17                       # The number of iterations of this Loop
+system.cpu.system.cpu.loop_39.ArthmNum            187                       # The number of Arithmetic operations within the loop
+system.cpu.system.cpu.loop_39.LoadNum               0                       # The number of Load in the loop
+system.cpu.system.cpu.loop_39.StoreNum            136                       # The number of Store in the loop
+system.cpu.AMratio                           1.375000                       # Arithmetic Memory Ratio
+system.cpu.system.cpu.loop_40.TargetPC        4335066                       # The Start Point of the Loop
+system.cpu.system.cpu.loop_40.BranchPC        4335781                       # The End Point of the Loop
+system.cpu.system.cpu.loop_40.iterNum               1                       # The number of iterations of this Loop
+system.cpu.system.cpu.loop_40.ArthmNum             18                       # The number of Arithmetic operations within the loop
+system.cpu.system.cpu.loop_40.LoadNum               5                       # The number of Load in the loop
+system.cpu.system.cpu.loop_40.StoreNum              0                       # The number of Store in the loop
+system.cpu.AMratio                           3.600000                       # Arithmetic Memory Ratio
+system.cpu.system.cpu.loop_41.TargetPC        4699507                       # The Start Point of the Loop
+system.cpu.system.cpu.loop_41.BranchPC        4699834                       # The End Point of the Loop
+system.cpu.system.cpu.loop_41.iterNum               1                       # The number of iterations of this Loop
+system.cpu.system.cpu.loop_41.ArthmNum             59                       # The number of Arithmetic operations within the loop
+system.cpu.system.cpu.loop_41.LoadNum               8                       # The number of Load in the loop
+system.cpu.system.cpu.loop_41.StoreNum              8                       # The number of Store in the loop
+system.cpu.AMratio                           3.687500                       # Arithmetic Memory Ratio
+system.cpu.system.cpu.loop_42.TargetPC        4699638                       # The Start Point of the Loop
+system.cpu.system.cpu.loop_42.BranchPC        4700039                       # The End Point of the Loop
+system.cpu.system.cpu.loop_42.iterNum               1                       # The number of iterations of this Loop
+system.cpu.system.cpu.loop_42.ArthmNum             32                       # The number of Arithmetic operations within the loop
+system.cpu.system.cpu.loop_42.LoadNum               7                       # The number of Load in the loop
+system.cpu.system.cpu.loop_42.StoreNum              3                       # The number of Store in the loop
+system.cpu.AMratio                           3.200000                       # Arithmetic Memory Ratio
+system.cpu.system.cpu.loop_43.TargetPC        4506381                       # The Start Point of the Loop
+system.cpu.system.cpu.loop_43.BranchPC        4507870                       # The End Point of the Loop
+system.cpu.system.cpu.loop_43.iterNum               1                       # The number of iterations of this Loop
+system.cpu.system.cpu.loop_43.ArthmNum            354                       # The number of Arithmetic operations within the loop
+system.cpu.system.cpu.loop_43.LoadNum              38                       # The number of Load in the loop
+system.cpu.system.cpu.loop_43.StoreNum             23                       # The number of Store in the loop
+system.cpu.AMratio                           5.803279                       # Arithmetic Memory Ratio
+system.cpu.system.cpu.loop_44.TargetPC        4506542                       # The Start Point of the Loop
+system.cpu.system.cpu.loop_44.BranchPC        4507990                       # The End Point of the Loop
+system.cpu.system.cpu.loop_44.iterNum               1                       # The number of iterations of this Loop
+system.cpu.system.cpu.loop_44.ArthmNum            338                       # The number of Arithmetic operations within the loop
+system.cpu.system.cpu.loop_44.LoadNum              36                       # The number of Load in the loop
+system.cpu.system.cpu.loop_44.StoreNum             23                       # The number of Store in the loop
+system.cpu.AMratio                           5.728814                       # Arithmetic Memory Ratio
+system.cpu.system.cpu.loop_45.TargetPC        4506586                       # The Start Point of the Loop
+system.cpu.system.cpu.loop_45.BranchPC        4508083                       # The End Point of the Loop
+system.cpu.system.cpu.loop_45.iterNum               1                       # The number of iterations of this Loop
+system.cpu.system.cpu.loop_45.ArthmNum            363                       # The number of Arithmetic operations within the loop
+system.cpu.system.cpu.loop_45.LoadNum              35                       # The number of Load in the loop
+system.cpu.system.cpu.loop_45.StoreNum             23                       # The number of Store in the loop
+system.cpu.AMratio                           6.258621                       # Arithmetic Memory Ratio
+system.cpu.system.cpu.loop_46.TargetPC        4506630                       # The Start Point of the Loop
+system.cpu.system.cpu.loop_46.BranchPC        4508060                       # The End Point of the Loop
+system.cpu.system.cpu.loop_46.iterNum               1                       # The number of iterations of this Loop
+system.cpu.system.cpu.loop_46.ArthmNum            350                       # The number of Arithmetic operations within the loop
+system.cpu.system.cpu.loop_46.LoadNum              34                       # The number of Load in the loop
+system.cpu.system.cpu.loop_46.StoreNum             23                       # The number of Store in the loop
+system.cpu.AMratio                           6.140351                       # Arithmetic Memory Ratio
+system.cpu.system.cpu.loop_47.TargetPC        4506674                       # The Start Point of the Loop
+system.cpu.system.cpu.loop_47.BranchPC        4508040                       # The End Point of the Loop
+system.cpu.system.cpu.loop_47.iterNum               1                       # The number of iterations of this Loop
+system.cpu.system.cpu.loop_47.ArthmNum            338                       # The number of Arithmetic operations within the loop
+system.cpu.system.cpu.loop_47.LoadNum              33                       # The number of Load in the loop
+system.cpu.system.cpu.loop_47.StoreNum             23                       # The number of Store in the loop
+system.cpu.AMratio                           6.035714                       # Arithmetic Memory Ratio
+system.cpu.system.cpu.loop_48.TargetPC        4506718                       # The Start Point of the Loop
+system.cpu.system.cpu.loop_48.BranchPC        4508023                       # The End Point of the Loop
+system.cpu.system.cpu.loop_48.iterNum               1                       # The number of iterations of this Loop
+system.cpu.system.cpu.loop_48.ArthmNum            327                       # The number of Arithmetic operations within the loop
+system.cpu.system.cpu.loop_48.LoadNum              32                       # The number of Load in the loop
+system.cpu.system.cpu.loop_48.StoreNum             23                       # The number of Store in the loop
+system.cpu.AMratio                           5.945455                       # Arithmetic Memory Ratio
+system.cpu.system.cpu.loop_49.TargetPC        4506768                       # The Start Point of the Loop
+system.cpu.system.cpu.loop_49.BranchPC        4508009                       # The End Point of the Loop
+system.cpu.system.cpu.loop_49.iterNum               1                       # The number of iterations of this Loop
+system.cpu.system.cpu.loop_49.ArthmNum            317                       # The number of Arithmetic operations within the loop
+system.cpu.system.cpu.loop_49.LoadNum              31                       # The number of Load in the loop
+system.cpu.system.cpu.loop_49.StoreNum             23                       # The number of Store in the loop
+system.cpu.AMratio                           5.870370                       # Arithmetic Memory Ratio
+system.cpu.system.cpu.loop_50.TargetPC        4506818                       # The Start Point of the Loop
+system.cpu.system.cpu.loop_50.BranchPC        4507998                       # The End Point of the Loop
+system.cpu.system.cpu.loop_50.iterNum               1                       # The number of iterations of this Loop
+system.cpu.system.cpu.loop_50.ArthmNum            308                       # The number of Arithmetic operations within the loop
+system.cpu.system.cpu.loop_50.LoadNum              30                       # The number of Load in the loop
+system.cpu.system.cpu.loop_50.StoreNum             23                       # The number of Store in the loop
+system.cpu.AMratio                           5.811321                       # Arithmetic Memory Ratio
+system.cpu.system.cpu.loop_51.TargetPC        4707256                       # The Start Point of the Loop
+system.cpu.system.cpu.loop_51.BranchPC        4707289                       # The End Point of the Loop
+system.cpu.system.cpu.loop_51.iterNum               1                       # The number of iterations of this Loop
+system.cpu.system.cpu.loop_51.ArthmNum             14                       # The number of Arithmetic operations within the loop
+system.cpu.system.cpu.loop_51.LoadNum               0                       # The number of Load in the loop
+system.cpu.system.cpu.loop_51.StoreNum              0                       # The number of Store in the loop
+system.cpu.AMratio                                inf                       # Arithmetic Memory Ratio
+system.cpu.system.cpu.loop_52.TargetPC        4707582                       # The Start Point of the Loop
+system.cpu.system.cpu.loop_52.BranchPC        4707894                       # The End Point of the Loop
+system.cpu.system.cpu.loop_52.iterNum               1                       # The number of iterations of this Loop
+system.cpu.system.cpu.loop_52.ArthmNum             48                       # The number of Arithmetic operations within the loop
+system.cpu.system.cpu.loop_52.LoadNum               8                       # The number of Load in the loop
+system.cpu.system.cpu.loop_52.StoreNum              4                       # The number of Store in the loop
+system.cpu.AMratio                                  4                       # Arithmetic Memory Ratio
+system.cpu.system.cpu.loop_53.TargetPC        4323051                       # The Start Point of the Loop
+system.cpu.system.cpu.loop_53.BranchPC        4323307                       # The End Point of the Loop
+system.cpu.system.cpu.loop_53.iterNum               7                       # The number of iterations of this Loop
+system.cpu.system.cpu.loop_53.ArthmNum            392                       # The number of Arithmetic operations within the loop
+system.cpu.system.cpu.loop_53.LoadNum              28                       # The number of Load in the loop
+system.cpu.system.cpu.loop_53.StoreNum              7                       # The number of Store in the loop
+system.cpu.AMratio                          11.200000                       # Arithmetic Memory Ratio
+system.cpu.system.cpu.loop_54.TargetPC        4323110                       # The Start Point of the Loop
+system.cpu.system.cpu.loop_54.BranchPC        4323387                       # The End Point of the Loop
+system.cpu.system.cpu.loop_54.iterNum               3                       # The number of iterations of this Loop
+system.cpu.system.cpu.loop_54.ArthmNum            255                       # The number of Arithmetic operations within the loop
+system.cpu.system.cpu.loop_54.LoadNum              16                       # The number of Load in the loop
+system.cpu.system.cpu.loop_54.StoreNum              7                       # The number of Store in the loop
+system.cpu.AMratio                          11.086957                       # Arithmetic Memory Ratio
+system.cpu.system.cpu.loop_55.TargetPC        4687790                       # The Start Point of the Loop
+system.cpu.system.cpu.loop_55.BranchPC        4687892                       # The End Point of the Loop
+system.cpu.system.cpu.loop_55.iterNum               3                       # The number of iterations of this Loop
+system.cpu.system.cpu.loop_55.ArthmNum             97                       # The number of Arithmetic operations within the loop
+system.cpu.system.cpu.loop_55.LoadNum              11                       # The number of Load in the loop
+system.cpu.system.cpu.loop_55.StoreNum             15                       # The number of Store in the loop
+system.cpu.AMratio                           3.730769                       # Arithmetic Memory Ratio
+system.cpu.system.cpu.loop_56.TargetPC        4507368                       # The Start Point of the Loop
+system.cpu.system.cpu.loop_56.BranchPC        4507672                       # The End Point of the Loop
+system.cpu.system.cpu.loop_56.iterNum               1                       # The number of iterations of this Loop
+system.cpu.system.cpu.loop_56.ArthmNum             28                       # The number of Arithmetic operations within the loop
+system.cpu.system.cpu.loop_56.LoadNum               2                       # The number of Load in the loop
+system.cpu.system.cpu.loop_56.StoreNum              1                       # The number of Store in the loop
+system.cpu.AMratio                           9.333333                       # Arithmetic Memory Ratio
+system.cpu.system.cpu.loop_57.TargetPC        4507440                       # The Start Point of the Loop
+system.cpu.system.cpu.loop_57.BranchPC        4507811                       # The End Point of the Loop
+system.cpu.system.cpu.loop_57.iterNum               1                       # The number of iterations of this Loop
+system.cpu.system.cpu.loop_57.ArthmNum             98                       # The number of Arithmetic operations within the loop
+system.cpu.system.cpu.loop_57.LoadNum               8                       # The number of Load in the loop
+system.cpu.system.cpu.loop_57.StoreNum              1                       # The number of Store in the loop
+system.cpu.AMratio                          10.888889                       # Arithmetic Memory Ratio
+system.cpu.system.cpu.loop_58.TargetPC        4507760                       # The Start Point of the Loop
+system.cpu.system.cpu.loop_58.BranchPC        4507783                       # The End Point of the Loop
+system.cpu.system.cpu.loop_58.iterNum               4                       # The number of iterations of this Loop
+system.cpu.system.cpu.loop_58.ArthmNum             45                       # The number of Arithmetic operations within the loop
+system.cpu.system.cpu.loop_58.LoadNum               4                       # The number of Load in the loop
+system.cpu.system.cpu.loop_58.StoreNum              0                       # The number of Store in the loop
+system.cpu.AMratio                          11.250000                       # Arithmetic Memory Ratio
+system.cpu.system.cpu.loop_59.TargetPC        4254834                       # The Start Point of the Loop
+system.cpu.system.cpu.loop_59.BranchPC        4254908                       # The End Point of the Loop
+system.cpu.system.cpu.loop_59.iterNum               1                       # The number of iterations of this Loop
+system.cpu.system.cpu.loop_59.ArthmNum             18                       # The number of Arithmetic operations within the loop
+system.cpu.system.cpu.loop_59.LoadNum               4                       # The number of Load in the loop
+system.cpu.system.cpu.loop_59.StoreNum              2                       # The number of Store in the loop
+system.cpu.AMratio                                  3                       # Arithmetic Memory Ratio
+system.cpu.system.cpu.loop_60.TargetPC        4780240                       # The Start Point of the Loop
+system.cpu.system.cpu.loop_60.BranchPC        4780452                       # The End Point of the Loop
+system.cpu.system.cpu.loop_60.iterNum               1                       # The number of iterations of this Loop
+system.cpu.system.cpu.loop_60.ArthmNum             31                       # The number of Arithmetic operations within the loop
+system.cpu.system.cpu.loop_60.LoadNum               4                       # The number of Load in the loop
+system.cpu.system.cpu.loop_60.StoreNum              8                       # The number of Store in the loop
+system.cpu.AMratio                           2.583333                       # Arithmetic Memory Ratio
+system.cpu.system.cpu.loop_61.TargetPC        4197056                       # The Start Point of the Loop
+system.cpu.system.cpu.loop_61.BranchPC        4197214                       # The End Point of the Loop
+system.cpu.system.cpu.loop_61.iterNum               1                       # The number of iterations of this Loop
+system.cpu.system.cpu.loop_61.ArthmNum             55                       # The number of Arithmetic operations within the loop
+system.cpu.system.cpu.loop_61.LoadNum               5                       # The number of Load in the loop
+system.cpu.system.cpu.loop_61.StoreNum              5                       # The number of Store in the loop
+system.cpu.AMratio                           5.500000                       # Arithmetic Memory Ratio
+system.cpu.system.cpu.loop_62.TargetPC        4201024                       # The Start Point of the Loop
+system.cpu.system.cpu.loop_62.BranchPC        4201043                       # The End Point of the Loop
+system.cpu.system.cpu.loop_62.iterNum               1                       # The number of iterations of this Loop
+system.cpu.system.cpu.loop_62.ArthmNum             11                       # The number of Arithmetic operations within the loop
+system.cpu.system.cpu.loop_62.LoadNum               1                       # The number of Load in the loop
+system.cpu.system.cpu.loop_62.StoreNum              1                       # The number of Store in the loop
+system.cpu.AMratio                           5.500000                       # Arithmetic Memory Ratio
+system.cpu.system.cpu.loop_63.TargetPC        4195950                       # The Start Point of the Loop
+system.cpu.system.cpu.loop_63.BranchPC        4196022                       # The End Point of the Loop
+system.cpu.system.cpu.loop_63.iterNum               1                       # The number of iterations of this Loop
+system.cpu.system.cpu.loop_63.ArthmNum             69                       # The number of Arithmetic operations within the loop
+system.cpu.system.cpu.loop_63.LoadNum               9                       # The number of Load in the loop
+system.cpu.system.cpu.loop_63.StoreNum              1                       # The number of Store in the loop
+system.cpu.AMratio                           6.900000                       # Arithmetic Memory Ratio
+system.cpu.system.cpu.loop_64.TargetPC        4503090                       # The Start Point of the Loop
+system.cpu.system.cpu.loop_64.BranchPC        4503162                       # The End Point of the Loop
+system.cpu.system.cpu.loop_64.iterNum               1                       # The number of iterations of this Loop
+system.cpu.system.cpu.loop_64.ArthmNum             13                       # The number of Arithmetic operations within the loop
+system.cpu.system.cpu.loop_64.LoadNum               2                       # The number of Load in the loop
+system.cpu.system.cpu.loop_64.StoreNum              3                       # The number of Store in the loop
+system.cpu.AMratio                           2.600000                       # Arithmetic Memory Ratio
+system.cpu.system.cpu.loop_65.TargetPC        4649091                       # The Start Point of the Loop
+system.cpu.system.cpu.loop_65.BranchPC        4649246                       # The End Point of the Loop
+system.cpu.system.cpu.loop_65.iterNum               1                       # The number of iterations of this Loop
+system.cpu.system.cpu.loop_65.ArthmNum             52                       # The number of Arithmetic operations within the loop
+system.cpu.system.cpu.loop_65.LoadNum               7                       # The number of Load in the loop
+system.cpu.system.cpu.loop_65.StoreNum              2                       # The number of Store in the loop
+system.cpu.AMratio                           5.777778                       # Arithmetic Memory Ratio
+system.cpu.system.cpu.loop_66.TargetPC        4649108                       # The Start Point of the Loop
+system.cpu.system.cpu.loop_66.BranchPC        4649197                       # The End Point of the Loop
+system.cpu.system.cpu.loop_66.iterNum               1                       # The number of iterations of this Loop
+system.cpu.system.cpu.loop_66.ArthmNum             41                       # The number of Arithmetic operations within the loop
+system.cpu.system.cpu.loop_66.LoadNum               6                       # The number of Load in the loop
+system.cpu.system.cpu.loop_66.StoreNum              2                       # The number of Store in the loop
+system.cpu.AMratio                           5.125000                       # Arithmetic Memory Ratio
+system.cpu.system.cpu.loop_67.TargetPC        4286850                       # The Start Point of the Loop
+system.cpu.system.cpu.loop_67.BranchPC        4286908                       # The End Point of the Loop
+system.cpu.system.cpu.loop_67.iterNum               1                       # The number of iterations of this Loop
+system.cpu.system.cpu.loop_67.ArthmNum             12                       # The number of Arithmetic operations within the loop
+system.cpu.system.cpu.loop_67.LoadNum               4                       # The number of Load in the loop
+system.cpu.system.cpu.loop_67.StoreNum              0                       # The number of Store in the loop
+system.cpu.AMratio                                  3                       # Arithmetic Memory Ratio
+system.cpu.system.cpu.loop_68.TargetPC        4281309                       # The Start Point of the Loop
+system.cpu.system.cpu.loop_68.BranchPC        4281610                       # The End Point of the Loop
+system.cpu.system.cpu.loop_68.iterNum               1                       # The number of iterations of this Loop
+system.cpu.system.cpu.loop_68.ArthmNum             93                       # The number of Arithmetic operations within the loop
+system.cpu.system.cpu.loop_68.LoadNum              14                       # The number of Load in the loop
+system.cpu.system.cpu.loop_68.StoreNum              8                       # The number of Store in the loop
+system.cpu.AMratio                           4.227273                       # Arithmetic Memory Ratio
+system.cpu.system.cpu.loop_69.TargetPC        4277872                       # The Start Point of the Loop
+system.cpu.system.cpu.loop_69.BranchPC        4281414                       # The End Point of the Loop
+system.cpu.system.cpu.loop_69.iterNum               3                       # The number of iterations of this Loop
+system.cpu.system.cpu.loop_69.ArthmNum           2253                       # The number of Arithmetic operations within the loop
+system.cpu.system.cpu.loop_69.LoadNum             304                       # The number of Load in the loop
+system.cpu.system.cpu.loop_69.StoreNum            180                       # The number of Store in the loop
+system.cpu.AMratio                           4.654959                       # Arithmetic Memory Ratio
+system.cpu.system.cpu.loop_70.TargetPC        4287124                       # The Start Point of the Loop
+system.cpu.system.cpu.loop_70.BranchPC        4287208                       # The End Point of the Loop
+system.cpu.system.cpu.loop_70.iterNum              27                       # The number of iterations of this Loop
+system.cpu.system.cpu.loop_70.ArthmNum            888                       # The number of Arithmetic operations within the loop
+system.cpu.system.cpu.loop_70.LoadNum             130                       # The number of Load in the loop
+system.cpu.system.cpu.loop_70.StoreNum             26                       # The number of Store in the loop
+system.cpu.AMratio                           5.692308                       # Arithmetic Memory Ratio
+system.cpu.system.cpu.loop_71.TargetPC        4275459                       # The Start Point of the Loop
+system.cpu.system.cpu.loop_71.BranchPC        4275609                       # The End Point of the Loop
+system.cpu.system.cpu.loop_71.iterNum               1                       # The number of iterations of this Loop
+system.cpu.system.cpu.loop_71.ArthmNum            464                       # The number of Arithmetic operations within the loop
+system.cpu.system.cpu.loop_71.LoadNum             113                       # The number of Load in the loop
+system.cpu.system.cpu.loop_71.StoreNum              2                       # The number of Store in the loop
+system.cpu.AMratio                           4.034783                       # Arithmetic Memory Ratio
+system.cpu.system.cpu.loop_72.TargetPC        4281184                       # The Start Point of the Loop
+system.cpu.system.cpu.loop_72.BranchPC        4285621                       # The End Point of the Loop
+system.cpu.system.cpu.loop_72.iterNum               1                       # The number of iterations of this Loop
+system.cpu.system.cpu.loop_72.ArthmNum            660                       # The number of Arithmetic operations within the loop
+system.cpu.system.cpu.loop_72.LoadNum              95                       # The number of Load in the loop
+system.cpu.system.cpu.loop_72.StoreNum             58                       # The number of Store in the loop
+system.cpu.AMratio                           4.313725                       # Arithmetic Memory Ratio
+system.cpu.system.cpu.loop_73.TargetPC        4273432                       # The Start Point of the Loop
+system.cpu.system.cpu.loop_73.BranchPC        4273470                       # The End Point of the Loop
+system.cpu.system.cpu.loop_73.iterNum               3                       # The number of iterations of this Loop
+system.cpu.system.cpu.loop_73.ArthmNum             57                       # The number of Arithmetic operations within the loop
+system.cpu.system.cpu.loop_73.LoadNum               4                       # The number of Load in the loop
+system.cpu.system.cpu.loop_73.StoreNum              3                       # The number of Store in the loop
+system.cpu.AMratio                           8.142857                       # Arithmetic Memory Ratio
+system.cpu.system.cpu.loop_74.TargetPC        4273499                       # The Start Point of the Loop
+system.cpu.system.cpu.loop_74.BranchPC        4273542                       # The End Point of the Loop
+system.cpu.system.cpu.loop_74.iterNum               3                       # The number of iterations of this Loop
+system.cpu.system.cpu.loop_74.ArthmNum             70                       # The number of Arithmetic operations within the loop
+system.cpu.system.cpu.loop_74.LoadNum              18                       # The number of Load in the loop
+system.cpu.system.cpu.loop_74.StoreNum              0                       # The number of Store in the loop
+system.cpu.AMratio                           3.888889                       # Arithmetic Memory Ratio
+system.cpu.system.cpu.loop_75.TargetPC        4278107                       # The Start Point of the Loop
+system.cpu.system.cpu.loop_75.BranchPC        4278166                       # The End Point of the Loop
+system.cpu.system.cpu.loop_75.iterNum               3                       # The number of iterations of this Loop
+system.cpu.system.cpu.loop_75.ArthmNum             93                       # The number of Arithmetic operations within the loop
+system.cpu.system.cpu.loop_75.LoadNum              23                       # The number of Load in the loop
+system.cpu.system.cpu.loop_75.StoreNum              3                       # The number of Store in the loop
+system.cpu.AMratio                           3.576923                       # Arithmetic Memory Ratio
+system.cpu.system.cpu.loop_76.TargetPC        4281280                       # The Start Point of the Loop
+system.cpu.system.cpu.loop_76.BranchPC        4281446                       # The End Point of the Loop
+system.cpu.system.cpu.loop_76.iterNum               1                       # The number of iterations of this Loop
+system.cpu.system.cpu.loop_76.ArthmNum             42                       # The number of Arithmetic operations within the loop
+system.cpu.system.cpu.loop_76.LoadNum              10                       # The number of Load in the loop
+system.cpu.system.cpu.loop_76.StoreNum              0                       # The number of Store in the loop
+system.cpu.AMratio                           4.200000                       # Arithmetic Memory Ratio
+system.cpu.system.cpu.loop_77.TargetPC        4261176                       # The Start Point of the Loop
+system.cpu.system.cpu.loop_77.BranchPC        4261349                       # The End Point of the Loop
+system.cpu.system.cpu.loop_77.iterNum               1                       # The number of iterations of this Loop
+system.cpu.system.cpu.loop_77.ArthmNum             54                       # The number of Arithmetic operations within the loop
+system.cpu.system.cpu.loop_77.LoadNum              10                       # The number of Load in the loop
+system.cpu.system.cpu.loop_77.StoreNum              3                       # The number of Store in the loop
+system.cpu.AMratio                           4.153846                       # Arithmetic Memory Ratio
+system.cpu.system.cpu.loop_78.TargetPC        4312144                       # The Start Point of the Loop
+system.cpu.system.cpu.loop_78.BranchPC        4313869                       # The End Point of the Loop
+system.cpu.system.cpu.loop_78.iterNum               3                       # The number of iterations of this Loop
+system.cpu.system.cpu.loop_78.ArthmNum            220                       # The number of Arithmetic operations within the loop
+system.cpu.system.cpu.loop_78.LoadNum              30                       # The number of Load in the loop
+system.cpu.system.cpu.loop_78.StoreNum             20                       # The number of Store in the loop
+system.cpu.AMratio                           4.400000                       # Arithmetic Memory Ratio
+system.cpu.system.cpu.loop_79.TargetPC        4496314                       # The Start Point of the Loop
+system.cpu.system.cpu.loop_79.BranchPC        4496403                       # The End Point of the Loop
+system.cpu.system.cpu.loop_79.iterNum               3                       # The number of iterations of this Loop
+system.cpu.system.cpu.loop_79.ArthmNum            103                       # The number of Arithmetic operations within the loop
+system.cpu.system.cpu.loop_79.LoadNum              21                       # The number of Load in the loop
+system.cpu.system.cpu.loop_79.StoreNum              0                       # The number of Store in the loop
+system.cpu.AMratio                           4.904762                       # Arithmetic Memory Ratio
+system.cpu.system.cpu.loop_80.TargetPC        4309867                       # The Start Point of the Loop
+system.cpu.system.cpu.loop_80.BranchPC        4311575                       # The End Point of the Loop
+system.cpu.system.cpu.loop_80.iterNum               3                       # The number of iterations of this Loop
+system.cpu.system.cpu.loop_80.ArthmNum            271                       # The number of Arithmetic operations within the loop
+system.cpu.system.cpu.loop_80.LoadNum              39                       # The number of Load in the loop
+system.cpu.system.cpu.loop_80.StoreNum             20                       # The number of Store in the loop
+system.cpu.AMratio                           4.593220                       # Arithmetic Memory Ratio
+system.cpu.system.cpu.loop_81.TargetPC        4197300                       # The Start Point of the Loop
+system.cpu.system.cpu.loop_81.BranchPC        4197366                       # The End Point of the Loop
+system.cpu.system.cpu.loop_81.iterNum           65536                       # The number of iterations of this Loop
+system.cpu.system.cpu.loop_81.ArthmNum        1507328                       # The number of Arithmetic operations within the loop
+system.cpu.system.cpu.loop_81.LoadNum          524288                       # The number of Load in the loop
+system.cpu.system.cpu.loop_81.StoreNum         196608                       # The number of Store in the loop
+system.cpu.AMratio                           2.090909                       # Arithmetic Memory Ratio
+system.cpu.system.cpu.loop_82.TargetPC        4584228                       # The Start Point of the Loop
+system.cpu.system.cpu.loop_82.BranchPC        4584483                       # The End Point of the Loop
+system.cpu.system.cpu.loop_82.iterNum               2                       # The number of iterations of this Loop
+system.cpu.system.cpu.loop_82.ArthmNum            220                       # The number of Arithmetic operations within the loop
+system.cpu.system.cpu.loop_82.LoadNum              38                       # The number of Load in the loop
+system.cpu.system.cpu.loop_82.StoreNum             18                       # The number of Store in the loop
+system.cpu.AMratio                           3.928571                       # Arithmetic Memory Ratio
+system.cpu.system.cpu.loop_83.TargetPC        4584558                       # The Start Point of the Loop
+system.cpu.system.cpu.loop_83.BranchPC        4585141                       # The End Point of the Loop
+system.cpu.system.cpu.loop_83.iterNum               2                       # The number of iterations of this Loop
+system.cpu.system.cpu.loop_83.ArthmNum            507                       # The number of Arithmetic operations within the loop
+system.cpu.system.cpu.loop_83.LoadNum              52                       # The number of Load in the loop
+system.cpu.system.cpu.loop_83.StoreNum             88                       # The number of Store in the loop
+system.cpu.AMratio                           3.621429                       # Arithmetic Memory Ratio
+system.cpu.system.cpu.loop_84.TargetPC        4584324                       # The Start Point of the Loop
+system.cpu.system.cpu.loop_84.BranchPC        4584646                       # The End Point of the Loop
+system.cpu.system.cpu.loop_84.iterNum               2                       # The number of iterations of this Loop
+system.cpu.system.cpu.loop_84.ArthmNum            188                       # The number of Arithmetic operations within the loop
+system.cpu.system.cpu.loop_84.LoadNum              38                       # The number of Load in the loop
+system.cpu.system.cpu.loop_84.StoreNum              9                       # The number of Store in the loop
+system.cpu.AMratio                                  4                       # Arithmetic Memory Ratio
+system.cpu.system.cpu.loop_85.TargetPC        4275664                       # The Start Point of the Loop
+system.cpu.system.cpu.loop_85.BranchPC        4275680                       # The End Point of the Loop
+system.cpu.system.cpu.loop_85.iterNum              36                       # The number of iterations of this Loop
+system.cpu.system.cpu.loop_85.ArthmNum            335                       # The number of Arithmetic operations within the loop
+system.cpu.system.cpu.loop_85.LoadNum              36                       # The number of Load in the loop
+system.cpu.system.cpu.loop_85.StoreNum              0                       # The number of Store in the loop
+system.cpu.AMratio                           9.305556                       # Arithmetic Memory Ratio
+system.cpu.system.cpu.loop_86.TargetPC        4275414                       # The Start Point of the Loop
+system.cpu.system.cpu.loop_86.BranchPC        4275682                       # The End Point of the Loop
+system.cpu.system.cpu.loop_86.iterNum              12                       # The number of iterations of this Loop
+system.cpu.system.cpu.loop_86.ArthmNum           1372                       # The number of Arithmetic operations within the loop
+system.cpu.system.cpu.loop_86.LoadNum             162                       # The number of Load in the loop
+system.cpu.system.cpu.loop_86.StoreNum             30                       # The number of Store in the loop
+system.cpu.AMratio                           7.145833                       # Arithmetic Memory Ratio
+system.cpu.system.cpu.loop_87.TargetPC        4586449                       # The Start Point of the Loop
+system.cpu.system.cpu.loop_87.BranchPC        4593413                       # The End Point of the Loop
+system.cpu.system.cpu.loop_87.iterNum               5                       # The number of iterations of this Loop
+system.cpu.system.cpu.loop_87.ArthmNum           1305                       # The number of Arithmetic operations within the loop
+system.cpu.system.cpu.loop_87.LoadNum             230                       # The number of Load in the loop
+system.cpu.system.cpu.loop_87.StoreNum             77                       # The number of Store in the loop
+system.cpu.AMratio                           4.250814                       # Arithmetic Memory Ratio
+system.cpu.system.cpu.loop_88.TargetPC        4586511                       # The Start Point of the Loop
+system.cpu.system.cpu.loop_88.BranchPC        4591099                       # The End Point of the Loop
+system.cpu.system.cpu.loop_88.iterNum               6                       # The number of iterations of this Loop
+system.cpu.system.cpu.loop_88.ArthmNum            917                       # The number of Arithmetic operations within the loop
+system.cpu.system.cpu.loop_88.LoadNum             184                       # The number of Load in the loop
+system.cpu.system.cpu.loop_88.StoreNum             54                       # The number of Store in the loop
+system.cpu.AMratio                           3.852941                       # Arithmetic Memory Ratio
+system.cpu.system.cpu.loop_89.TargetPC        4736208                       # The Start Point of the Loop
+system.cpu.system.cpu.loop_89.BranchPC        4736245                       # The End Point of the Loop
+system.cpu.system.cpu.loop_89.iterNum              21                       # The number of iterations of this Loop
+system.cpu.system.cpu.loop_89.ArthmNum            390                       # The number of Arithmetic operations within the loop
+system.cpu.system.cpu.loop_89.LoadNum              26                       # The number of Load in the loop
+system.cpu.system.cpu.loop_89.StoreNum             26                       # The number of Store in the loop
+system.cpu.AMratio                           7.500000                       # Arithmetic Memory Ratio
+system.cpu.system.cpu.loop_90.TargetPC        4589866                       # The Start Point of the Loop
+system.cpu.system.cpu.loop_90.BranchPC        4591499                       # The End Point of the Loop
+system.cpu.system.cpu.loop_90.iterNum               6                       # The number of iterations of this Loop
+system.cpu.system.cpu.loop_90.ArthmNum            643                       # The number of Arithmetic operations within the loop
+system.cpu.system.cpu.loop_90.LoadNum             104                       # The number of Load in the loop
+system.cpu.system.cpu.loop_90.StoreNum             22                       # The number of Store in the loop
+system.cpu.AMratio                           5.103175                       # Arithmetic Memory Ratio
+system.cpu.system.cpu.loop_91.TargetPC        4589929                       # The Start Point of the Loop
+system.cpu.system.cpu.loop_91.BranchPC        4591276                       # The End Point of the Loop
+system.cpu.system.cpu.loop_91.iterNum               6                       # The number of iterations of this Loop
+system.cpu.system.cpu.loop_91.ArthmNum            446                       # The number of Arithmetic operations within the loop
+system.cpu.system.cpu.loop_91.LoadNum              65                       # The number of Load in the loop
+system.cpu.system.cpu.loop_91.StoreNum             17                       # The number of Store in the loop
+system.cpu.AMratio                           5.439024                       # Arithmetic Memory Ratio
+system.cpu.system.cpu.loop_92.TargetPC        4589980                       # The Start Point of the Loop
+system.cpu.system.cpu.loop_92.BranchPC        4591581                       # The End Point of the Loop
+system.cpu.system.cpu.loop_92.iterNum               6                       # The number of iterations of this Loop
+system.cpu.system.cpu.loop_92.ArthmNum            547                       # The number of Arithmetic operations within the loop
+system.cpu.system.cpu.loop_92.LoadNum              89                       # The number of Load in the loop
+system.cpu.system.cpu.loop_92.StoreNum             22                       # The number of Store in the loop
+system.cpu.AMratio                           4.927928                       # Arithmetic Memory Ratio
+system.cpu.system.cpu.loop_93.TargetPC        4587352                       # The Start Point of the Loop
+system.cpu.system.cpu.loop_93.BranchPC        4590203                       # The End Point of the Loop
+system.cpu.system.cpu.loop_93.iterNum               6                       # The number of iterations of this Loop
+system.cpu.system.cpu.loop_93.ArthmNum            385                       # The number of Arithmetic operations within the loop
+system.cpu.system.cpu.loop_93.LoadNum              70                       # The number of Load in the loop
+system.cpu.system.cpu.loop_93.StoreNum             11                       # The number of Store in the loop
+system.cpu.AMratio                           4.753086                       # Arithmetic Memory Ratio
+system.cpu.system.cpu.loop_94.TargetPC        4585592                       # The Start Point of the Loop
+system.cpu.system.cpu.loop_94.BranchPC        4587359                       # The End Point of the Loop
+system.cpu.system.cpu.loop_94.iterNum               6                       # The number of iterations of this Loop
+system.cpu.system.cpu.loop_94.ArthmNum            839                       # The number of Arithmetic operations within the loop
+system.cpu.system.cpu.loop_94.LoadNum             149                       # The number of Load in the loop
+system.cpu.system.cpu.loop_94.StoreNum             83                       # The number of Store in the loop
+system.cpu.AMratio                           3.616379                       # Arithmetic Memory Ratio
+system.cpu.system.cpu.loop_95.TargetPC        4584821                       # The Start Point of the Loop
+system.cpu.system.cpu.loop_95.BranchPC        4585787                       # The End Point of the Loop
+system.cpu.system.cpu.loop_95.iterNum               4                       # The number of iterations of this Loop
+system.cpu.system.cpu.loop_95.ArthmNum            637                       # The number of Arithmetic operations within the loop
+system.cpu.system.cpu.loop_95.LoadNum              79                       # The number of Load in the loop
+system.cpu.system.cpu.loop_95.StoreNum             96                       # The number of Store in the loop
+system.cpu.AMratio                           3.640000                       # Arithmetic Memory Ratio
+system.cpu.system.cpu.loop_96.TargetPC        4275417                       # The Start Point of the Loop
+system.cpu.system.cpu.loop_96.BranchPC        4276046                       # The End Point of the Loop
+system.cpu.system.cpu.loop_96.iterNum               2                       # The number of iterations of this Loop
+system.cpu.system.cpu.loop_96.ArthmNum           1021                       # The number of Arithmetic operations within the loop
+system.cpu.system.cpu.loop_96.LoadNum             117                       # The number of Load in the loop
+system.cpu.system.cpu.loop_96.StoreNum             22                       # The number of Store in the loop
+system.cpu.AMratio                           7.345324                       # Arithmetic Memory Ratio
+system.cpu.system.cpu.loop_97.TargetPC        4275459                       # The Start Point of the Loop
+system.cpu.system.cpu.loop_97.BranchPC        4275585                       # The End Point of the Loop
+system.cpu.system.cpu.loop_97.iterNum               2                       # The number of iterations of this Loop
+system.cpu.system.cpu.loop_97.ArthmNum            289                       # The number of Arithmetic operations within the loop
+system.cpu.system.cpu.loop_97.LoadNum              74                       # The number of Load in the loop
+system.cpu.system.cpu.loop_97.StoreNum              1                       # The number of Store in the loop
+system.cpu.AMratio                           3.853333                       # Arithmetic Memory Ratio
+system.cpu.system.cpu.loop_98.TargetPC        4584408                       # The Start Point of the Loop
+system.cpu.system.cpu.loop_98.BranchPC        4585793                       # The End Point of the Loop
+system.cpu.system.cpu.loop_98.iterNum               2                       # The number of iterations of this Loop
+system.cpu.system.cpu.loop_98.ArthmNum            714                       # The number of Arithmetic operations within the loop
+system.cpu.system.cpu.loop_98.LoadNum             101                       # The number of Load in the loop
+system.cpu.system.cpu.loop_98.StoreNum             88                       # The number of Store in the loop
+system.cpu.AMratio                           3.777778                       # Arithmetic Memory Ratio
+system.cpu.system.cpu.loop_99.TargetPC        4584434                       # The Start Point of the Loop
+system.cpu.system.cpu.loop_99.BranchPC        4585106                       # The End Point of the Loop
+system.cpu.system.cpu.loop_99.iterNum               2                       # The number of iterations of this Loop
+system.cpu.system.cpu.loop_99.ArthmNum            379                       # The number of Arithmetic operations within the loop
+system.cpu.system.cpu.loop_99.LoadNum              49                       # The number of Load in the loop
+system.cpu.system.cpu.loop_99.StoreNum             54                       # The number of Store in the loop
+system.cpu.AMratio                           3.679612                       # Arithmetic Memory Ratio
+system.cpu.system.cpu.loop_100.TargetPC       4197404                       # The Start Point of the Loop
+system.cpu.system.cpu.loop_100.BranchPC       4197535                       # The End Point of the Loop
+system.cpu.system.cpu.loop_100.iterNum           1000                       # The number of iterations of this Loop
+system.cpu.system.cpu.loop_100.ArthmNum    2424850000                       # The number of Arithmetic operations within the loop
+system.cpu.system.cpu.loop_100.LoadNum      851971000                       # The number of Load in the loop
+system.cpu.system.cpu.loop_100.StoreNum     131074000                       # The number of Store in the loop
+system.cpu.AMratio                           2.466672                       # Arithmetic Memory Ratio
+system.cpu.system.cpu.loop_101.TargetPC       4197413                       # The Start Point of the Loop
+system.cpu.system.cpu.loop_101.BranchPC       4197522                       # The End Point of the Loop
+system.cpu.system.cpu.loop_101.iterNum       65536000                       # The number of iterations of this Loop
+system.cpu.system.cpu.loop_101.ArthmNum    2228226997                       # The number of Arithmetic operations within the loop
+system.cpu.system.cpu.loop_101.LoadNum      851968999                       # The number of Load in the loop
+system.cpu.system.cpu.loop_101.StoreNum     131072000                       # The number of Store in the loop
+system.cpu.AMratio                           2.266667                       # Arithmetic Memory Ratio
+system.cpu.system.cpu.loop_102.TargetPC       4586411                       # The Start Point of the Loop
+system.cpu.system.cpu.loop_102.BranchPC       4588761                       # The End Point of the Loop
+system.cpu.system.cpu.loop_102.iterNum              1                       # The number of iterations of this Loop
+system.cpu.system.cpu.loop_102.ArthmNum            96                       # The number of Arithmetic operations within the loop
+system.cpu.system.cpu.loop_102.LoadNum             19                       # The number of Load in the loop
+system.cpu.system.cpu.loop_102.StoreNum             9                       # The number of Store in the loop
+system.cpu.AMratio                           3.428571                       # Arithmetic Memory Ratio
+system.cpu.system.cpu.loop_103.TargetPC       4254112                       # The Start Point of the Loop
+system.cpu.system.cpu.loop_103.BranchPC       4254326                       # The End Point of the Loop
+system.cpu.system.cpu.loop_103.iterNum              1                       # The number of iterations of this Loop
+system.cpu.system.cpu.loop_103.ArthmNum            34                       # The number of Arithmetic operations within the loop
+system.cpu.system.cpu.loop_103.LoadNum              4                       # The number of Load in the loop
+system.cpu.system.cpu.loop_103.StoreNum             1                       # The number of Store in the loop
+system.cpu.AMratio                           6.800000                       # Arithmetic Memory Ratio
+system.cpu.system.cpu.loop_104.TargetPC       4201112                       # The Start Point of the Loop
+system.cpu.system.cpu.loop_104.BranchPC       4201124                       # The End Point of the Loop
+system.cpu.system.cpu.loop_104.iterNum              1                       # The number of iterations of this Loop
+system.cpu.system.cpu.loop_104.ArthmNum             9                       # The number of Arithmetic operations within the loop
+system.cpu.system.cpu.loop_104.LoadNum              1                       # The number of Load in the loop
+system.cpu.system.cpu.loop_104.StoreNum             1                       # The number of Store in the loop
+system.cpu.AMratio                           4.500000                       # Arithmetic Memory Ratio
+system.cpu.system.cpu.loop_105.TargetPC       4780720                       # The Start Point of the Loop
+system.cpu.system.cpu.loop_105.BranchPC       4781008                       # The End Point of the Loop
+system.cpu.system.cpu.loop_105.iterNum              1                       # The number of iterations of this Loop
+system.cpu.system.cpu.loop_105.ArthmNum            60                       # The number of Arithmetic operations within the loop
+system.cpu.system.cpu.loop_105.LoadNum              8                       # The number of Load in the loop
+system.cpu.system.cpu.loop_105.StoreNum             4                       # The number of Store in the loop
+system.cpu.AMratio                                  5                       # Arithmetic Memory Ratio
+system.cpu.system.cpu.loop_106.TargetPC       4780881                       # The Start Point of the Loop
+system.cpu.system.cpu.loop_106.BranchPC       4781002                       # The End Point of the Loop
+system.cpu.system.cpu.loop_106.iterNum              1                       # The number of iterations of this Loop
+system.cpu.system.cpu.loop_106.ArthmNum            19                       # The number of Arithmetic operations within the loop
+system.cpu.system.cpu.loop_106.LoadNum              5                       # The number of Load in the loop
+system.cpu.system.cpu.loop_106.StoreNum             1                       # The number of Store in the loop
+system.cpu.AMratio                           3.166667                       # Arithmetic Memory Ratio
+system.cpu.system.cpu.loop_107.TargetPC       4254153                       # The Start Point of the Loop
+system.cpu.system.cpu.loop_107.BranchPC       4254393                       # The End Point of the Loop
+system.cpu.system.cpu.loop_107.iterNum              1                       # The number of iterations of this Loop
+system.cpu.system.cpu.loop_107.ArthmNum            29                       # The number of Arithmetic operations within the loop
+system.cpu.system.cpu.loop_107.LoadNum              4                       # The number of Load in the loop
+system.cpu.system.cpu.loop_107.StoreNum             1                       # The number of Store in the loop
+system.cpu.AMratio                           5.800000                       # Arithmetic Memory Ratio
+system.cpu.system.cpu.loop_108.TargetPC       4254032                       # The Start Point of the Loop
+system.cpu.system.cpu.loop_108.BranchPC       4254474                       # The End Point of the Loop
+system.cpu.system.cpu.loop_108.iterNum              1                       # The number of iterations of this Loop
+system.cpu.system.cpu.loop_108.ArthmNum            26                       # The number of Arithmetic operations within the loop
+system.cpu.system.cpu.loop_108.LoadNum              3                       # The number of Load in the loop
+system.cpu.system.cpu.loop_108.StoreNum             1                       # The number of Store in the loop
+system.cpu.AMratio                           6.500000                       # Arithmetic Memory Ratio
+system.cpu.system.cpu.loop_109.TargetPC       4282655                       # The Start Point of the Loop
+system.cpu.system.cpu.loop_109.BranchPC       4283732                       # The End Point of the Loop
+system.cpu.system.cpu.loop_109.iterNum              1                       # The number of iterations of this Loop
+system.cpu.system.cpu.loop_109.ArthmNum           420                       # The number of Arithmetic operations within the loop
+system.cpu.system.cpu.loop_109.LoadNum             63                       # The number of Load in the loop
+system.cpu.system.cpu.loop_109.StoreNum            32                       # The number of Store in the loop
+system.cpu.AMratio                           4.421053                       # Arithmetic Memory Ratio
+system.cpu.system.cpu.loop_110.TargetPC       4282856                       # The Start Point of the Loop
+system.cpu.system.cpu.loop_110.BranchPC       4282903                       # The End Point of the Loop
+system.cpu.system.cpu.loop_110.iterNum              3                       # The number of iterations of this Loop
+system.cpu.system.cpu.loop_110.ArthmNum            50                       # The number of Arithmetic operations within the loop
+system.cpu.system.cpu.loop_110.LoadNum              9                       # The number of Load in the loop
+system.cpu.system.cpu.loop_110.StoreNum             5                       # The number of Store in the loop
+system.cpu.AMratio                           3.571429                       # Arithmetic Memory Ratio
+system.cpu.system.cpu.loop_111.TargetPC       4283035                       # The Start Point of the Loop
+system.cpu.system.cpu.loop_111.BranchPC       4283700                       # The End Point of the Loop
+system.cpu.system.cpu.loop_111.iterNum              1                       # The number of iterations of this Loop
+system.cpu.system.cpu.loop_111.ArthmNum           265                       # The number of Arithmetic operations within the loop
+system.cpu.system.cpu.loop_111.LoadNum             42                       # The number of Load in the loop
+system.cpu.system.cpu.loop_111.StoreNum            18                       # The number of Store in the loop
+system.cpu.AMratio                           4.416667                       # Arithmetic Memory Ratio
+system.cpu.system.cpu.loop_112.TargetPC       4283168                       # The Start Point of the Loop
+system.cpu.system.cpu.loop_112.BranchPC       4283196                       # The End Point of the Loop
+system.cpu.system.cpu.loop_112.iterNum              1                       # The number of iterations of this Loop
+system.cpu.system.cpu.loop_112.ArthmNum            27                       # The number of Arithmetic operations within the loop
+system.cpu.system.cpu.loop_112.LoadNum              5                       # The number of Load in the loop
+system.cpu.system.cpu.loop_112.StoreNum             3                       # The number of Store in the loop
+system.cpu.AMratio                           3.375000                       # Arithmetic Memory Ratio
+system.cpu.system.cpu.loop_113.TargetPC       4283282                       # The Start Point of the Loop
+system.cpu.system.cpu.loop_113.BranchPC       4283803                       # The End Point of the Loop
+system.cpu.system.cpu.loop_113.iterNum              1                       # The number of iterations of this Loop
+system.cpu.system.cpu.loop_113.ArthmNum           145                       # The number of Arithmetic operations within the loop
+system.cpu.system.cpu.loop_113.LoadNum             23                       # The number of Load in the loop
+system.cpu.system.cpu.loop_113.StoreNum            11                       # The number of Store in the loop
+system.cpu.AMratio                           4.264706                       # Arithmetic Memory Ratio
+system.cpu.system.cpu.loop_114.TargetPC       4283295                       # The Start Point of the Loop
+system.cpu.system.cpu.loop_114.BranchPC       4283671                       # The End Point of the Loop
+system.cpu.system.cpu.loop_114.iterNum              1                       # The number of iterations of this Loop
+system.cpu.system.cpu.loop_114.ArthmNum           119                       # The number of Arithmetic operations within the loop
+system.cpu.system.cpu.loop_114.LoadNum             19                       # The number of Load in the loop
+system.cpu.system.cpu.loop_114.StoreNum             7                       # The number of Store in the loop
+system.cpu.AMratio                           4.576923                       # Arithmetic Memory Ratio
+system.cpu.system.cpu.loop_115.TargetPC       4288223                       # The Start Point of the Loop
+system.cpu.system.cpu.loop_115.BranchPC       4288329                       # The End Point of the Loop
+system.cpu.system.cpu.loop_115.iterNum              1                       # The number of iterations of this Loop
+system.cpu.system.cpu.loop_115.ArthmNum            30                       # The number of Arithmetic operations within the loop
+system.cpu.system.cpu.loop_115.LoadNum              5                       # The number of Load in the loop
+system.cpu.system.cpu.loop_115.StoreNum             6                       # The number of Store in the loop
+system.cpu.AMratio                           2.727273                       # Arithmetic Memory Ratio
+system.cpu.system.cpu.loop_116.TargetPC       4283168                       # The Start Point of the Loop
+system.cpu.system.cpu.loop_116.BranchPC       4283454                       # The End Point of the Loop
+system.cpu.system.cpu.loop_116.iterNum              1                       # The number of iterations of this Loop
+system.cpu.system.cpu.loop_116.ArthmNum            25                       # The number of Arithmetic operations within the loop
+system.cpu.system.cpu.loop_116.LoadNum              4                       # The number of Load in the loop
+system.cpu.system.cpu.loop_116.StoreNum             2                       # The number of Store in the loop
+system.cpu.AMratio                           4.166667                       # Arithmetic Memory Ratio
+system.cpu.system.cpu.loop_117.TargetPC       4283168                       # The Start Point of the Loop
+system.cpu.system.cpu.loop_117.BranchPC       4283206                       # The End Point of the Loop
+system.cpu.system.cpu.loop_117.iterNum              1                       # The number of iterations of this Loop
+system.cpu.system.cpu.loop_117.ArthmNum             7                       # The number of Arithmetic operations within the loop
+system.cpu.system.cpu.loop_117.LoadNum              1                       # The number of Load in the loop
+system.cpu.system.cpu.loop_117.StoreNum             1                       # The number of Store in the loop
+system.cpu.AMratio                           3.500000                       # Arithmetic Memory Ratio
+system.cpu.dtb.walker.pwrStateResidencyTicks::UNDEFINED 173271486304000                       # Cumulative time (in ticks) in various power states
+system.cpu.interrupts.clk_domain.clock          16000                       # Clock period in ticks
+system.cpu.itb.walker.pwrStateResidencyTicks::UNDEFINED 173271486304000                       # Cumulative time (in ticks) in various power states
+
+---------- End Simulation Statistics   ----------

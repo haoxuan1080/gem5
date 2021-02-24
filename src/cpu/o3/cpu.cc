@@ -95,8 +95,8 @@ O3_PIM_Node::O3_PIM_Node(uint64_t start, uint64_t end)
     :startPC(start)
     ,endPC(end)
 {
-    cout<<"constructing pim node: start: "<<std::hex<<start
-            <<" end: "<<std::hex<<end<<endl;
+    cout<<"constructing pim node: start: 0x"<<std::hex<<start
+            <<" end: 0x"<<std::hex<<end<<endl;
 }
 
 template <class Impl>
@@ -241,7 +241,7 @@ FullO3CPU<Impl>::FullO3CPU(DerivO3CPUParams *params)
         _status = SwitchedOut;
     }
 
-    ifstream file("PIM_loops.txt");
+    ifstream file(params->PIM_list);
     while (1) {
         string str;
         if (!getline(file, str)) break;

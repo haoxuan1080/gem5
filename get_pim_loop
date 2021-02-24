@@ -22,6 +22,12 @@ def addOptions(parser):
             default = 5.0, \
             help = "The threashold below which the Arithmetic \
             to Memory operation ratio of reserved loops should be")
+    parser.add_option("-w", "--write_file",
+                      dest="write_file",
+                      type="string",
+                      default="./PIM_loops.txt",
+                      help="The output file which contains the list"
+                           "of loops to be offloaded into PIM")
 
 def is_stat(line):
     return (line[0] != '-' and line[0] != ' ' and line[0] != '\n')
@@ -70,7 +76,7 @@ filepath = options.filename
 
 print("reading from file: " + filepath)
 f = open(filepath, "r")
-fw = open("./PIM_loops.txt", "w")
+fw = open(options.write_file, "w")
 
 loops = []
 
