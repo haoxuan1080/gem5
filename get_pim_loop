@@ -61,12 +61,12 @@ def read_a_loop(f, StartPC):
     stat = line.split()
     StoreNum = int(stat[1])
 
-    #reading AMratio
+    #reading ldstRatio
     line = f.readline()
     stat = line.split()
-    AMratio = float(stat[1])
+    ldstRatio = float(stat[1])
 
-    return [StartPC, EndPC, iterNum, ArthmNum, LoadNum, StoreNum, AMratio]
+    return [StartPC, EndPC, iterNum, ArthmNum, LoadNum, StoreNum, ldstRatio]
 
 ###Start of Script
 parser = optparse.OptionParser()
@@ -98,10 +98,10 @@ while True:
             #print ("loop num is: ", loopnum)
             StartPC = int(value)
             [StartPC, EndPC, iterNum, ArthmNum, LoadNum, \
-                    StoreNum, Amratio] = read_a_loop(f, StartPC)
+                    StoreNum, ldstRatio] = read_a_loop(f, StartPC)
             print("Loop ", loopnum, "from ", StartPC, " to ", EndPC)
-            print("AMratio = ", Amratio)
-            if (iterNum >= options.threshold and Amratio < options.ratio):
+            print("ldstRatio = ", ldstRatio)
+            if (iterNum >= options.threshold and ldstRatio < options.ratio):
                 print("Loop ", loopnum, "is selected to be offloaded to PIM")
                 loops.append((loopnum, StartPC, EndPC))
 

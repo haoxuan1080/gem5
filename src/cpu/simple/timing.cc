@@ -88,7 +88,7 @@ BranchNode& TimingSimpleCPU::LoopList::insertLoop(Addr BranchPC, \
     bn->BranchPC = BranchPC;
     bn->TargetPC = TargetPC;
     bn->iterNum = 0;
-    bn->ArthmNum = 0;
+    bn->TotalInstNum = 0;
     bn->LoadNum = 0;
     bn->StoreNum = 0;
     bn->pim = false;
@@ -101,10 +101,10 @@ BranchNode::BranchNode(TimingSimpleCPU& cpu, int n)
         ADD_STAT(TargetPC, "Target PC"),
         ADD_STAT(BranchPC, "Branch PC"),
         ADD_STAT(iterNum, "Iteration Number"),
-        ADD_STAT(ArthmNum, "ArithMetic Number"),
+        ADD_STAT(TotalInstNum, "Total instruction Number"),
         ADD_STAT(LoadNum, "Load Number"),
         ADD_STAT(StoreNum, "Store Number"),
-        ADD_STAT(AMratio, "Arithmetic Memory Ratio")
+        ADD_STAT(ldstRatio, "Total instruction to Memory access Ratio")
 {
         //ADD_STAT()
 }
@@ -126,8 +126,8 @@ void TimingSimpleCPU::regStats_BN(BranchNode& bn, int n)
     bn.iterNum
             .name(name() + ".loop_" + to_string(n) + ".iterNum")
             .desc("The number of iterations of this Loop");
-    bn.ArthmNum
-            .name(name() + ".loop_" + to_string(n) + ".ArthmNum")
+    bn.TotalInstNum
+            .name(name() + ".loop_" + to_string(n) + ".TotalInstNum")
             .desc("The number of Arithmetic operations within the loop");
     bn.LoadNum
             .name(name() + ".loop_" + to_string(n) + ".LoadNum")
@@ -135,7 +135,7 @@ void TimingSimpleCPU::regStats_BN(BranchNode& bn, int n)
     bn.StoreNum
             .name(name() + ".loop_" + to_string(n) + ".StoreNum")
             .desc("The number of Store in the loop");
-    bn.AMratio = bn.ArthmNum/(bn.LoadNum+bn.StoreNum);
+    bn.ldstRatio = bn.TotalInstNum/(bn.LoadNum+bn.StoreNum);
 
 }
 
@@ -1004,7 +1004,7 @@ TimingSimpleCPU::completeIfetch(PacketPtr pkt)
              }
              if (curStaticInst && (curStaticInst->isFloating()
                  || curStaticInst->isInteger())) {
-                 (*current)->ArthmNum++;
+                 (*current)->TotalInstNum++;
              }
          }
      }
@@ -1024,12 +1024,6 @@ TimingSimpleCPU::completeIfetch(PacketPtr pkt)
              t_info.PIM_LoadNum++;
              //cout<<"0x"<<std::hex<<prevPC<<": Is Load"<<endl;
          }
-         if (curStaticInst && (curStaticInst->isFloating()
-                 || curStaticInst->isInteger())) {
-             t_info.PIM_ArthmNum++;
-             //cout<<"0x"<<std::hex<<prevPC<<": Is Arthm"<<endl;
-         }
-         //cout<<"In PIM Node at PC"<<std::hex<<prevPC<<"end"<<endl;
      }
      //----------End for statistics--------//
 

@@ -255,12 +255,6 @@ BaseSimpleCPU::regStats()
 in all the instructions executed")
             ;
 
-        t_info.PIM_ArthmNum
-            .name(thread_str + ".PIM_ArthmNum")
-            .desc("Number of Arithmetic operations offloaded\
-to the memory")
-            ;
-
         t_info.PIM_LoadNum
             .name(thread_str + ".PIM_LoadNum")
             .desc("Number of Load Instructions offloadded \
@@ -273,10 +267,10 @@ to the memory")
 to the memory")
             ;
 
-        t_info.PIM_AMratio
-            .name(thread_str + ".PIM_AMratio")
-            .desc("Overall Arithmetic to Memory access of all \
-the instruction offloaded to PIM")
+        t_info.PIM_ldstRatio
+            .name(thread_str + ".PIM_ldstRatio")
+            .desc("Overall total operations to Memory access\
+ratio of all the instruction offloaded to PIM")
             ;
 
         t_info.numIntAluAccesses
@@ -423,7 +417,7 @@ the instruction offloaded to PIM")
         t_info.numIdleCycles = t_info.idleFraction * numCycles;
         t_info.numBusyCycles = t_info.notIdleFraction * numCycles;
 
-        t_info.PIM_AMratio = t_info.PIM_ArthmNum
+        t_info.PIM_ldstRatio = t_info.PIM_InstNUM
                 /(t_info.PIM_LoadNum + t_info.PIM_StoreNum);
 
         t_info.numBranches

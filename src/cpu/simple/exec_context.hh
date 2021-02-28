@@ -88,10 +88,9 @@ class SimpleExecContext : public ExecContext {
     Stats::Scalar PIM_InstNUM;
     Stats::Scalar NONPIM_InstNUM;
     Stats::Average PIM_Fraction;
-    Stats::Scalar PIM_ArthmNum;
     Stats::Scalar PIM_LoadNum;
     Stats::Scalar PIM_StoreNum;
-    Stats::Formula PIM_AMratio; //overall AM ratio of all
+    Stats::Formula PIM_ldstRatio; //overall ldst ratio of all
     //the instructions offloaded to the memory
     //PIM statistics ends
 

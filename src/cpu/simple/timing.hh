@@ -56,10 +56,10 @@ struct BranchNode : public Stats::Group
     Stats::Scalar TargetPC;
     Stats::Scalar BranchPC;
     Stats::Scalar iterNum;
-    Stats::Scalar ArthmNum;
+    Stats::Scalar TotalInstNum;
     Stats::Scalar LoadNum;
     Stats::Scalar StoreNum;
-    Stats::Formula AMratio;
+    Stats::Formula ldstRatio;
     BranchNode(TimingSimpleCPU&, int);
     bool pim = false;
 };
